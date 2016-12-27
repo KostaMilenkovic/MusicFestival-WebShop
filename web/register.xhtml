@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+    <h:body>
+    	<h1>Register</h1>
+
+	  <h:form>
+                <hr></hr>
+                First Name : <h:inputText value="#{usercontroller.user.firstName}" />
+                <hr></hr>
+                Last Name : <h:inputText value="#{usercontroller.user.lastName}" />
+                <hr></hr>
+                Username : <h:inputText value="#{usercontroller.user.userName}" />
+                <hr></hr>
+                Password : <h:inputSecret value="#{usercontroller.user.password}" />
+                <hr></hr>
+                Confirm Password : <h:inputSecret value="#{usercontroller.user.confirmPassword}" />
+                <hr></hr>
+                Phone : <h:inputText value="#{usercontroller.user.phone}" />
+                <hr></hr>
+                E-mail : <h:inputText value="#{usercontroller.user.email}" />
+                <hr></hr>
+                
+    		<h:commandButton value="REGISTER" action="#{usercontroller.register()}" />
+    	  </h:form>
+        <h:outputText value="#{usercontroller.message}" />
+
+    </h:body>
+</html>
