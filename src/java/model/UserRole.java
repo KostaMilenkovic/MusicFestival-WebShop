@@ -6,7 +6,9 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,25 +16,25 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author milenkok
+ * @author obabovic
  */
 @Entity
-@Table(name = "socialnetwork")
+@Table(name = "user_role")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Socialnetwork.findAll", query = "SELECT s FROM Socialnetwork s"),
-    @NamedQuery(name = "Socialnetwork.findById", query = "SELECT s FROM Socialnetwork s WHERE s.id = :id"),
-    @NamedQuery(name = "Socialnetwork.findByIdFestival", query = "SELECT s FROM Socialnetwork s WHERE s.idFestival = :idFestival"),
-    @NamedQuery(name = "Socialnetwork.findByName", query = "SELECT s FROM Socialnetwork s WHERE s.name = :name"),
-    @NamedQuery(name = "Socialnetwork.findByLink", query = "SELECT s FROM Socialnetwork s WHERE s.link = :link")})
-public class Socialnetwork implements Serializable {
+    @NamedQuery(name = "UserRole.findAll", query = "SELECT u FROM UserRole u")
+    , @NamedQuery(name = "UserRole.findById", query = "SELECT u FROM UserRole u WHERE u.id = :id")
+    , @NamedQuery(name = "UserRole.findByName", query = "SELECT u FROM UserRole u WHERE u.name = :name")})
+public class UserRole implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -42,31 +44,22 @@ public class Socialnetwork implements Serializable {
     private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "idFestival")
-    private int idFestival;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
+    @Size(min = 1, max = 255)
     @Column(name = "name")
     private String name;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
-    @Column(name = "link")
-    private String link;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "role")
+    private Collection<User> userCollection;
 
-    public Socialnetwork() {
+    public UserRole() {
     }
 
-    public Socialnetwork(Integer id) {
+    public UserRole(Integer id) {
         this.id = id;
     }
 
-    public Socialnetwork(Integer id, int idFestival, String name, String link) {
+    public UserRole(Integer id, String name) {
         this.id = id;
-        this.idFestival = idFestival;
         this.name = name;
-        this.link = link;
     }
 
     public Integer getId() {
@@ -77,14 +70,6 @@ public class Socialnetwork implements Serializable {
         this.id = id;
     }
 
-    public int getIdFestival() {
-        return idFestival;
-    }
-
-    public void setIdFestival(int idFestival) {
-        this.idFestival = idFestival;
-    }
-
     public String getName() {
         return name;
     }
@@ -93,12 +78,13 @@ public class Socialnetwork implements Serializable {
         this.name = name;
     }
 
-    public String getLink() {
-        return link;
+    @XmlTransient
+    public Collection<User> getUserCollection() {
+        return userCollection;
     }
 
-    public void setLink(String link) {
-        this.link = link;
+    public void setUserCollection(Collection<User> userCollection) {
+        this.userCollection = userCollection;
     }
 
     @Override
@@ -111,10 +97,10 @@ public class Socialnetwork implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Socialnetwork)) {
+        if (!(object instanceof UserRole)) {
             return false;
         }
-        Socialnetwork other = (Socialnetwork) object;
+        UserRole other = (UserRole) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -123,7 +109,7 @@ public class Socialnetwork implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Socialnetwork[ id=" + id + " ]";
+        return "model.UserRole[ id=" + id + " ]";
     }
     
 }

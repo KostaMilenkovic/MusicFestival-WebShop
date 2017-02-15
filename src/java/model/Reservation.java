@@ -6,10 +6,8 @@
 package model;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,28 +17,26 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author obabovic
  */
 @Entity
-@Table(name = "ticket")
+@Table(name = "reservation")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Ticket.findAll", query = "SELECT t FROM Ticket t")
-    , @NamedQuery(name = "Ticket.findById", query = "SELECT t FROM Ticket t WHERE t.id = :id")
-    , @NamedQuery(name = "Ticket.findByType", query = "SELECT t FROM Ticket t WHERE t.type = :type")
-    , @NamedQuery(name = "Ticket.findByDate", query = "SELECT t FROM Ticket t WHERE t.date = :date")})
-public class Ticket implements Serializable {
+    @NamedQuery(name = "Reservation.findAll", query = "SELECT r FROM Reservation r")
+    , @NamedQuery(name = "Reservation.findById", query = "SELECT r FROM Reservation r WHERE r.id = :id")
+    , @NamedQuery(name = "Reservation.findByStatus", query = "SELECT r FROM Reservation r WHERE r.status = :status")
+    , @NamedQuery(name = "Reservation.findByDate", query = "SELECT r FROM Reservation r WHERE r.date = :date")})
+public class Reservation implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -51,29 +47,30 @@ public class Ticket implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(name = "type")
-    private String type;
+    @Column(name = "status")
+    private String status;
     @Basic(optional = false)
     @NotNull
     @Column(name = "date")
     @Temporal(TemporalType.DATE)
     private Date date;
-    @JoinColumn(name = "festival", referencedColumnName = "id")
+    @JoinColumn(name = "user", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Festival festival;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ticket")
-    private Collection<Reservation> reservationCollection;
+    private User user;
+    @JoinColumn(name = "ticket", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Ticket ticket;
 
-    public Ticket() {
+    public Reservation() {
     }
 
-    public Ticket(Integer id) {
+    public Reservation(Integer id) {
         this.id = id;
     }
 
-    public Ticket(Integer id, String type, Date date) {
+    public Reservation(Integer id, String status, Date date) {
         this.id = id;
-        this.type = type;
+        this.status = status;
         this.date = date;
     }
 
@@ -85,12 +82,12 @@ public class Ticket implements Serializable {
         this.id = id;
     }
 
-    public String getType() {
-        return type;
+    public String getStatus() {
+        return status;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public Date getDate() {
@@ -101,21 +98,20 @@ public class Ticket implements Serializable {
         this.date = date;
     }
 
-    public Festival getFestival() {
-        return festival;
+    public User getUser() {
+        return user;
     }
 
-    public void setFestival(Festival festival) {
-        this.festival = festival;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    @XmlTransient
-    public Collection<Reservation> getReservationCollection() {
-        return reservationCollection;
+    public Ticket getTicket() {
+        return ticket;
     }
 
-    public void setReservationCollection(Collection<Reservation> reservationCollection) {
-        this.reservationCollection = reservationCollection;
+    public void setTicket(Ticket ticket) {
+        this.ticket = ticket;
     }
 
     @Override
@@ -128,10 +124,10 @@ public class Ticket implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Ticket)) {
+        if (!(object instanceof Reservation)) {
             return false;
         }
-        Ticket other = (Ticket) object;
+        Reservation other = (Reservation) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -140,7 +136,7 @@ public class Ticket implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Ticket[ id=" + id + " ]";
+        return "model.Reservation[ id=" + id + " ]";
     }
     
 }

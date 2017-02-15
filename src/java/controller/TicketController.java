@@ -5,7 +5,7 @@
  */
 package controller;
 
-import session.User;
+import model.User;
 import db.DB;
 import java.io.Serializable;
 import java.util.List;

@@ -5,7 +5,7 @@
  */
 package controller;
 
-import session.User;
+import model.User;
 import db.DB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -194,14 +194,16 @@ public class RegisterController {
             return null;
         }
         
-        user.setFirstName(userName);
-        user.setLastName(lastName);
-        user.setUserName(userName);
+        
+        
+        user.setName(userName);
+        user.setSurname(lastName);
+        user.setUsername(userName);
         user.setPassword(password);
         user.setPhone(phone);
         user.setEmail(email);
-        user.setRole(1); //set user role
-        user.setValid(0); //not approved
+        user.setRole(DB.getUserRoleById(1)); //set user role
+        user.setApproved(0); //not approved
         
         Boolean success;
         try{

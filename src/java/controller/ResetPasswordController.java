@@ -11,7 +11,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
-import session.User;
+import model.User;
 
 /**
  *
@@ -158,7 +158,7 @@ public class ResetPasswordController {
         
         try{
             user.setPassword(newPassword);
-            user.setUserName(userName);
+            user.setUsername(userName);
             success = DB.resetPassword(userName, oldPassword, newPassword);
         }catch(Exception e){
             e.printStackTrace();

@@ -1,1 +1,5 @@
 build/
+/dist/
+src/conf/
+src/java/hibernate.cfg.xml
+web/WEB-INF/

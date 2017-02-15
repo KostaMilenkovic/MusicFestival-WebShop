@@ -5,7 +5,7 @@
  */
 package controller;
 
-import session.User;
+import model.User;
 import db.DB;
 import java.io.Serializable;
 import java.util.List;
@@ -36,7 +36,7 @@ public class LoginController implements Serializable{
     
     public String login(){
 
-        String username = user.getUserName();
+        String username = user.getUsername();
         String password = user.getPassword();
         
         if(username.equals("") || password.equals("")){
@@ -44,29 +44,24 @@ public class LoginController implements Serializable{
             return null;
         }
         
-        boolean success = user.login(username,password);
+        User success = DB.login(username,password);
         
         
-        if(!success){
+        if(success == null){
             message = "Failed to login";
             return null;
         }
         
         message = "Successfully logged in";
         
-        switch(user.getRole()){
-            case 1: {
-                if(user.getValid()==0)
-                    return "home_unregistered";
-                else
-                    return "home_registered";
-            }
-            case 2: return "home_admin";
-            default: return "";
+        switch(user.getRole().getName()){
+            case "administrator":
+                return "home_admin";
+            case "registered": 
+                return "home_registered";
+            default: 
+                return "home_unregistered";
         }
-            
-        
-        
     }
     
     

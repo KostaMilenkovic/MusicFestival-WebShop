@@ -6,8 +6,10 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,32 +17,36 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author milenkok
+ * @author obabovic
  */
 @Entity
 @Table(name = "festival")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Festival.findAll", query = "SELECT f FROM Festival f WHERE endDate>CURRENT_DATE"),
-    @NamedQuery(name = "Festival.findAllDesc", query = "SELECT f FROM Festival f ORDER BY f.rating DESC"),
-    @NamedQuery(name = "Festival.findRecent", query = "SELECT f FROM Festival f WHERE startDate>CURRENT_DATE ORDER BY f. startDate DESC"),
-    @NamedQuery(name = "Festival.findById", query = "SELECT f FROM Festival f WHERE f.id = :id"),
-    @NamedQuery(name = "Festival.findByName", query = "SELECT f FROM Festival f WHERE f.name = :name"),
-    @NamedQuery(name = "Festival.findByPlace", query = "SELECT f FROM Festival f WHERE f.place = :place"),
-    @NamedQuery(name = "Festival.findByStartDate", query = "SELECT f FROM Festival f WHERE f.startDate = :startDate"),
-    @NamedQuery(name = "Festival.findByEndDate", query = "SELECT f FROM Festival f WHERE f.endDate = :endDate"),
-    @NamedQuery(name = "Festival.findByTicketsDay", query = "SELECT f FROM Festival f WHERE f.ticketsDay = :ticketsDay"),
-    @NamedQuery(name = "Festival.findByTicketsTotal", query = "SELECT f FROM Festival f WHERE f.ticketsTotal = :ticketsTotal"),
-    @NamedQuery(name = "Festival.findByRating", query = "SELECT f FROM Festival f WHERE f.rating = :rating")})
+    @NamedQuery(name = "Festival.findAll", query = "SELECT f FROM Festival f"),
+    @NamedQuery(name = "Festival.findAllDesc", query = "SELECT f FROM Festival f")
+    , @NamedQuery(name = "Festival.findById", query = "SELECT f FROM Festival f WHERE f.id = :id")
+    , @NamedQuery(name = "Festival.findByName", query = "SELECT f FROM Festival f WHERE f.name = :name")
+    , @NamedQuery(name = "Festival.findByPlace", query = "SELECT f FROM Festival f WHERE f.place = :place")
+    , @NamedQuery(name = "Festival.findByStartDate", query = "SELECT f FROM Festival f WHERE f.startDate = :startDate")
+    , @NamedQuery(name = "Festival.findByEndDate", query = "SELECT f FROM Festival f WHERE f.endDate = :endDate")
+    , @NamedQuery(name = "Festival.findByCostDay", query = "SELECT f FROM Festival f WHERE f.costDay = :costDay")
+    , @NamedQuery(name = "Festival.findByCostAll", query = "SELECT f FROM Festival f WHERE f.costAll = :costAll")
+    , @NamedQuery(name = "Festival.findByUserTicketDay", query = "SELECT f FROM Festival f WHERE f.userTicketDay = :userTicketDay")
+    , @NamedQuery(name = "Festival.findByNumTicketsDay", query = "SELECT f FROM Festival f WHERE f.numTicketsDay = :numTicketsDay")
+    , @NamedQuery(name = "Festival.findByStatus", query = "SELECT f FROM Festival f WHERE f.status = :status")
+    , @NamedQuery(name = "Festival.findByNumVisits", query = "SELECT f FROM Festival f WHERE f.numVisits = :numVisits")})
 public class Festival implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -51,36 +57,59 @@ public class Festival implements Serializable {
     private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 100)
+    @Size(min = 1, max = 255)
     @Column(name = "name")
     private String name;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 100)
+    @Size(min = 1, max = 255)
     @Column(name = "place")
     private String place;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "startDate")
+    @Column(name = "start_date")
     @Temporal(TemporalType.DATE)
     private Date startDate;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "endDate")
+    @Column(name = "end_date")
     @Temporal(TemporalType.DATE)
     private Date endDate;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "ticketsDay")
-    private int ticketsDay;
+    @Column(name = "cost_day")
+    private int costDay;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "ticketsTotal")
-    private int ticketsTotal;
+    @Column(name = "cost_all")
+    private int costAll;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "rating")
-    private int rating;
+    @Column(name = "user_ticket_day")
+    private int userTicketDay;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "num_tickets_day")
+    private int numTicketsDay;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "status")
+    private String status;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "num_visits")
+    private int numVisits;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival")
+    private Collection<Ticket> ticketCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival")
+    private Collection<FestivalRating> festivalRatingCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival")
+    private Collection<FestivalComment> festivalCommentCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival")
+    private Collection<SocialNetwork> socialNetworkCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival")
+    private Collection<FestivalPerformer> festivalPerformerCollection;
 
     public Festival() {
     }
@@ -89,15 +118,18 @@ public class Festival implements Serializable {
         this.id = id;
     }
 
-    public Festival(Integer id, String name, String place, Date startDate, Date endDate, int ticketsDay, int ticketsTotal, int rating) {
+    public Festival(Integer id, String name, String place, Date startDate, Date endDate, int costDay, int costAll, int userTicketDay, int numTicketsDay, String status, int numVisits) {
         this.id = id;
         this.name = name;
         this.place = place;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.ticketsDay = ticketsDay;
-        this.ticketsTotal = ticketsTotal;
-        this.rating = rating;
+        this.costDay = costDay;
+        this.costAll = costAll;
+        this.userTicketDay = userTicketDay;
+        this.numTicketsDay = numTicketsDay;
+        this.status = status;
+        this.numVisits = numVisits;
     }
 
     public Integer getId() {
@@ -140,28 +172,97 @@ public class Festival implements Serializable {
         this.endDate = endDate;
     }
 
-    public int getTicketsDay() {
-        return ticketsDay;
+    public int getCostDay() {
+        return costDay;
     }
 
-    public void setTicketsDay(int ticketsDay) {
-        this.ticketsDay = ticketsDay;
+    public void setCostDay(int costDay) {
+        this.costDay = costDay;
     }
 
-    public int getTicketsTotal() {
-        return ticketsTotal;
+    public int getCostAll() {
+        return costAll;
     }
 
-    public void setTicketsTotal(int ticketsTotal) {
-        this.ticketsTotal = ticketsTotal;
+    public void setCostAll(int costAll) {
+        this.costAll = costAll;
     }
 
-    public int getRating() {
-        return rating;
+    public int getUserTicketDay() {
+        return userTicketDay;
     }
 
-    public void setRating(int rating) {
-        this.rating = rating;
+    public void setUserTicketDay(int userTicketDay) {
+        this.userTicketDay = userTicketDay;
+    }
+
+    public int getNumTicketsDay() {
+        return numTicketsDay;
+    }
+
+    public void setNumTicketsDay(int numTicketsDay) {
+        this.numTicketsDay = numTicketsDay;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public int getNumVisits() {
+        return numVisits;
+    }
+
+    public void setNumVisits(int numVisits) {
+        this.numVisits = numVisits;
+    }
+
+    @XmlTransient
+    public Collection<Ticket> getTicketCollection() {
+        return ticketCollection;
+    }
+
+    public void setTicketCollection(Collection<Ticket> ticketCollection) {
+        this.ticketCollection = ticketCollection;
+    }
+
+    @XmlTransient
+    public Collection<FestivalRating> getFestivalRatingCollection() {
+        return festivalRatingCollection;
+    }
+
+    public void setFestivalRatingCollection(Collection<FestivalRating> festivalRatingCollection) {
+        this.festivalRatingCollection = festivalRatingCollection;
+    }
+
+    @XmlTransient
+    public Collection<FestivalComment> getFestivalCommentCollection() {
+        return festivalCommentCollection;
+    }
+
+    public void setFestivalCommentCollection(Collection<FestivalComment> festivalCommentCollection) {
+        this.festivalCommentCollection = festivalCommentCollection;
+    }
+
+    @XmlTransient
+    public Collection<SocialNetwork> getSocialNetworkCollection() {
+        return socialNetworkCollection;
+    }
+
+    public void setSocialNetworkCollection(Collection<SocialNetwork> socialNetworkCollection) {
+        this.socialNetworkCollection = socialNetworkCollection;
+    }
+
+    @XmlTransient
+    public Collection<FestivalPerformer> getFestivalPerformerCollection() {
+        return festivalPerformerCollection;
+    }
+
+    public void setFestivalPerformerCollection(Collection<FestivalPerformer> festivalPerformerCollection) {
+        this.festivalPerformerCollection = festivalPerformerCollection;
     }
 
     @Override

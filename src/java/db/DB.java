@@ -5,12 +5,13 @@
  */
 package db;
 
-import session.User;
+import model.User;
 import java.util.List;
 import model.Festival;
 import model.Performer;
-import model.Socialnetwork;
+import model.SocialNetwork;
 import model.Ticket;
+import model.UserRole;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -27,23 +28,21 @@ public class DB {
     private static ServiceRegistry serviceRegistry;
     private static SessionFactory factory;
         
-    static{
+    static {
         cfg = new Configuration();
         cfg.configure("hibernate.cfg.xml");
         cfg.addAnnotatedClass(User.class);
         cfg.addAnnotatedClass(Festival.class);
         cfg.addAnnotatedClass(Ticket.class);
         cfg.addAnnotatedClass(Performer.class);
-        cfg.addAnnotatedClass(Socialnetwork.class);
+        cfg.addAnnotatedClass(SocialNetwork.class);
         serviceRegistry = new StandardServiceRegistryBuilder().applySettings(cfg.getProperties()).build();
         factory = cfg.buildSessionFactory(serviceRegistry);
     }
     
-    public static Boolean register(User user){
-        
-        
+    public static Boolean register(User user) {
         Session session = factory.openSession();
-        Query query = session.getNamedQuery("User.findByUserName").setString("userName", user.getUserName());
+        Query query = session.getNamedQuery("User.findByUserName").setString("userName", user.getUsername());
         User resultUser = (User)query.uniqueResult();
         if(resultUser!=null){
             session.close();
@@ -68,7 +67,6 @@ public class DB {
         
         session.close();
         return resultUser;
-        
     }
     
     public static Boolean resetPassword(String username, String oldPassword, String newPassword){
@@ -146,25 +144,6 @@ public class DB {
     
     public static Boolean reserveTicketForFestival(Integer festivalId,String festivalName,Integer ownerId){
         Session session = factory.openSession();
-
-        Query query = session.getNamedQuery("Festival.findById").setInteger("id", festivalId);
-        Festival festival = (Festival)query.uniqueResult();
-        
-        Ticket ticket = new Ticket();
-        ticket.setFestivalName(festivalName);
-        ticket.setFestivalId(festivalId);
-        ticket.setStartDate(festival.getStartDate());
-        ticket.setEndDate(festival.getEndDate());
-        ticket.setOwnerId(ownerId);
-        ticket.setStatus("reserved");
-        
-        festival.setTicketsDay(festival.getTicketsTotal()-1); //not safe
-        
-        session.getTransaction().begin();
-        session.save(ticket);
-        session.save(festival);
-        if(!session.getTransaction().wasCommitted())session.getTransaction().commit();
-        session.close();
         
         return true;
     }
@@ -180,5 +159,15 @@ public class DB {
         
         return festival;
     }
+    
+    public static UserRole getUserRoleById(Integer userRoleId) {
+        Session session = factory.openSession();
+
+        Query query = session.getNamedQuery("UserRole.findById").setInteger("id", userRoleId);
+        UserRole userRole = (UserRole)query.uniqueResult();
         
+        session.close();
+        
+        return userRole;
+    }
 }
