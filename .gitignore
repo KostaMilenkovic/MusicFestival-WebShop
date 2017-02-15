@@ -4,8 +4,6 @@ build/
 src/conf/
 src/java/hibernate.cfg.xml
 web/WEB-INF/
-web/.DS_Store
-src/.DS_Store
 lib/
 nbproject/
 .DS_Store
