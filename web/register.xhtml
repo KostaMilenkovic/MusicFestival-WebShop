@@ -1,32 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html">
-
-    <h:body>
-    	<h1>Register</h1>
+<ui:composition template="template/templatePage.xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    
+    <ui:define name="header">
+        <h:link outcome="login.xhtml"><h1>Music festival web shop</h1></h:link>
+        <c:if test="#{user.userName!=null}">
+            <h1>Your account is not approved yet <h:outputText value="#{user.userName}" /></h1>
+        </c:if>
+    </ui:define>
+    
+    <ui:define name="content">
+        <div class="centered-div" style="background-color:lightcyan;">
 
 	  <h:form>
                 <hr></hr>
-                First Name : <h:inputText value="#{usercontroller.user.firstName}" />
+                First Name : <h:inputText value="#{registerController.firstName}" />
                 <hr></hr>
-                Last Name : <h:inputText value="#{usercontroller.user.lastName}" />
+                Last Name : <h:inputText value="#{registerController.lastName}" />
                 <hr></hr>
-                Username : <h:inputText value="#{usercontroller.user.userName}" />
+                Username : <h:inputText value="#{registerController.userName}" />
                 <hr></hr>
-                Password : <h:inputSecret value="#{usercontroller.user.password}" />
+                Password : <h:inputSecret value="#{registerController.password}" />
                 <hr></hr>
-                Confirm Password : <h:inputSecret value="#{usercontroller.user.confirmPassword}" />
+                Confirm Password : <h:inputSecret value="#{registerController.confirmPassword}" />
                 <hr></hr>
-                Phone : <h:inputText value="#{usercontroller.user.phone}" />
+                Phone : <h:inputText value="#{registerController.phone}" />
                 <hr></hr>
-                E-mail : <h:inputText value="#{usercontroller.user.email}" />
+                E-mail : <h:inputText value="#{registerController.email}" />
                 <hr></hr>
                 
-    		<h:commandButton value="REGISTER" action="#{usercontroller.register()}" />
+    		<h:commandButton class="btn btn-default"  value="REGISTER" action="#{registerController.register()}" />
     	  </h:form>
-        <h:outputText value="#{usercontroller.message}" />
-
-    </h:body>
-</html>
+            <h:outputText class="text-danger" value="#{registerController.message}" />
+        </div>
+    </ui:define>
+</ui:composition>

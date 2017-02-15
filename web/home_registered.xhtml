@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="template/templatePage.xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    
+<!--    <ui:define name="header">
+        <h:link outcome="login.xhtml"><h1>Music festival web shop</h1></h:link>
+        <c:if test="#{user.userName!=null}">
+            <h1><h:outputText value="#{user.userName}" /></h1>
+        </c:if>
+        <h:form>
+            <h:commandButton value="logout" action="#{user.logout()}"/>
+        </h:form>
+    </ui:define>-->
+    
+    <ui:define name="content">
+        <div class="welcome-div">
+            <p>Welcome back, <h:outputText value="#{user.userName}" /></p>
+            <p><h:outputText value="#{usercontroller.message}"/></p>
+        </div>
+        
+        <div class="top5-festivals-div">
+            <h1>Top 5 festivals</h1>
+            <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+            <h:form>
+                <h:dataTable class="table" value="#{homeRegisteredController.top5}" var="festival">
+                        <h:column>
+                            <f:facet name="header">Name</f:facet>
+                            <h:outputText value="#{festival.name}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Place</f:facet>
+                            <h:outputText value="#{festival.place}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">From</f:facet>
+                            <h:outputText value="#{festival.startDate}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Until</f:facet>
+                            <h:outputText value="#{festival.endDate}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Daily Tickets</f:facet>
+                            <h:outputText value="#{festival.ticketsDay}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Festival Tickets</f:facet>
+                            <h:outputText value="#{festival.ticketsTotal}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Rating</f:facet>
+                            <h:outputText value="#{festival.rating}"/>
+                        </h:column>
+                    <h:column>
+                        <f:facet name="header">Reservation</f:facet>
+                        <h:form>
+                            <h:commandButton class="btn btn-success" action="#{ticketController.reserveTicketForFestival(festival.id, festival.name, usercontroller.user.id)}" value="RESERVE"/>
+                        </h:form>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">View</f:facet>
+                        <h:commandLink class="btn btn-info" action="#{homeRegisteredController.showFestival(festival.id)}" value="VIEW"/>
+                    </h:column>
+
+                </h:dataTable>
+            </h:form>
+            </div>
+            <div class="col-md-3"></div>
+            </div>
+        </div>
+        <div class="recent5-festivals-div">
+            <h1>Most Recent 5 festivals</h1>
+            <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <h:form>
+                    <h:dataTable class="table" value="#{homeRegisteredController.recent5}" var="festival">
+                            <h:column>
+                                <f:facet name="header">Name</f:facet>
+                                <h:outputText value="#{festival.name}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Place</f:facet>
+                                <h:outputText value="#{festival.place}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">From</f:facet>
+                                <h:outputText value="#{festival.startDate}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Until</f:facet>
+                                <h:outputText value="#{festival.endDate}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Daily Tickets</f:facet>
+                                <h:outputText value="#{festival.ticketsDay}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Festival Tickets</f:facet>
+                                <h:outputText value="#{festival.ticketsTotal}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Rating</f:facet>
+                                <h:outputText value="#{festival.rating}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Reservation</f:facet>
+                                <h:form>
+                                    <h:commandButton class="btn btn-success" action="#{ticketController.reserveTicketForFestival(festival.id, festival.name, usercontroller.user.id)}" value="RESERVE"/>
+                                </h:form>
+                            </h:column>
+                             <h:column>
+                                <f:facet name="header">View</f:facet>
+                                <h:commandLink class="btn btn-info" action="#{homeRegisteredController.showFestival(festival.id)}" value="VIEW"/>
+                            </h:column>
+                    </h:dataTable>
+                </h:form>
+            </div>
+            <div class="col-md-3"></div>
+            </div>
+        </div>
+        <div class="search-festivals-div">
+            <h1>Search festivals</h1>
+            <h:form>
+                <hr></hr>
+                Name : <h:inputText value="#{homeRegisteredController.name}" />
+                <hr></hr>
+                Place : <h:inputText value="#{homeRegisteredController.place}" />
+                <hr></hr>
+                <h:commandButton value="SEARCH" action="#{homeRegisteredController.searchExtended()}" />
+            </h:form>
+        </div>
+        <div class="table-div">
+        <h:form>
+            <h:dataTable class="table" value="#{homeRegisteredController.festivals}" var="festival">
+                    <h:column>
+                        <f:facet name="header">Name</f:facet>
+                        <h:outputText value="#{festival.name}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Place</f:facet>
+                        <h:outputText value="#{festival.place}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">From</f:facet>
+                        <h:outputText value="#{festival.startDate}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Until</f:facet>
+                        <h:outputText value="#{festival.endDate}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Daily Tickets</f:facet>
+                        <h:outputText value="#{festival.ticketsDay}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Festival Tickets</f:facet>
+                        <h:outputText value="#{festival.ticketsTotal}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Rating</f:facet>
+                        <h:outputText value="#{festival.rating}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Reservation</f:facet>
+                        <h:form>
+                            <h:commandButton class="btn btn-success" action="#{ticketController.reserveTicketForFestival(festival.id, festival.name, usercontroller.user.id)}" value="RESERVE"/>
+                        </h:form>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">View</f:facet>
+                        <h:commandLink class="btn btn-info" action="#{homeRegisteredController.showFestival(festival.id)}" value="VIEW"/>
+                    </h:column>
+            </h:dataTable>
+        </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

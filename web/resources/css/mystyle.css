@@ -1,0 +1,50 @@
+#bottom {
+   position:fixed;
+   left:0px;
+   bottom:0px;
+   height:4em;
+   width:100%;
+   background:blanchedalmond;
+}
+
+#top{
+    background-color: peachpuff;
+}
+
+.table-div{
+    padding:4em;
+    padding-bottom: 8em;
+    background-color: skyblue;
+}
+
+.welcome-div{
+    background-color: lightgreen;
+    padding: 2em;   
+}
+
+.centered-div{
+    text-align: center;
+    padding: 2em;   
+}
+
+.top5-festivals-div{
+    background-color: lightblue;
+    text-align: center;
+}
+
+.recent5-festivals-div{
+    background-color: lightblue;
+    text-align: center;
+}
+
+.search-festivals-div{
+    background-color: skyblue;
+    text-align: center;
+    padding: 2em;
+}
+
+.festival-table-div{
+    background-color: skyblue;
+    text-align: center;
+    padding-top : 2em;
+}

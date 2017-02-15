@@ -3,9 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package beans;
+package session;
 
+import db.DB;
 import java.io.Serializable;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +20,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -24,6 +29,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author milenkok
  */
+@SessionScoped
+@ManagedBean(name="user")
 @Entity
 @Table(name = "user")
 @XmlRootElement
@@ -38,7 +45,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "User.findById", query = "SELECT u FROM User u WHERE u.id = :id")})
 public class User implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
@@ -76,9 +82,11 @@ public class User implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Transient
-    private String confirmPassword;
-
+    @Column(name = "role")
+    private Integer role;
+    @Column(name = "valid")
+    private Integer valid;
+    
     public User() {
     }
 
@@ -86,7 +94,7 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public User(Integer id, String firstName, String lastName, String userName, String password, String phone, String email) {
+    public User(Integer id, String firstName, String lastName, String userName, String password, String phone, String email,Integer role,Integer valid) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -94,6 +102,8 @@ public class User implements Serializable {
         this.password = password;
         this.phone = phone;
         this.email = email;
+        this.role = role;
+        this.valid = valid;
     }
 
     public String getFirstName() {
@@ -159,15 +169,21 @@ public class User implements Serializable {
         return hash;
     }
 
-    public String getConfirmPassword() {
-        return confirmPassword;
+    public Integer getRole() {
+        return role;
     }
 
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
+    public void setRole(Integer role) {
+        this.role = role;
     }
-    
-    
+
+    public Integer getValid() {
+        return valid;
+    }
+
+    public void setValid(Integer valid) {
+        this.valid = valid;
+    }    
 
     @Override
     public boolean equals(Object object) {
@@ -181,10 +197,36 @@ public class User implements Serializable {
         }
         return true;
     }
+    
+    
 
     @Override
     public String toString() {
         return "beans.User[ id=" + id + " ]";
     }
     
+    public String logout() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
+        session.invalidate();
+        return "login";
+    } 
+    
+    public Boolean login(String username, String password){
+            User result =  DB.login(username,password);
+            if(result==null)
+                return false;
+            
+            this.firstName = result.getFirstName();
+            this.lastName = result.getLastName();
+            this.userName = result.getUserName();
+            this.email = result.getEmail();
+            this.phone = result.getPhone();
+            this.password = result.getPassword();
+            this.role = result.getRole();
+            this.valid = result.getValid();
+            this.id = result.getId();
+            
+            return true;
+    }
 }
