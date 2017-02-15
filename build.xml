@@ -7,13 +7,8 @@
 <!-- the Compile on Save feature is turned off for the project. -->
 <!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
 <!-- in the project's Project Properties dialog box.-->
-<<<<<<< HEAD
-<project name="pia_project" default="default" basedir=".">
-    <description>Builds, tests, and runs the project pia_project.</description>
-=======
 <project name="music_festival_web_shop" default="default" basedir=".">
     <description>Builds, tests, and runs the project pia-project.</description>
->>>>>>> 00cf095f30d036c6e4dd008b87870935f5af03c3
     <import file="nbproject/build-impl.xml"/>
     <!--
 
