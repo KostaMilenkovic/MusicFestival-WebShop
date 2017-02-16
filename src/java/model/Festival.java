@@ -35,8 +35,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Festival.findAll", query = "SELECT f FROM Festival f"),
-    @NamedQuery(name = "Festival.findAllDesc", query = "SELECT f FROM Festival f")
-    , @NamedQuery(name = "Festival.findById", query = "SELECT f FROM Festival f WHERE f.id = :id")
+    @NamedQuery(name = "Festival.findAllDesc", query = "SELECT f FROM Festival f"),
+    @NamedQuery(name = "Festival.findRecent", query = "SELECT f FROM Festival f WHERE startDate>CURRENT_DATE ORDER BY f. startDate DESC"),
+    @NamedQuery(name = "Festival.findById", query = "SELECT f FROM Festival f WHERE f.id = :id")
     , @NamedQuery(name = "Festival.findByName", query = "SELECT f FROM Festival f WHERE f.name = :name")
     , @NamedQuery(name = "Festival.findByPlace", query = "SELECT f FROM Festival f WHERE f.place = :place")
     , @NamedQuery(name = "Festival.findByStartDate", query = "SELECT f FROM Festival f WHERE f.startDate = :startDate")

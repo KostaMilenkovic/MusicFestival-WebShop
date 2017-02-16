@@ -22,7 +22,7 @@ public class ResetPasswordController {
     @ManagedProperty(value = "#{user}")
     private User user;
     
-    private String userName;
+    private String username;
     private String oldPassword;
     private String newPassword;
     private String confirmPassword;
@@ -37,12 +37,12 @@ public class ResetPasswordController {
         this.user = user;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getOldPassword() {
@@ -81,7 +81,7 @@ public class ResetPasswordController {
     
     public String resetPassword(){
         
-        if(userName.equals("")){
+        if(username.equals("")){
             message = "User name field is required";
             return null;
         }
@@ -157,8 +157,8 @@ public class ResetPasswordController {
         
         try{
             user.setPassword(newPassword);
-            user.setUsername(userName);
-            success = DB.resetPassword(userName, oldPassword, newPassword);
+            user.setUsername(username);
+            success = DB.resetPassword(username, oldPassword, newPassword);
         }catch(Exception e){
             e.printStackTrace();
             message = "Failed to reset a password. Try again";
