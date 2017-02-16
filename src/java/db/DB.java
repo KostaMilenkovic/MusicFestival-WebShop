@@ -118,6 +118,14 @@ public class DB {
         return festivals;
     }
     
+    public static List<Festival> getTopFiveFestivalsByRating(){
+        Session session = factory.openSession();
+        Query query = session.getNamedQuery("Festival.findTopFiveByRating");
+        List<Festival> festival = query.list();
+        session.close();
+        return festival;
+    }
+    
     public static List<Festival> getRecentFiveFestivals(){
         Session session = factory.openSession();
         Query query = session.getNamedQuery("Festival.findRecent");
@@ -146,9 +154,9 @@ public class DB {
     public static List<FestivalRating> getFestivalRatingsByFestival(Integer id){
         Session session = factory.openSession();
         Query query = session.getNamedQuery("FestivalRating.findByFestival").setInteger("festival", id);
-        List<FestivalRating> festivalRatings = query.list();
+        List<FestivalRating> festivalRating = query.list();
         session.close();
-        return festivalRatings;
+        return festivalRating;
     }
     
     public static List<Ticket> getMyTickets(Integer id){

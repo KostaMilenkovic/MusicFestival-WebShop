@@ -16,6 +16,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import model.Festival;
+import model.FestivalRating;
 
 /**
  *
@@ -87,7 +88,12 @@ public class HomeUnregisteredController implements Serializable{
     }
      
     public void getTop5() {
-        festivals = DB.getTopFiveRatingFestivals();
+        festivals = DB.getFestivals();
+        
+        for (Festival festival : festivals) {
+            
+        }
+        
         return;
     }
     
