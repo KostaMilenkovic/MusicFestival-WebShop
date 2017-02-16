@@ -143,6 +143,14 @@ public class DB {
         return festivals;
     }
     
+    public static List<FestivalRating> getFestivalRatingsByFestival(Integer id){
+        Session session = factory.openSession();
+        Query query = session.getNamedQuery("FestivalRating.findByFestival").setInteger("festival", id);
+        List<FestivalRating> festivalRatings = query.list();
+        session.close();
+        return festivalRatings;
+    }
+    
     public static List<Ticket> getMyTickets(Integer id){
         Session session = factory.openSession();
         Query query = session.getNamedQuery("Ticket.findByOwnerId").setInteger("ownerId", id);
