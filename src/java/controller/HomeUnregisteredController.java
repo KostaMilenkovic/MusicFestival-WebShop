@@ -34,7 +34,6 @@ public class HomeUnregisteredController implements Serializable{
     
     
     private List<Festival> festivals;
-    private List<Festival> top5;
 
     public User getUser() {
         return user;
@@ -86,16 +85,11 @@ public class HomeUnregisteredController implements Serializable{
     public void setFestivals(List<Festival> festivals) {
         this.festivals = festivals;
     }
-
-    public List<Festival> getTop5() {
-        if(top5==null)top5 = DB.getTopFiveFestivals();
-        return top5;
+     
+    public void getTop5() {
+        festivals = DB.getTopFiveFestivals();
+        return;
     }
-
-    public void setTop5(List<Festival> top5) {
-        this.top5 = top5;
-    }
-        
     
     public void search(){
         
