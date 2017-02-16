@@ -7,6 +7,7 @@ package controller;
 
 import model.User;
 import db.DB;
+import static db.DB.setCurrentUser;
 import java.io.Serializable;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
@@ -36,7 +37,7 @@ public class LoginController implements Serializable {
         }
         
         user = DB.login(username,password);
-
+        DB.setCurrentUser(user);
         
         if(user == null){
             message = "Failed to log in.";
@@ -55,8 +56,6 @@ public class LoginController implements Serializable {
                 return "home_unregistered";
         }
     }
-    
-    
     
   
 

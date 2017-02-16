@@ -7,6 +7,8 @@ package db;
 
 import model.User;
 import java.util.List;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import model.Festival;
 import model.FestivalComment;
 import model.FestivalPerformer;
@@ -75,6 +77,7 @@ public class DB {
             return null;
         
         session.close();
+        
         return resultUser;
     }
     
@@ -178,5 +181,13 @@ public class DB {
         session.close();
         
         return userRole;
+    }
+    
+    public static User getCurrentUser() {
+        return (User)((HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(false)).getAttribute("user");
+    }
+    
+    public static void setCurrentUser(User user) {
+        ((HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true)).setAttribute("user", user);
     }
 }

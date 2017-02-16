@@ -87,7 +87,7 @@ public class HomeUnregisteredController implements Serializable{
         return;
     }
     
-    public void search(){
+    public void search() {
         
         festivals = DB.getFestivals();
         List<Festival> removedFestivals = new ArrayList<Festival>();

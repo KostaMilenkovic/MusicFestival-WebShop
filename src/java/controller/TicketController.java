@@ -18,7 +18,7 @@ import model.Ticket;
 
 @ViewScoped
 @ManagedBean(name="ticketController")
-public class TicketController implements Serializable{
+public class TicketController implements Serializable {
     @ManagedProperty(value="#{user}")
     private User user;
     

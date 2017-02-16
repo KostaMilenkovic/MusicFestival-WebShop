@@ -12,15 +12,15 @@
                   <!-- Brand and toggle get grouped for better mobile display -->
                   <div class="navbar-header">
                         <h:form class="navbar-brand" rendered="#{ loginController.user.name == null}">
-                            <h:commandLink value="Home unregistered" action="#{link.to('login.xhtml')}"/>
+                            <h:link value="Home unregistered" outcome="#{link.to('login.xhtml')}"/>
                         </h:form>
 
                         <h:form class="navbar-brand" rendered="#{loginController.user.role.name.compareTo('registered') == 0}">
-                            <h:commandLink value="Home registered" action="#{link.to('home_registered.xhtml')}"/>
+                            <h:link value="Home registered" outcome="#{link.to('home_registered.xhtml')}"/>
                         </h:form>
                       
                         <h:form class="navbar-brand" rendered="#{loginController.user.role.name.compareTo('administrator') == 0}">
-                            <h:commandLink value="Home admin" action="#{link.to('home_admin.xhtml')}"/>
+                            <h:link value="Home admin" outcome="#{link.to('home_admin.xhtml')}"/>
                         </h:form>                    
                   </div>
 
@@ -31,31 +31,36 @@
                             <c:when test="#{loginController.user.name == null}">
                                 <li>
                                     <h:form class="navbar-brand">
-                                        <h:commandLink value="Register" action="#{link.to('register.xhtml')}"/>
+                                        <h:link value="Register" outcome="#{link.to('register.xhtml')}"/>
                                     </h:form>
                                 </li>
                                 <li>
                                     <h:form class="navbar-brand">
-                                        <h:commandLink value="Reset password" action="#{link.to('reset_password.xhtml')}"/>
+                                        <h:link value="Reset password" outcome="#{link.to('reset_password.xhtml')}"/>
                                     </h:form>
                                 </li>
                             </c:when>
                             <c:when test="#{ loginController.user.role.name.compareTo('registered')==0 }">
                                 <li>
                                     <h:form class="navbar-brand">
-                                        <h:commandLink value="Tickets" action="#{link.to('tickets.xhtml')}"/>
+                                        <h:link value="Tickets" outcome="#{link.to('tickets.xhtml')}"/>
                                     </h:form>
                                 </li>
                                 <li>
                                     <h:form class="navbar-brand">
-                                        <h:commandLink value="logout" action="#{loginController.user.logout()}"/>
+                                        <h:link value="logout" outcome="#{loginController.user.logout()}"/>
                                     </h:form>
                                 </li>
                             </c:when>
                             <c:when test="#{ loginController.user.role.name.compareTo('administrator')==0 }">
                                 <li>
                                     <h:form class="navbar-brand">
-                                        <h:commandLink value="logout" action="#{loginController.user.logout()}"/>
+                                        <h:link value="new festival" outcome="#{link.to('new_festival.xhtml')}"/>
+                                    </h:form>
+                                </li>
+                                <li>
+                                    <h:form class="navbar-brand">
+                                        <h:link value="logout" outcome="#{loginController.user.logout()}"/>
                                     </h:form>
                                 </li>
                             </c:when>

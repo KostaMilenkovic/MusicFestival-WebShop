@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="template/templatePage.xhtml"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    
+    <ui:define name="content">
+        <f:metadata>
+            <f:viewAction action="#{newFestivalController.checkIfLoggedIn()}" />
+        </f:metadata>
+        <div class="container">
+            <h1 class="text-center">
+                New festival
+            </h1>
+            <div class="row">   
+                <b:form class="col-sm-6 col-sm-offset-3">
+
+                      First Name  <b:inputText value="#{registerController.firstName}" />
+
+                      Last Name  <b:inputText value="#{registerController.lastName}" />
+
+                      Username  <b:inputText value="#{registerController.userName}" />
+
+                      Password  <b:inputSecret value="#{registerController.password}" />
+
+                      Confirm Password  <b:inputSecret value="#{registerController.confirmPassword}" />
+
+                      Phone  <b:inputText value="#{registerController.phone}" />
+
+                      E-mail  <b:inputText value="#{registerController.email}" />
+
+                      <b:commandButton class="btn btn-default"  value="REGISTER" action="#{registerController.register()}" />
+                      <br></br>
+                      <h:outputText class="text-danger" value="#{registerController.message}" />
+                </b:form>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>
