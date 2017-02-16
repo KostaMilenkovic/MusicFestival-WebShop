@@ -8,7 +8,11 @@ package db;
 import model.User;
 import java.util.List;
 import model.Festival;
+import model.FestivalComment;
+import model.FestivalPerformer;
+import model.FestivalRating;
 import model.Performer;
+import model.Reservation;
 import model.SocialNetwork;
 import model.Ticket;
 import model.UserRole;
@@ -32,9 +36,14 @@ public class DB {
         cfg = new Configuration();
         cfg.configure("hibernate.cfg.xml");
         cfg.addAnnotatedClass(User.class);
+        cfg.addAnnotatedClass(UserRole.class);
         cfg.addAnnotatedClass(Festival.class);
+        cfg.addAnnotatedClass(FestivalRating.class);
+        cfg.addAnnotatedClass(FestivalComment.class);
+        cfg.addAnnotatedClass(FestivalPerformer.class);
         cfg.addAnnotatedClass(Ticket.class);
         cfg.addAnnotatedClass(Performer.class);
+        cfg.addAnnotatedClass(Reservation.class);
         cfg.addAnnotatedClass(SocialNetwork.class);
         serviceRegistry = new StandardServiceRegistryBuilder().applySettings(cfg.getProperties()).build();
         factory = cfg.buildSessionFactory(serviceRegistry);
@@ -42,7 +51,7 @@ public class DB {
     
     public static Boolean register(User user) {
         Session session = factory.openSession();
-        Query query = session.getNamedQuery("User.findByUserName").setString("userName", user.getUsername());
+        Query query = session.getNamedQuery("User.findByUsername").setString("username", user.getUsername());
         User resultUser = (User)query.uniqueResult();
         if(resultUser!=null){
             session.close();
@@ -57,7 +66,7 @@ public class DB {
     
     public static User login(String username, String password){
         Session session = factory.openSession();
-        Query query = session.getNamedQuery("User.findByUserName").setString("userName", username);
+        Query query = session.getNamedQuery("User.findByUsername").setString("username", username);
         User resultUser = (User)query.uniqueResult();
         
         if(resultUser == null)
@@ -71,7 +80,7 @@ public class DB {
     
     public static Boolean resetPassword(String username, String oldPassword, String newPassword){
         Session session = factory.openSession();
-        Query query = session.getNamedQuery("User.findByUserName").setString("userName", username);
+        Query query = session.getNamedQuery("User.findByUsername").setString("username", username);
         User resultUser = (User)query.uniqueResult();
         
         if(resultUser == null)
