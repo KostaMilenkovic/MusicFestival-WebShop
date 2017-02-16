@@ -11,10 +11,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
-/**
- *
- * @author milenkok
- */
+
 @ManagedBean(name = "registerController")
 @ViewScoped
 public class RegisterController {

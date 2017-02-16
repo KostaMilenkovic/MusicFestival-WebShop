@@ -15,10 +15,6 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import model.Festival;
 
-/**
- *
- * @author milenkok
- */
 @ManagedBean(name = "homeUnregisteredController")
 @ViewScoped
 public class HomeUnregisteredController implements Serializable{

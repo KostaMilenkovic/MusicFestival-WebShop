@@ -12,10 +12,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import model.User;
 
-/**
- *
- * @author milenkok
- */
+
 @ManagedBean(name = "resetPasswordController")
 @ViewScoped
 public class ResetPasswordController {

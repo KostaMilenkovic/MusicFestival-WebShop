@@ -8,16 +8,6 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     
-<!--    <ui:define name="header">
-        <h:link outcome="login.xhtml"><h1>Music festival web shop</h1></h:link>
-        <c:if test="#{user.username!=null}">
-            <h1><h:outputText value="#{user.username}" /></h1>
-        </c:if>
-        <h:form>
-            <h:commandButton value="logout" action="#{user.logout()}"/>
-        </h:form>
-    </ui:define>-->
-    
     <ui:define name="content">
         <div class="welcome-div">
             <p>Welcome back, <h:outputText value="#{user.username}" /></p>

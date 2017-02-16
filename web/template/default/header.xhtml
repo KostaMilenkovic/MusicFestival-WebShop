@@ -3,28 +3,63 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:body>
         <ui:composition>
             <nav class="navbar navbar-default">
                 <div class="container-fluid">
                   <!-- Brand and toggle get grouped for better mobile display -->
                   <div class="navbar-header">
-                    <a class="navbar-brand" href="home_registered.xhtml">Brand</a>
+                        <h:form class="navbar-brand" rendered="#{ loginController.user.name == null}">
+                            <h:commandLink value="Home unregistered" action="#{link.to('login.xhtml')}"/>
+                        </h:form>
+
+                        <h:form class="navbar-brand" rendered="#{loginController.user.role.name.compareTo('registered') == 0}">
+                            <h:commandLink value="Home registered" action="#{link.to('home_registered.xhtml')}"/>
+                        </h:form>
+                      
+                        <h:form class="navbar-brand" rendered="#{loginController.user.role.name.compareTo('administrator') == 0}">
+                            <h:commandLink value="Home admin" action="#{link.to('home_admin.xhtml')}"/>
+                        </h:form>                    
                   </div>
 
                   <!-- Collect the nav links, forms, and other content for toggling -->
                   <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-right">
-                      <li><a href="#">Link</a></li>
-                      <li><a href="#">Link</a></li>
-                      <li><a href="#">Link</a></li>
-                      <li><a href="tickets.xhtml">Tickets</a></li>
-                      <li>
-                          <h:form class="navbar-form navbar-right">
-                              <h:commandButton  class="btn" value="logout" action="#{user.logout()}"/>
-                          </h:form>
-                      </li>
+                        <c:choose>
+                            <c:when test="#{loginController.user.name == null}">
+                                <li>
+                                    <h:form class="navbar-brand">
+                                        <h:commandLink value="Register" action="#{link.to('register.xhtml')}"/>
+                                    </h:form>
+                                </li>
+                                <li>
+                                    <h:form class="navbar-brand">
+                                        <h:commandLink value="Reset password" action="#{link.to('reset_password.xhtml')}"/>
+                                    </h:form>
+                                </li>
+                            </c:when>
+                            <c:when test="#{ loginController.user.role.name.compareTo('registered')==0 }">
+                                <li>
+                                    <h:form class="navbar-brand">
+                                        <h:commandLink value="Tickets" action="#{link.to('tickets.xhtml')}"/>
+                                    </h:form>
+                                </li>
+                                <li>
+                                    <h:form class="navbar-brand">
+                                        <h:commandLink value="logout" action="#{loginController.user.logout()}"/>
+                                    </h:form>
+                                </li>
+                            </c:when>
+                            <c:when test="#{ loginController.user.role.name.compareTo('administrator')==0 }">
+                                <li>
+                                    <h:form class="navbar-brand">
+                                        <h:commandLink value="logout" action="#{loginController.user.logout()}"/>
+                                    </h:form>
+                                </li>
+                            </c:when>
+                        </c:choose>
                     </ul>
                   </div><!-- /.navbar-collapse -->
                 </div><!-- /.container-fluid -->

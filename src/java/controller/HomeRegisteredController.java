@@ -18,10 +18,6 @@ import model.Festival;
 
 
 
-/**
- *
- * @author milenkok
- */
 @ViewScoped
 @ManagedBean(name = "homeRegisteredController")
 public class HomeRegisteredController implements Serializable{

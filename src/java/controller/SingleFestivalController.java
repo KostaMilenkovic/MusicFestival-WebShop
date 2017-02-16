@@ -15,10 +15,6 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import model.Festival;
 
-/**
- *
- * @author milenkok
- */
 @ViewScoped
 @ManagedBean(name = "singleFestivalController")
 public class SingleFestivalController implements Serializable{

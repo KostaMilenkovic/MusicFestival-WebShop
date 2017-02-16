@@ -7,18 +7,10 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
-    
-    <ui:define name="header">
-        <h:link outcome="login.xhtml"><h1>Music festival web shop</h1></h:link>
-        <c:if test="#{user.username!=null}">
-            <h1>Your account is not approved yet <h:outputText value="#{user.username}" /></h1>
-        </c:if>
-    </ui:define>
-    
     <ui:define name="content">
         
         <div class="top5-festivals-div">
-        <h1>Top 5 festivals</h1>
+        <h1>Most recent festivals</h1>
         <h:form>
             <div class="row">
             <div class="col-md-3"></div>
