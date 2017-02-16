@@ -10,8 +10,8 @@
     
     <ui:define name="header">
         <h:link outcome="login.xhtml"><h1>Music festival web shop</h1></h:link>
-        <c:if test="#{user.userName!=null}">
-            <h1>Your account is not approved yet <h:outputText value="#{user.userName}" /></h1>
+        <c:if test="#{user.username!=null}">
+            <h1>Your account is not approved yet <h:outputText value="#{user.username}" /></h1>
         </c:if>
     </ui:define>
     
@@ -19,7 +19,7 @@
         <div class="centered-div" style="background-color:lightcyan;">
 	  <h:form>
                 <hr></hr>
-                Username : <h:inputText value="#{loginController.user.userName}" />
+                Username : <h:inputText value="#{loginController.user.username}" />
                 <hr></hr>
                 Password : <h:inputSecret value="#{loginController.user.password}" />
                 <hr></hr>

@@ -10,8 +10,8 @@
     
     <ui:define name="header">
         <h:link outcome="login.xhtml"><h1>Music festival web shop</h1></h:link>
-        <c:if test="#{user.userName!=null}">
-            <h1>Your account is not approved yet <h:outputText value="#{user.userName}" /></h1>
+        <c:if test="#{user.username!=null}">
+            <h1>Your account is not approved yet <h:outputText value="#{user.username}" /></h1>
         </c:if>
     </ui:define>
     
@@ -42,15 +42,15 @@
                     </h:column>
                     <h:column>
                         <f:facet name="header">Daily Tickets</f:facet>
-                        <h:outputText value="#{festival.ticketsDay}"/>
+                        <h:outputText value="#{festival.costDay}"/>
                     </h:column>
                     <h:column>
                         <f:facet name="header">Festival Tickets</f:facet>
-                        <h:outputText value="#{festival.ticketsTotal}"/>
+                        <h:outputText value="#{festival.costAll}"/>
                     </h:column>
                     <h:column>
                         <f:facet name="header">Rating</f:facet>
-                        <h:outputText value="#{festival.rating}"/>
+                        <!--<h:outputText value="#{festival.rating}"/>-->
                     </h:column>
             </h:dataTable>
             </div>
@@ -93,15 +93,15 @@
                             </h:column>
                             <h:column>
                                 <f:facet name="header">Daily Tickets</f:facet>
-                                <h:outputText value="#{festival.ticketsDay}"/>
+                                <h:outputText value="#{festival.costDay}"/>
                             </h:column>
                             <h:column>
                                 <f:facet name="header">Festival Tickets</f:facet>
-                                <h:outputText value="#{festival.ticketsTotal}"/>
+                                <h:outputText value="#{festival.costAll}"/>
                             </h:column>
                             <h:column>
                                 <f:facet name="header">Rating</f:facet>
-                                <h:outputText value="#{festival.rating}"/>
+                                <!--<h:outputText value="#{festival.rating}"/>-->
                             </h:column>
                     </h:dataTable>
                     </div>

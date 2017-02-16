@@ -5,8 +5,12 @@
  */
 package model;
 
+import db.DB;
 import java.io.Serializable;
 import java.util.Collection;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -20,6 +24,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -30,6 +35,8 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author obabovic
  */
 @Entity
+@SessionScoped
+@ManagedBean (name="user")
 @Table(name = "user")
 @XmlRootElement
 @NamedQueries({
@@ -250,6 +257,32 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "model.User[ id=" + id + " ]";
+    }
+    
+    
+    public String logout() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
+        session.invalidate();
+        return "login";
+    } 
+     
+    public Boolean login(String username, String password){
+            User result =  DB.login(username,password);
+            if(result==null)
+                return false;
+
+            this.name = result.getName();
+            this.surname = result.getSurname();
+            this.username = result.getUsername();
+            this.email = result.getEmail();
+            this.phone = result.getPhone();
+            this.password = result.getPassword();
+            this.role = result.getRole();
+            this.approved = result.getApproved();
+            this.id = result.getId();
+
+            return true;
     }
     
 }

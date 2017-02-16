@@ -10,8 +10,8 @@
     
 <!--    <ui:define name="header">
         <h:link outcome="login.xhtml"><h1>Music festival web shop</h1></h:link>
-        <c:if test="#{user.userName!=null}">
-            <h1><h:outputText value="#{user.userName}" /></h1>
+        <c:if test="#{user.username!=null}">
+            <h1><h:outputText value="#{user.username}" /></h1>
         </c:if>
         <h:form>
             <h:commandButton value="logout" action="#{user.logout()}"/>
@@ -20,7 +20,7 @@
     
     <ui:define name="content">
         <div class="welcome-div">
-            <p>Welcome back, <h:outputText value="#{user.userName}" /></p>
+            <p>Welcome back, <h:outputText value="#{user.username}" /></p>
             <p><h:outputText value="#{usercontroller.message}"/></p>
         </div>
         
@@ -49,15 +49,15 @@
                         </h:column>
                         <h:column>
                             <f:facet name="header">Daily Tickets</f:facet>
-                            <h:outputText value="#{festival.ticketsDay}"/>
+                            <h:outputText value="#{festival.costDay}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">Festival Tickets</f:facet>
-                            <h:outputText value="#{festival.ticketsTotal}"/>
+                            <h:outputText value="#{festival.costAll}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">Rating</f:facet>
-                            <h:outputText value="#{festival.rating}"/>
+                            <!--<h:outputText value="#{festival.rating}"/>-->
                         </h:column>
                     <h:column>
                         <f:facet name="header">Reservation</f:facet>
@@ -101,15 +101,15 @@
                             </h:column>
                             <h:column>
                                 <f:facet name="header">Daily Tickets</f:facet>
-                                <h:outputText value="#{festival.ticketsDay}"/>
+                                <h:outputText value="#{festival.costDay}"/>
                             </h:column>
                             <h:column>
                                 <f:facet name="header">Festival Tickets</f:facet>
-                                <h:outputText value="#{festival.ticketsTotal}"/>
+                                <h:outputText value="#{festival.costAll}"/>
                             </h:column>
                             <h:column>
                                 <f:facet name="header">Rating</f:facet>
-                                <h:outputText value="#{festival.rating}"/>
+                                <!--<h:outputText value="#{festival.rating}"/>-->
                             </h:column>
                             <h:column>
                                 <f:facet name="header">Reservation</f:facet>
@@ -159,15 +159,15 @@
                     </h:column>
                     <h:column>
                         <f:facet name="header">Daily Tickets</f:facet>
-                        <h:outputText value="#{festival.ticketsDay}"/>
+                        <h:outputText value="#{festival.costDay}"/>
                     </h:column>
                     <h:column>
                         <f:facet name="header">Festival Tickets</f:facet>
-                        <h:outputText value="#{festival.ticketsTotal}"/>
+                        <h:outputText value="#{festival.costAll}"/>
                     </h:column>
                     <h:column>
                         <f:facet name="header">Rating</f:facet>
-                        <h:outputText value="#{festival.rating}"/>
+                        <!--<h:outputText value="#{festival.rating}"/>-->
                     </h:column>
                     <h:column>
                         <f:facet name="header">Reservation</f:facet>
