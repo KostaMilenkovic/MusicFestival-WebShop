@@ -3,6 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition template="template/templatePage.xhtml"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:b="http://bootsfaces.net/ui"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
@@ -46,12 +47,14 @@
             </div>
         </h:form>
         </div>
-        <div class="search-festivals-div">
+        <div class="container-fluid search-festivals-div">
             <h1>Search festivals</h1>
             <h:form>
                 Name : <h:inputText value="#{homeUnregisteredController.name}" />
                 <br></br><br> </br>
                 Place : <h:inputText value="#{homeUnregisteredController.place}" />
+                <h:outputLabel for="startDate" value="Start Date:" ></h:outputLabel>
+                <b:datepicker id="startDate" col-sm="2" />
                 <br></br><br></br>
                 <h:commandButton value="SEARCH" class="btn" action="#{homeUnregisteredController.search()}" />
 
