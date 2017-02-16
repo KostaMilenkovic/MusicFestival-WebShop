@@ -24,10 +24,10 @@
                         <b:inputText placeholder="Place" value="#{homeUnregisteredController.place}" />
                     </div>
                     <div class="col-md-2">
-                        <b:datepicker value="#{current_date}" placeholder="Start Date" />
+                        <b:datepicker placeholder="Start Date" value="#{homeUnregisteredController.startDate}"  />
                     </div>
                     <div class="col-md-2">
-                        <b:datepicker value="#{current_date}" placeholder="End Date" />
+                        <b:datepicker placeholder="End Date" value="#{homeUnregisteredController.endDate}"  />
                     </div>
                     <div class="col-md-1">
                         <b:commandButton value="Search" class="btn btn-primary" action="#{homeUnregisteredController.search()}" />
@@ -39,7 +39,7 @@
             
             <div class="row" >
                 <div class="col-md-12">
-                        <b:dataTable  value="#{homeUnregisteredController.festivals}" var="festival">
+                    <b:dataTable  value="#{homeUnregisteredController.festivals}" searching="false" var="festival">
                                 <b:column>
                                     <f:facet name="header">Name</f:facet>
                                     <h:outputText value="#{festival.name}"/>
