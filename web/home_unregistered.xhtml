@@ -3,10 +3,12 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition template="template/templatePage.xhtml"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:b="http://bootsfaces.net/ui"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+<<<<<<< HEAD
     <ui:define name="content">
         
         <div class="top5-festivals-div">
@@ -96,10 +98,59 @@
                                 <!--<h:outputText value="#{festival.rating}"/>-->
                             </h:column>
                     </h:dataTable>
+=======
+    
+    <ui:define name="content">
+        
+        <div class="container" >
+            <div class="row"> 
+                <div class="col-md-3">
+                    <h4> Search Festivals: </h4>
+                </div>
+                <b:form>
+                    <div class="col-md-2">
+                        <b:inputText placeholder="Name" value="#{homeUnregisteredController.name}" />
+>>>>>>> 9da025c1d70437e0ce4a82ebdc83ce705c6f0892
                     </div>
-                    <div class="col-md-3"></div>
+                    <div class="col-md-2">
+                        <b:inputText placeholder="Place" value="#{homeUnregisteredController.place}" />
                     </div>
-            </h:form>
+                    <div class="col-md-2">
+                        <b:datepicker placeholder="Start Date" value="#{homeUnregisteredController.startDate}"  />
+                    </div>
+                    <div class="col-md-2">
+                        <b:datepicker placeholder="End Date" value="#{homeUnregisteredController.endDate}"  />
+                    </div>
+                    <div class="col-md-1">
+                        <b:commandButton value="Search" class="btn btn-primary" action="#{homeUnregisteredController.search()}" />
+                    </div>
+                </b:form>
+                
+            </div>
+            
+            
+            <div class="row" >
+                <div class="col-md-12">
+                    <b:dataTable  value="#{homeUnregisteredController.festivals}" searching="false" var="festival">
+                                <b:column>
+                                    <f:facet name="header">Name</f:facet>
+                                    <h:outputText value="#{festival.name}"/>
+                                </b:column>
+                                <b:column>
+                                    <f:facet name="header">Place</f:facet>
+                                    <h:outputText value="#{festival.place}"/>
+                                </b:column>
+                                <b:column>
+                                    <f:facet name="header">From</f:facet>
+                                    <h:outputText value="#{festival.startDate}"/>
+                                </b:column>
+                                <b:column>
+                                    <f:facet name="header">Until</f:facet>
+                                    <h:outputText value="#{festival.endDate}"/>
+                                </b:column>
+                        </b:dataTable>
+                </div>
+            </div>
         </div>
         
     </ui:define>

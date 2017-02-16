@@ -8,6 +8,8 @@ package controller;
 import model.User;
 import db.DB;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -23,6 +25,9 @@ public class HomeUnregisteredController implements Serializable{
     
     private String name;
     private String place;
+    private Date startDate;
+    private Date endDate;
+    
     
     private List<Festival> festivals;
     private List<Festival> top5;
@@ -47,6 +52,24 @@ public class HomeUnregisteredController implements Serializable{
         return place;
     }
 
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+    
+        
+    
     public void setPlace(String place) {
         this.place = place;
     }
@@ -71,15 +94,21 @@ public class HomeUnregisteredController implements Serializable{
         
     
     public void search(){
-        if(!name.equals("")){
-            festivals = DB.getFestivalsByName(name);
-            return;
-        }
-        if(!place.equals("")){
-            festivals = DB.getFestivalsByPlace(place);
-            return;
-        }
+        
         festivals = DB.getFestivals();
+        List<Festival> removedFestivals = new ArrayList<Festival>();
+        
+        for (Festival festival : festivals) {
+            if (!"".equals(name) && !festival.getName().equals(name) ||
+                !"".equals(place) && !festival.getPlace().equals(place) ||
+                startDate != null && endDate != null && !( festival.getStartDate().after(startDate) && festival.getEndDate().before(endDate))) 
+                
+                removedFestivals.add(festival);
+        }
+        
+        festivals.removeAll(removedFestivals);
+        
+        return;
         
     }
     
