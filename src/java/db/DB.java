@@ -5,6 +5,9 @@
  */
 package db;
 
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Date;
 import model.User;
 import java.util.List;
 import model.Festival;
@@ -121,9 +124,21 @@ public class DB {
     public static List<Festival> getTopFiveFestivalsByRating(){
         Session session = factory.openSession();
         Query query = session.getNamedQuery("Festival.findTopFiveByRating");
-        List<Festival> festival = query.list();
+        query.setMaxResults(5);
+        List<Object[]> list = query.list();
         session.close();
-        return festival;
+        List<Festival> festivals = new ArrayList<>();
+        for (Object[] obj : list) {
+            Festival festival = new Festival();
+            festival.setId((Integer) obj[0]);
+            festival.setName((String) obj[1]);
+            festival.setPlace((String) obj[2]);
+            festival.setStartDate((Date) obj[3]);
+            festival.setEndDate((Date) obj[4]);
+            festivals.add(festival);
+        }
+        
+        return festivals;
     }
     
     public static List<Festival> getRecentFiveFestivals(){

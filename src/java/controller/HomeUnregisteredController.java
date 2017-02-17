@@ -88,11 +88,7 @@ public class HomeUnregisteredController implements Serializable{
     }
      
     public void getTop5() {
-        festivals = DB.getFestivals();
-        
-        for (Festival festival : festivals) {
-            
-        }
+        festivals = DB.getTopFiveFestivalsByRating();
         
         return;
     }
