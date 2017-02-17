@@ -31,6 +31,7 @@ public class HomeRegisteredController implements Serializable{
     private String place;
     private Date startDate;
     private Date endDate;
+    private String message;
     
     private List<Festival> festivals = null;
     
@@ -99,6 +100,14 @@ public class HomeRegisteredController implements Serializable{
         this.endDate = endDate;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     
     
     
@@ -128,11 +137,7 @@ public class HomeRegisteredController implements Serializable{
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("festivalId", festivalId);
         return "festival";
     }
-    
-    public String reserveFestival(Integer festivalId){
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("festivalId", festivalId);
-        return "festival";
-    }
+
     
     
     

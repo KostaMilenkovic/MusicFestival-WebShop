@@ -3,16 +3,88 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition template="template/templatePage.xhtml"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:b="http://bootsfaces.net/ui"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     
+    
     <ui:define name="content">
-        <h1>Festival</h1>
-        name: <h:outputText value="#{singleFestivalController.festival.name}"/>
-        <br></br>
-        place: <h:outputText value="#{singleFestivalController.festival.place}"/>
+        <div class="welcome-div" style="margin-bottom: 2em;">
+            <p><h:outputText value="#{singleFestivalController.message}"/></p>
+        </div>
         
+        <div class="container" style="margin-bottom: 10em;">
+            <h1 class="text-center">
+                <h:outputText value="#{singleFestivalController.festival.name}"/>
+            </h1>
+            <div class="row">
+                <div class="col-sm-4 col-sm-offset-4">
+                    at: <h:outputText value="#{singleFestivalController.festival.place}"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4 col-sm-offset-4">
+                    from: <h:outputText value="#{singleFestivalController.festival.startDate}"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4 col-sm-offset-4">
+                    to: <h:outputText value="#{singleFestivalController.festival.endDate}"/>
+                </div>
+            </div>
+            
+            <h1 class="text-center">
+                <h:outputText value="Line up"/>
+            </h1>
+            
+            <div class="row" >
+                <div class="col-md-12">
+                    <b:dataTable  value="#{singleFestivalController.festival.festivalPerformerCollection}" searching="false" var="festivalPerformer">
+                        <b:column>
+                            <f:facet name="header">Name</f:facet>
+                            <h:outputText value="#{festivalPerformer.performer.name}"/>
+                        </b:column>
+                        <b:column>
+                            <f:facet name="header">Date</f:facet>
+                            <h:outputText value="#{festivalPerformer.date}"/>
+                        </b:column>
+                        <b:column>
+                            <f:facet name="header">Time</f:facet>
+                            <h:outputText value="#{festivalPerformer.time}"/>
+                        </b:column>
+                    </b:dataTable>
+                </div>
+            </div>
+            
+            <h1 class="text-center">
+                <h:outputText value="Ticket Reservation"/>
+            </h1>
+
+            <div class="row" >
+                <div class="col-md-12">
+                    <b:dataTable  value="#{singleFestivalController.festival.ticketCollection}" searching="false" var="ticket">
+                        <b:column>
+                            <f:facet name="header">Type</f:facet>
+                            <h:outputText value="#{ticket.type}"/>
+                        </b:column>
+                        <b:column>
+                            <f:facet name="header">Date</f:facet>
+                            <h:outputText value="#{ticket.date}"/>
+                        </b:column>
+                        <h:column>
+                            <f:facet name="header">Reservation</f:facet>
+                            <h:form>
+                                <h:commandLink class="btn btn-success" action="#{singleFestivalController.reserveTicket(ticket)}" value="RESERVE"/>
+                            </h:form>
+                        </h:column>
+
+                    </b:dataTable>
+                </div>
+            </div>
+            
+            
+        </div>
     </ui:define>
 </ui:composition>

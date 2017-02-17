@@ -14,6 +14,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import model.Festival;
+import model.Ticket;
 
 @ViewScoped
 @ManagedBean(name = "singleFestivalController")
@@ -21,6 +22,8 @@ public class SingleFestivalController implements Serializable{
     @ManagedProperty(value = "#{user}")
     private User user;
     private Festival festival;
+    
+    private String message;
 
     public User getUser() {
         return user;
@@ -28,6 +31,14 @@ public class SingleFestivalController implements Serializable{
     
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public Festival getFestival() {
@@ -38,6 +49,11 @@ public class SingleFestivalController implements Serializable{
 
     public void setFestival(Festival festival) {
         this.festival = festival;
+    }
+    
+    public void reserveTicket(Ticket ticket){
+        DB.makeAReservation(user, ticket);
+        message = "reservation successfull!";
     }
     
   

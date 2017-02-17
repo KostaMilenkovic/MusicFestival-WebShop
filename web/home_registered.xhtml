@@ -10,11 +10,13 @@
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     
     <ui:define name="content">
-
-        <div class="welcome-div" style="margin-bottom: 2em;">
-            <p>Welcome back, <h:outputText value="#{user.username}" /></p>
-            <p><h:outputText value="#{message}"/></p>
-        </div>
+        <c:if test="#{homeRegisteredController.message != null}">
+            <div class="welcome-div" style="margin-bottom: 2em;">
+                <p>Welcome back, <h:outputText value="#{user.username}" /></p>
+                <p><h:outputText value="#{homeRegisteredController.message}"/></p>
+            </div>
+        </c:if>
+        
 
 
         <div class="container" >
@@ -81,21 +83,53 @@
                             <f:facet name="header">Total Price</f:facet>
                             <h:outputText value="#{festival.costAll}"/>
                         </b:column>
-                        <b:column>
-                            <f:facet name="header">Reservation</f:facet>
-                            <h:form>
-                                <h:commandButton class="btn btn-success" action="#{ticketController.reserveTicketForFestival(festival.id)}" value="RESERVE"/>
-                            </h:form>
-                        </b:column>
-                        <b:column>
+                        <h:column>
                             <f:facet name="header">Show More</f:facet>
                             <h:form>
-                                <h:commandLink class="btn btn-info" action="#{homeRegisteredController.showFestival(festival.id)}" value="VIEW"/> 
+                                <h:commandLink class="btn btn-info" action="#{homeRegisteredController.showFestival(festival.id)}" value="VIEW"/>
                             </h:form>
-                        </b:column>
+                        </h:column>
                     </b:dataTable>
                 </div>
             </div>
+            
+            <h1 class="text-center">
+                <h:outputText value="My reservations"/>
+            </h1>
+            
+            <div class="row" >
+                <div class="col-md-12">
+                    <b:dataTable  value="#{homeRegisteredController.user.reservationCollection}" searching="false" var="reservation">
+                        <b:column>
+                            <f:facet name="header">Type</f:facet>
+                            <h:outputText value="#{reservation.ticket.type}"/>
+                        </b:column>
+                        <b:column>
+                            <f:facet name="header">Date</f:facet>
+                            <h:outputText value="#{reservation.ticket.date}"/>
+                        </b:column>
+                        <b:column>
+                            <f:facet name="header">Festival</f:facet>
+                            <h:outputText value="#{reservation.ticket.festival.name}"/>
+                        </b:column>
+                        <b:column>
+                            <f:facet name="header">Status</f:facet>
+                            <h:outputText value="#{reservation.status}"/>
+                        </b:column>
+                        <b:column>
+                            <f:facet name="header">Reservation Date</f:facet>
+                            <h:outputText value="#{reservation.date}"/>
+                        </b:column>
+                        <h:column>
+                            <f:facet name="header">Action</f:facet>
+                            <h:form>
+                                <h:commandLink class="btn btn-danger"  value="CANCEL"/>
+                            </h:form>
+                        </h:column>
+                    </b:dataTable>
+                </div>
+            </div>
+            
         </div>
 
     </ui:define>
