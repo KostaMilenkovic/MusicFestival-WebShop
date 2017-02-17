@@ -139,6 +139,7 @@ public class DB {
         Session session = factory.openSession();
         Query query = session.getNamedQuery("Festival.findAll");
         List<Festival> festivals = query.list();
+        
         session.close();
         return festivals;
     }
@@ -203,7 +204,7 @@ public class DB {
     
     public static List<Festival> getRecentFiveFestivals(){
         Session session = factory.openSession();
-        Query query = session.getNamedQuery("Festival.findRecent");
+        Query query = session.getNamedQuery("Festival.findRecentFive");
         query.setMaxResults(5);
         List<Festival> festivals = query.list();
         session.close();

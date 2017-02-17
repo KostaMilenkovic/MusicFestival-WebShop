@@ -8,6 +8,8 @@ package controller;
 import model.User;
 import db.DB;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -27,10 +29,10 @@ public class HomeRegisteredController implements Serializable{
     
     private String name;
     private String place;
+    private Date startDate;
+    private Date endDate;
     
     private List<Festival> festivals = null;
-    private List<Festival> top5 = null;
-    private List<Festival> recent5 = null;
     
     /**
      * Creates a new instance of FestivalController
@@ -47,7 +49,7 @@ public class HomeRegisteredController implements Serializable{
     }
 
     public List<Festival> getFestivals() {
-        if(festivals==null)festivals = DB.getFestivals();
+        if(festivals==null)festivals = DB.getRecentFiveFestivals();
         return festivals;
     }
 
@@ -55,24 +57,14 @@ public class HomeRegisteredController implements Serializable{
         this.festivals = festivals;
     }
 
-    public List<Festival> getTop5() {
-        if(top5==null)top5 = DB.getTopFiveFestivals();
-        return top5;
+    public void getTop5() {
+        festivals = DB.getTopFiveFestivalsByRating();
     }
 
-    public void setTop5(List<Festival> top5) {
-        this.top5 = top5;
+    public void getRecent5() {
+        festivals =  DB.getRecentFiveFestivals();
     }
 
-    public List<Festival> getRecent5() {
-        if(recent5==null)recent5 = DB.getRecentFiveFestivals();
-        return recent5;
-    }
-
-    public void setRecent5(List<Festival> recent5) {
-        this.recent5 = recent5;
-    }
-    
     
 
     public String getName() {
@@ -90,6 +82,25 @@ public class HomeRegisteredController implements Serializable{
     public void setPlace(String place) {
         this.place = place;
     }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    
+    
     
     //==========================================================================
     
@@ -98,20 +109,27 @@ public class HomeRegisteredController implements Serializable{
     
     
       
-    public void searchExtended(){
-        if(!name.equals("")){
-            festivals = DB.getFestivalsByName(name);
-            return;
-        }
-        if(!place.equals("")){
-            festivals = DB.getFestivalsByPlace(place);
-            return;
-        }
+    public void search(){
         festivals = DB.getFestivals();
-        return;
+        List<Festival> removedFestivals = new ArrayList<Festival>();
+        
+        for (Festival festival : festivals) {
+            if (!"".equals(name) && !festival.getName().equals(name) ||
+                !"".equals(place) && !festival.getPlace().equals(place) ||
+                startDate != null && endDate != null && !( festival.getStartDate().after(startDate) && festival.getEndDate().before(endDate))) 
+                
+                removedFestivals.add(festival);
+        }
+        
+        festivals.removeAll(removedFestivals);
     }
     
     public String showFestival(Integer festivalId){
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("festivalId", festivalId);
+        return "festival";
+    }
+    
+    public String reserveFestival(Integer festivalId){
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("festivalId", festivalId);
         return "festival";
     }
