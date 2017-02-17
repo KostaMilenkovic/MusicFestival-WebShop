@@ -16,6 +16,7 @@ import model.User;
 @ManagedBean(name = "newFestivalController")
 @ViewScoped
 public class AdminCreateFestivalController implements Serializable {
+    @ManagedProperty(value = "#{user}")
     private User user;
     
     public AdminCreateFestivalController() {
