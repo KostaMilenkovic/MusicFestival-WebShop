@@ -26,8 +26,26 @@
                     <b:dateTimePicker value="#{festivalEdit.performerDateTimeStart}" />
                     Ending date and time 
                     <b:dateTimePicker value="#{festivalEdit.performerDateTimeEnd}" />
-                    <b:commandButton value="RESET" class="btn btn-default" action="#{festivalEdit.newEvent()}" />
+                    <b:commandButton value="Submit" class="btn btn-default" action="#{festivalEdit.newEvent()}" />
                 </b:form>
+            </div>
+            <div class="row">
+                <h2 class="text-center">
+                    Add an image
+                </h2>
+                <h:form class="col-sm-offset-5 col-sm-1" enctype="multipart/form-data">
+                    <h:inputFile id="file" value="#{festivalEdit.file}"/>
+                    <h:commandButton value="Submit" class="btn btn-default" action="#{festivalEdit.uploadFile(false)}"/>
+                </h:form>
+            </div>  
+            <div class="row">
+                <h2 class="text-center">
+                    Add a video
+                </h2>
+                <h:form class="col-sm-offset-5 col-sm-1" enctype="multipart/form-data">
+                    <h:inputFile id="file" value="#{festivalEdit.file}"/>
+                    <h:commandButton value="Submit" class="btn btn-default" action="#{festivalEdit.uploadFile(true)}"/>
+                </h:form>
             </div>
         <br></br>
         <h:outputText value="#{resetPasswordController.message}" />      

@@ -16,8 +16,10 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import model.Festival;
 import model.FestivalComment;
+import model.FestivalImage;
 import model.FestivalPerformer;
 import model.FestivalRating;
+import model.FestivalVideo;
 import model.Performer;
 import model.Reservation;
 import model.SocialNetwork;
@@ -46,6 +48,8 @@ public class DB {
         cfg.addAnnotatedClass(Festival.class);
         cfg.addAnnotatedClass(FestivalRating.class);
         cfg.addAnnotatedClass(FestivalComment.class);
+        cfg.addAnnotatedClass(FestivalImage.class);
+        cfg.addAnnotatedClass(FestivalVideo.class);
         cfg.addAnnotatedClass(FestivalPerformer.class);
         cfg.addAnnotatedClass(Ticket.class);
         cfg.addAnnotatedClass(Performer.class);
@@ -377,6 +381,24 @@ public class DB {
         Session session = factory.openSession();
         session.getTransaction().begin();
         session.save(fp);
+        if(!session.getTransaction().wasCommitted())
+            session.getTransaction().commit();
+        session.close();
+    }
+    
+    public static void uploadImage(FestivalImage image) {
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        session.save(image);
+        if(!session.getTransaction().wasCommitted())
+            session.getTransaction().commit();
+        session.close();
+    }
+    
+    public static void uploadVideo(FestivalVideo video) {
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        session.save(video);
         if(!session.getTransaction().wasCommitted())
             session.getTransaction().commit();
         session.close();

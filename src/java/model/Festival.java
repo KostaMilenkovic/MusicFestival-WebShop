@@ -111,6 +111,10 @@ public class Festival implements Serializable {
     private Collection<FestivalComment> festivalCommentCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival")
     private Collection<SocialNetwork> socialNetworkCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival")
+    private Collection<FestivalImage> festivalImageCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival")
+    private Collection<FestivalVideo> festivalVideoCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival",fetch = FetchType.EAGER)
     private Collection<FestivalPerformer> festivalPerformerCollection;
 
@@ -271,6 +275,25 @@ public class Festival implements Serializable {
     public void setSocialNetworkCollection(Collection<SocialNetwork> socialNetworkCollection) {
         this.socialNetworkCollection = socialNetworkCollection;
     }
+    
+    @XmlTransient
+    public Collection<FestivalImage> getFestivalImageCollection() {
+        return festivalImageCollection;
+    }
+
+    public void setFestivalImageCollection(Collection<FestivalImage> festivalImageCollection) {
+        this.festivalImageCollection = festivalImageCollection;
+    }
+    
+    @XmlTransient
+    public Collection<FestivalVideo> getFestivalVideoCollection() {
+        return festivalVideoCollection;
+    }
+
+    public void setFestivalVideoCollection(Collection<FestivalVideo> festivalVideoCollection) {
+        this.festivalVideoCollection = festivalVideoCollection;
+    }
+    
 
     @XmlTransient
     public Collection<FestivalPerformer> getFestivalPerformerCollection() {

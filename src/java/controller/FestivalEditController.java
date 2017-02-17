@@ -6,6 +6,11 @@
 package controller;
 
 import db.DB;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.sql.Time;
 import java.text.DateFormat;
@@ -20,10 +25,15 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 import model.Festival;
+import model.FestivalImage;
 import model.FestivalPerformer;
+import model.FestivalVideo;
 import model.Performer;
+import util.FileHelper;
 
 @ManagedBean(name = "festivalEdit")
 @ViewScoped
@@ -34,6 +44,7 @@ public class FestivalEditController implements Serializable {
     private Integer selectedPerformer;
     private Date performerDateTimeStart;
     private Date performerDateTimeEnd;
+    private Part file;
     
     public FestivalEditController() {
         festival = (Festival)((HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(false)).getAttribute("festival_to_edit");
@@ -64,6 +75,50 @@ public class FestivalEditController implements Serializable {
             DB.createEvent(fp);
         } catch (ParseException ex) {
             Logger.getLogger(FestivalEditController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
+    public void uploadFile(boolean isVideo) {
+        InputStream inputStream = null;
+        OutputStream outputStream = null;
+        FacesContext context = FacesContext.getCurrentInstance();
+        ServletContext servletContext = (ServletContext) context
+                .getExternalContext().getContext();
+        String path = servletContext.getRealPath("");
+        path = path.substring(0, path.length()-9);
+        if (file.getSize() > 0) {
+            boolean fileSuccess = false;
+            String fileName = FileHelper.getFileNameFromPart(file);
+            String fileExt = (isVideo)?"vid":"img";
+            File outputFile = new File(path + File.separator + "web"
+                    + File.separator + "resources" + File.separator + fileExt + File.separator + fileName);
+            try {
+                inputStream = file.getInputStream();
+                outputStream = new FileOutputStream(outputFile);
+                byte[] buffer = new byte[1024];
+                int bytesRead = 0;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+                if(isVideo) {
+                    FestivalVideo video = new FestivalVideo(festival, fileName);
+                    DB.uploadVideo(video);
+                }
+                else {
+                    FestivalImage img = new FestivalImage(festival, fileName);
+                    DB.uploadImage(img);
+                }
+                fileSuccess = true;
+            } catch (IOException ex) {
+                Logger.getLogger(FestivalEditController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
@@ -104,6 +159,14 @@ public class FestivalEditController implements Serializable {
 
     public void setPerformerDateTimeEnd(Date performerDateTimeEnd) {
         this.performerDateTimeEnd = performerDateTimeEnd;
+    }
+
+    public Part getFile() {
+        return file;
+    }
+
+    public void setFile(Part file) {
+        this.file = file;
     }
 
     
