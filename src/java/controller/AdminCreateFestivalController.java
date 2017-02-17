@@ -62,8 +62,23 @@ public class AdminCreateFestivalController implements Serializable {
             
             festival.setCostDay( rootNode.findValues("Tickets").get(0).get(0).asInt());
             festival.setCostAll( rootNode.findValues("Tickets").get(0).get(1).asInt());
+            festival.setNumTicketsDay(0);
+            festival.setUserTicketDay(0);
+            festival.setNumVisits(0);
+            festival.setStatus("Open");
             
-            System.out.print(rootNode.findValues("Festival").get(0).findValues("Name").get(0));
+            
+            DB.insertFestival(festival);
+            
+            
+            List<Performer> performers = new ArrayList<>();
+            JsonNode jsonPerformer = rootNode.findValue("PerformersList");
+            
+            //TODO parse performers list and Social Networks
+            for ( int i = 0; i < jsonPerformer.size(); i++) {
+                Performer performer = new Performer();
+                
+            }
             
     
         } catch (Exception ex) {

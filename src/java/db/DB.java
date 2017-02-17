@@ -135,6 +135,15 @@ public class DB {
         return true;
     }
     
+    public static Boolean insertFestival(Festival festival) {
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        session.save(festival);
+        if(!session.getTransaction().wasCommitted())session.getTransaction().commit();
+        session.close();
+        return true;
+    }
+    
     public static List<Festival> getFestivals(){
         Session session = factory.openSession();
         Query query = session.getNamedQuery("Festival.findAll");
