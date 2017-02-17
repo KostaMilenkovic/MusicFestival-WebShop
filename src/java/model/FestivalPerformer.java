@@ -23,10 +23,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- *
- * @author obabovic
- */
+
 @Entity
 @Table(name = "festival_performer")
 @XmlRootElement

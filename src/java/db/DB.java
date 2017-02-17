@@ -37,7 +37,7 @@ public class DB {
     private static Configuration cfg;
     private static ServiceRegistry serviceRegistry;
     private static SessionFactory factory;
-    private static User user = null;
+    public static User user = null;
     
     static {
         cfg = new Configuration();
@@ -84,8 +84,8 @@ public class DB {
         if(!password.equals(resultUser.getPassword()))
             return null;
         session.close();
-        setCurrentUser(resultUser);
         user = resultUser;
+        setCurrentUser(user);
         return resultUser;
     }
     
@@ -243,7 +243,7 @@ public class DB {
         return user;
     }
 
-    public static void setUser(User user) {
-        user = user;
+    public static void setUser(User user1) {
+        user = user1;
     }
 }
