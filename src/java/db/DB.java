@@ -5,6 +5,9 @@
  */
 package db;
 
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Date;
 import model.User;
 import java.util.List;
 import javax.faces.bean.ApplicationScoped;
@@ -138,6 +141,26 @@ public class DB {
         return festivals;
     }
     
+    public static List<Festival> getTopFiveFestivalsByRating(){
+        Session session = factory.openSession();
+        Query query = session.getNamedQuery("Festival.findTopFiveByRating");
+        query.setMaxResults(5);
+        List<Object[]> list = query.list();
+        session.close();
+        List<Festival> festivals = new ArrayList<>();
+        for (Object[] obj : list) {
+            Festival festival = new Festival();
+            festival.setId((Integer) obj[0]);
+            festival.setName((String) obj[1]);
+            festival.setPlace((String) obj[2]);
+            festival.setStartDate((Date) obj[3]);
+            festival.setEndDate((Date) obj[4]);
+            festivals.add(festival);
+        }
+        
+        return festivals;
+    }
+    
     public static List<Festival> getRecentFiveFestivals(){
         Session session = factory.openSession();
         Query query = session.getNamedQuery("Festival.findRecent");
@@ -161,6 +184,14 @@ public class DB {
         List<Festival> festivals = query.list();
         session.close();
         return festivals;
+    }
+    
+    public static List<FestivalRating> getFestivalRatingsByFestival(Integer id){
+        Session session = factory.openSession();
+        Query query = session.getNamedQuery("FestivalRating.findByFestival").setInteger("festival", id);
+        List<FestivalRating> festivalRating = query.list();
+        session.close();
+        return festivalRating;
     }
     
     public static List<Ticket> getMyTickets(Integer id){
