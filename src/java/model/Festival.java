@@ -46,8 +46,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Festival.findByUserTicketDay", query = "SELECT f FROM Festival f WHERE f.userTicketDay = :userTicketDay")
     , @NamedQuery(name = "Festival.findByNumTicketsDay", query = "SELECT f FROM Festival f WHERE f.numTicketsDay = :numTicketsDay")
     , @NamedQuery(name = "Festival.findByStatus", query = "SELECT f FROM Festival f WHERE f.status = :status")
-    , @NamedQuery(name = "Festival.findByNumVisits", query = "SELECT f FROM Festival f WHERE f.numVisits = :numVisits")
-    , @NamedQuery(name = "Festival.findRecentFive", query = "SELECT f FROM Festival f WHERE f.endDate>current_date() ORDER BY f.startDate ASC")})
+    , @NamedQuery(name = "Festival.findRecentFive", query = "SELECT f FROM Festival f WHERE f.endDate>current_date() ORDER BY f.startDate ASC")
+    , @NamedQuery(name = "Festival.findInitialized", query = "SELECT f FROM Festival f WHERE f.status = 'initialized'")
+    , @NamedQuery(name = "Festival.findByNumVisits", query = "SELECT f FROM Festival f WHERE f.numVisits = :numVisits")})
 public class Festival implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -131,6 +132,19 @@ public class Festival implements Serializable {
         this.numTicketsDay = numTicketsDay;
         this.status = status;
         this.numVisits = numVisits;
+    }
+
+    public Festival(String name, String location, Date dateStart, Date dateEnd, Integer priceOneDay, Integer priceAllDays, Integer numTicketsPerUser, Integer numTicketsPerDay, String initialized, int i) {
+        this.name = name;
+        this.place = location;
+        this.startDate = dateStart;
+        this.endDate = dateEnd;
+        this.costDay = priceOneDay;
+        this.costAll = priceAllDays;
+        this.userTicketDay = numTicketsPerUser;
+        this.numTicketsDay = numTicketsPerDay;
+        this.status = initialized;
+        this.numVisits = i;
     }
 
     public Integer getId() {

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="template/templatePage.xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:b="http://bootsfaces.net/ui">
+    <ui:define name="content">
+        <div class="container">
+            <h1 class="text-center" style="margin-bottom:2em;">
+                Edit festival
+            </h1>
+            <div class="row">
+                <h2 class="text-center">
+                    Add an event
+                </h2>
+                <b:form class="col-sm-6 col-sm-offset-3">
+                    Performer 
+                    <b:selectOneMenu value="#{festivalEdit.selectedPerformer}">
+                        <f:selectItems value="#{festivalEdit.performers}"/>	   							
+                    </b:selectOneMenu>
+                    Starting date and time 
+                    <b:dateTimePicker value="#{festivalEdit.performerDateTimeStart}" />
+                    Ending date and time 
+                    <b:dateTimePicker value="#{festivalEdit.performerDateTimeEnd}" />
+                    <b:commandButton value="RESET" class="btn btn-default" action="#{festivalEdit.newEvent()}" />
+                </b:form>
+            </div>
+        <br></br>
+        <h:outputText value="#{resetPasswordController.message}" />      
+      </div>
+    </ui:define>
+</ui:composition>
