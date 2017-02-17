@@ -33,7 +33,6 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Festival.findAll", query = "SELECT f FROM Festival f"),
     @NamedQuery(name = "Festival.findAllDesc", query = "SELECT f FROM Festival f"),
-    @NamedQuery(name = "Festival.findRecent", query = "SELECT f FROM Festival f WHERE startDate>CURRENT_DATE ORDER BY f. startDate DESC"),
     @NamedQuery(name = "Festival.findById", query = "SELECT f FROM Festival f WHERE f.id = :id"),
     @NamedQuery(name = "Festival.findTopFiveByRating", query = "SELECT f.id, f.name, f.place, f.startDate, f.endDate, AVG(r.rating) as average FROM Festival f, FestivalRating r WHERE f.id = r.festival GROUP BY f.id ORDER BY average DESC")
     , @NamedQuery(name = "Festival.findByName", query = "SELECT f FROM Festival f WHERE f.name = :name")
@@ -45,7 +44,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Festival.findByUserTicketDay", query = "SELECT f FROM Festival f WHERE f.userTicketDay = :userTicketDay")
     , @NamedQuery(name = "Festival.findByNumTicketsDay", query = "SELECT f FROM Festival f WHERE f.numTicketsDay = :numTicketsDay")
     , @NamedQuery(name = "Festival.findByStatus", query = "SELECT f FROM Festival f WHERE f.status = :status")
-    , @NamedQuery(name = "Festival.findByNumVisits", query = "SELECT f FROM Festival f WHERE f.numVisits = :numVisits")})
+    , @NamedQuery(name = "Festival.findByNumVisits", query = "SELECT f FROM Festival f WHERE f.numVisits = :numVisits")
+    , @NamedQuery(name = "Festival.findRecentFive", query = "SELECT f FROM Festival f WHERE f.endDate>current_date() ORDER BY f.startDate ASC")})
 public class Festival implements Serializable {
 
     private static final long serialVersionUID = 1L;
