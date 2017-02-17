@@ -326,6 +326,20 @@ public class DB {
         return userRole;
     }
     
+    public static void makeAReservation(User user, Ticket ticket){
+        Session session = factory.openSession();
+
+        session.getTransaction().begin();
+        Reservation reservation = new Reservation();
+        reservation.setDate(new Date());
+        reservation.setStatus("PENDING");
+        reservation.setTicket(ticket);
+        reservation.setUser(user);
+        session.save(reservation);
+        if(!session.getTransaction().wasCommitted())session.getTransaction().commit();
+        session.close();
+    }
+    
     public static void setCurrentUser(User user) {
         ((HttpSession)(FacesContext.getCurrentInstance().getExternalContext().getSession(true))).setAttribute("user", user);
     }

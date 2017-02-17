@@ -12,6 +12,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -102,7 +103,7 @@ public class Festival implements Serializable {
     @NotNull
     @Column(name = "num_visits")
     private int numVisits;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival",fetch = FetchType.EAGER)
     private Collection<Ticket> ticketCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival")
     private Collection<FestivalRating> festivalRatingCollection;
@@ -110,7 +111,7 @@ public class Festival implements Serializable {
     private Collection<FestivalComment> festivalCommentCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival")
     private Collection<SocialNetwork> socialNetworkCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival",fetch = FetchType.EAGER)
     private Collection<FestivalPerformer> festivalPerformerCollection;
 
     public Festival() {
