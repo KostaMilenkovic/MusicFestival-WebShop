@@ -7,7 +7,6 @@ package controller;
 
 import model.User;
 import db.DB;
-import static db.DB.setCurrentUser;
 import java.io.Serializable;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
@@ -20,8 +19,6 @@ import model.UserRole;
 @ViewScoped
 @ManagedBean(name = "loginController")
 public class LoginController implements Serializable {
-    
-    @ManagedProperty(value = "#{user}")
     private User user;
     
     private String username;
@@ -42,7 +39,6 @@ public class LoginController implements Serializable {
         }
         
         user = DB.login(username,password);
-        DB.setCurrentUser(user);
         
         if(user == null){
             message = "Failed to log in.";
@@ -50,8 +46,7 @@ public class LoginController implements Serializable {
         }
         
         message = "Successfully logged in!";
-        
-        
+       
         switch(user.getRole().getName()){
             case "administrator":
                 return "home_admin";

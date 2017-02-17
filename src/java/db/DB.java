@@ -7,6 +7,8 @@ package db;
 
 import model.User;
 import java.util.List;
+import javax.faces.bean.ApplicationScoped;
+import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import model.Festival;
@@ -25,14 +27,14 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
-/**
- *
- * @author milenkok
- */
+
+@ManagedBean(name="db")
+@ApplicationScoped
 public class DB {
     private static Configuration cfg;
     private static ServiceRegistry serviceRegistry;
     private static SessionFactory factory;
+    private static User user = null;
     
     static {
         cfg = new Configuration();
@@ -60,7 +62,7 @@ public class DB {
             return false;
         }
         session.getTransaction().begin();
-        session.save(user);
+        session.save(resultUser);
         if(!session.getTransaction().wasCommitted())session.getTransaction().commit();
         session.close();
         return true;
@@ -78,10 +80,17 @@ public class DB {
             
         if(!password.equals(resultUser.getPassword()))
             return null;
-        
         session.close();
-        
+        setCurrentUser(resultUser);
+        user = resultUser;
         return resultUser;
+    }
+    
+    public static void logout() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
+        session.invalidate();
+        user = null;
     }
     
     public static Boolean resetPassword(String username, String oldPassword, String newPassword){
@@ -191,11 +200,19 @@ public class DB {
         return userRole;
     }
     
-    public static User getCurrentUser() {
-        return (User)((HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(false)).getAttribute("user");
+    public static void setCurrentUser(User user) {
+        ((HttpSession)(FacesContext.getCurrentInstance().getExternalContext().getSession(true))).setAttribute("user", user);
     }
     
-    public static void setCurrentUser(User user) {
-        ((HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true)).setAttribute("user", user);
+    public static User getCurrentUser() {
+        return (User)((HttpSession)(FacesContext.getCurrentInstance().getExternalContext().getSession(false))).getAttribute("user");
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public static void setUser(User user) {
+        user = user;
     }
 }

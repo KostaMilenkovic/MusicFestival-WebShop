@@ -10,19 +10,15 @@
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     
     <ui:define name="content">
-        <f:metadata>
-            <f:viewAction action="#{newFestivalController.checkIfLoggedIn()}" />
-        </f:metadata>
         <div class="container">
             <h1 class="text-center">
                 New festival
             </h1>
             <div class="row">   
                 <b:form class="col-sm-6 col-sm-offset-3">
+                      Name  <b:inputText value="#{registerController.firstName}" />
 
-                      First Name  <b:inputText value="#{registerController.firstName}" />
-
-                      Last Name  <b:inputText value="#{registerController.lastName}" />
+                      <b:inputText value="#{registerController.lastName}" />
 
                       Username  <b:inputText value="#{registerController.userName}" />
 

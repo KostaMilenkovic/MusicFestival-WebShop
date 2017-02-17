@@ -11,15 +11,15 @@
                 <div class="container-fluid">
                   <!-- Brand and toggle get grouped for better mobile display -->
                   <div class="navbar-header">
-                        <h:form class="navbar-brand" rendered="#{ loginController.user.name == null}">
+                        <h:form class="navbar-brand" rendered="#{ db.user.name == null}">
                             <h:link value="Home unregistered" outcome="#{link.to('login.xhtml')}"/>
                         </h:form>
 
-                        <h:form class="navbar-brand" rendered="#{loginController.user.role.name.compareTo('registered') == 0}">
+                        <h:form class="navbar-brand" rendered="#{db.user.role.name.compareTo('registered') == 0}">
                             <h:link value="Home registered" outcome="#{link.to('home_registered.xhtml')}"/>
                         </h:form>
                       
-                        <h:form class="navbar-brand" rendered="#{loginController.user.role.name.compareTo('administrator') == 0}">
+                        <h:form class="navbar-brand" rendered="#{db.user.role.name.compareTo('administrator') == 0}">
                             <h:link value="Home admin" outcome="#{link.to('home_admin.xhtml')}"/>
                         </h:form>                    
                   </div>
@@ -28,7 +28,7 @@
                   <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-right">
                         <c:choose>
-                            <c:when test="#{loginController.user.name == null}">
+                            <c:when test="#{db.user.name == null}">
                                 <li>
                                     <h:form class="navbar-brand">
                                         <h:link value="Register" outcome="#{link.to('register.xhtml')}"/>
@@ -40,7 +40,7 @@
                                     </h:form>
                                 </li>
                             </c:when>
-                            <c:when test="#{ loginController.user.role.name.compareTo('registered')==0 }">
+                            <c:when test="#{ db.user.role.name.compareTo('registered')==0 }">
                                 <li>
                                     <h:form class="navbar-brand">
                                         <h:link value="Tickets" outcome="#{link.to('tickets.xhtml')}"/>
@@ -48,19 +48,19 @@
                                 </li>
                                 <li>
                                     <h:form class="navbar-brand">
-                                        <h:link value="logout" outcome="#{loginController.user.logout()}"/>
+                                        <h:link value="logout" outcome="#{db.user.logout()}"/>
                                     </h:form>
                                 </li>
                             </c:when>
-                            <c:when test="#{ loginController.user.role.name.compareTo('administrator')==0 }">
+                            <c:when test="#{ db.user.role.name.compareTo('administrator')==0 }">
                                 <li>
                                     <h:form class="navbar-brand">
-                                        <h:link value="new festival" outcome="#{link.to('new_festival.xhtml')}"/>
+                                        <h:link value="new festival" outcome="#{link.to('admin_create_festival.xhtml')}"/>
                                     </h:form>
                                 </li>
                                 <li>
                                     <h:form class="navbar-brand">
-                                        <h:link value="logout" outcome="#{loginController.user.logout()}"/>
+                                        <h:link value="logout" outcome="#{db.user.logout()}"/>
                                     </h:form>
                                 </li>
                             </c:when>
