@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package model;
 
 import db.DB;
@@ -30,10 +25,6 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-/**
- *
- * @author obabovic
- */
 @Entity
 @Table(name = "user")
 @XmlRootElement
@@ -48,6 +39,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "User.findByPhone", query = "SELECT u FROM User u WHERE u.phone = :phone")
     , @NamedQuery(name = "User.findByNumResAttempts", query = "SELECT u FROM User u WHERE u.numResAttempts = :numResAttempts")
     , @NamedQuery(name = "User.findByApproved", query = "SELECT u FROM User u WHERE u.approved = :approved")})
+@SessionScoped
+@ManagedBean(name="user")
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -259,9 +252,7 @@ public class User implements Serializable {
     
     
     public String logout() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
-        session.invalidate();
+        
         return "login";
     } 
      

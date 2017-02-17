@@ -55,7 +55,7 @@
                             <c:when test="#{ loginController.user.role.name.compareTo('administrator')==0 }">
                                 <li>
                                     <h:form class="navbar-brand">
-                                        <h:link value="new festival" outcome="#{link.to('new_festival.xhtml')}"/>
+                                        <h:link value="new festival" outcome="#{link.to('admin_create_festival.xhtml')}"/>
                                     </h:form>
                                 </li>
                                 <li>

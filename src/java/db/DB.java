@@ -103,6 +103,15 @@ public class DB {
         return true;
     }
     
+    public static void newFestival(Festival festival) {
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        session.save(festival);
+        if(!session.getTransaction().wasCommitted())
+            session.getTransaction().commit();
+        session.close();
+    }
+    
     public static List<Festival> getFestivals(){
         Session session = factory.openSession();
         Query query = session.getNamedQuery("Festival.findAll");
@@ -144,6 +153,24 @@ public class DB {
         List<Festival> festivals = query.list();
         session.close();
         return festivals;
+    }
+    
+    public static List<Festival> getInitializedFestivals() {
+        Session session = factory.openSession();
+        Query query = session.getNamedQuery("Festival.findInitialized");
+        List<Festival> festivals = query.list();
+        session.close();
+        return festivals;
+    }
+    
+    public static void finalizeFestivalSetup(Festival festival) {
+        Session session = factory.openSession();
+        festival.setStatus("active");
+        session.getTransaction().begin();
+        session.saveOrUpdate(festival);
+        if(!session.getTransaction().wasCommitted())
+            session.getTransaction().commit();
+        session.close();
     }
     
     public static List<Ticket> getMyTickets(Integer id){
@@ -189,5 +216,31 @@ public class DB {
     
     public static void setCurrentUser(User user) {
         ((HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true)).setAttribute("user", user);
+    }
+    
+    
+    public static List<Performer> getAllPerformers() {
+        Session session = factory.openSession();
+        Query query = session.getNamedQuery("Performer.findAll");
+        List<Performer> performers = query.list();
+        session.close();
+        return performers;
+    }
+    
+    public static Performer getPerformerById(Integer performerId) {
+        Session session = factory.openSession();
+        Query query = session.getNamedQuery("Performer.findById").setInteger("id", performerId);;
+        Performer performer = (Performer)query.uniqueResult();
+        session.close();
+        return performer;
+    }
+    
+    public static void createEvent(FestivalPerformer fp) {
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        session.save(fp);
+        if(!session.getTransaction().wasCommitted())
+            session.getTransaction().commit();
+        session.close();
     }
 }

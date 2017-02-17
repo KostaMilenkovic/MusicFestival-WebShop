@@ -34,10 +34,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "festival")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Festival.findAll", query = "SELECT f FROM Festival f"),
-    @NamedQuery(name = "Festival.findAllDesc", query = "SELECT f FROM Festival f"),
-    @NamedQuery(name = "Festival.findRecent", query = "SELECT f FROM Festival f WHERE startDate>CURRENT_DATE ORDER BY f. startDate DESC"),
-    @NamedQuery(name = "Festival.findById", query = "SELECT f FROM Festival f WHERE f.id = :id")
+    @NamedQuery(name = "Festival.findAll", query = "SELECT f FROM Festival f")
+    , @NamedQuery(name = "Festival.findById", query = "SELECT f FROM Festival f WHERE f.id = :id")
     , @NamedQuery(name = "Festival.findByName", query = "SELECT f FROM Festival f WHERE f.name = :name")
     , @NamedQuery(name = "Festival.findByPlace", query = "SELECT f FROM Festival f WHERE f.place = :place")
     , @NamedQuery(name = "Festival.findByStartDate", query = "SELECT f FROM Festival f WHERE f.startDate = :startDate")
@@ -47,6 +45,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Festival.findByUserTicketDay", query = "SELECT f FROM Festival f WHERE f.userTicketDay = :userTicketDay")
     , @NamedQuery(name = "Festival.findByNumTicketsDay", query = "SELECT f FROM Festival f WHERE f.numTicketsDay = :numTicketsDay")
     , @NamedQuery(name = "Festival.findByStatus", query = "SELECT f FROM Festival f WHERE f.status = :status")
+    , @NamedQuery(name = "Festival.findInitialized", query = "SELECT f FROM Festival f WHERE f.status = 'initialized'")
     , @NamedQuery(name = "Festival.findByNumVisits", query = "SELECT f FROM Festival f WHERE f.numVisits = :numVisits")})
 public class Festival implements Serializable {
 
@@ -131,6 +130,19 @@ public class Festival implements Serializable {
         this.numTicketsDay = numTicketsDay;
         this.status = status;
         this.numVisits = numVisits;
+    }
+
+    public Festival(String name, String location, Date dateStart, Date dateEnd, Integer priceOneDay, Integer priceAllDays, Integer numTicketsPerUser, Integer numTicketsPerDay, String initialized, int i) {
+        this.name = name;
+        this.place = location;
+        this.startDate = dateStart;
+        this.endDate = dateEnd;
+        this.costDay = priceOneDay;
+        this.costAll = priceAllDays;
+        this.userTicketDay = numTicketsPerUser;
+        this.numTicketsDay = numTicketsPerDay;
+        this.status = initialized;
+        this.numVisits = i;
     }
 
     public Integer getId() {

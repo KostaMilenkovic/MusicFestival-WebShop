@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="template/templatePage.xhtml"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    
+    <ui:define name="content">
+        <div class="container">
+            <h1 class="text-center">
+                New festival
+            </h1>
+            <div class="row">   
+                <b:form class="col-sm-6 col-sm-offset-3">
+
+                      Name  <b:inputText value="#{adminCreateFestival.name}" />
+
+                      Location <b:inputText value="#{adminCreateFestival.location}" />
+
+                      Starting date  <b:datepicker value="#{adminCreateFestival.dateStart}" />
+
+                      Ending date  <b:datepicker value="#{adminCreateFestival.dateEnd}" />
+
+                      Price for a day  <b:inputText value="#{adminCreateFestival.priceOneDay}" type="number"/>
+
+                      Price for whole festival  <b:inputText value="#{adminCreateFestival.priceAllDays}" type="number" />
+
+                      Tickets per user  <b:inputText value="#{adminCreateFestival.numTicketsPerUser}" type="number" />
+                      
+                      Tickets per day <b:inputText value="#{adminCreateFestival.numTicketsPerDay}" type="number" />
+
+                      <b:commandButton class="btn btn-default"  value="Submit" action="#{adminCreateFestival.newFestival()}" />
+                      <br></br>
+                      <h:outputText class="text-danger" value="#{registerController.message}" />
+                </b:form>
+                <h:form class="centered-div">
+                    <h:link value="Edit festivals." outcome="admin_create_festival_additional.xhtml" style="color:lightcoral;" />
+                </h:form>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

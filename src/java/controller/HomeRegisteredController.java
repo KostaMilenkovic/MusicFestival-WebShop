@@ -32,9 +32,7 @@ public class HomeRegisteredController implements Serializable{
     private List<Festival> top5 = null;
     private List<Festival> recent5 = null;
     
-    /**
-     * Creates a new instance of FestivalController
-     */
+    
     public HomeRegisteredController() {
     }
 
