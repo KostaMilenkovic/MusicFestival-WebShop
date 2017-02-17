@@ -71,8 +71,11 @@ public class DB {
         Query query = session.getNamedQuery("User.findByUsername").setString("username", username);
         User resultUser = (User)query.uniqueResult();
         
-        if(resultUser == null)
+        if(resultUser == null){
+            session.close();
             return null;
+        }
+            
         if(!password.equals(resultUser.getPassword()))
             return null;
         
@@ -86,11 +89,16 @@ public class DB {
         Query query = session.getNamedQuery("User.findByUsername").setString("username", username);
         User resultUser = (User)query.uniqueResult();
         
-        if(resultUser == null)
+        if(resultUser == null){
+            session.close();
             return false;
-        if(!oldPassword.equals(resultUser.getPassword()))
+        }
+            
+        if(!oldPassword.equals(resultUser.getPassword())){
+            session.close();
             return false;
-       
+        }
+        
         resultUser.setPassword(newPassword);
         
         

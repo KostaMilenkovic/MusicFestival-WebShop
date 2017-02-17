@@ -48,6 +48,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "User.findByPhone", query = "SELECT u FROM User u WHERE u.phone = :phone")
     , @NamedQuery(name = "User.findByNumResAttempts", query = "SELECT u FROM User u WHERE u.numResAttempts = :numResAttempts")
     , @NamedQuery(name = "User.findByApproved", query = "SELECT u FROM User u WHERE u.approved = :approved")})
+@SessionScoped
+@ManagedBean(name="user")
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;

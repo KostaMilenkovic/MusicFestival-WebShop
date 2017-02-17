@@ -17,10 +17,13 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import model.UserRole;
 
-@SessionScoped
+@ViewScoped
 @ManagedBean(name = "loginController")
 public class LoginController implements Serializable {
+    
+    @ManagedProperty(value = "#{user}")
     private User user;
+    
     private String username;
     private String password;
     
@@ -30,6 +33,8 @@ public class LoginController implements Serializable {
     
     public String login(){
 
+        if(username==null || password==null)
+            return null;
         
         if(username.equals("") || password.equals("")){
             message = "Please enter a username and a password";
