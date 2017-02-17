@@ -31,8 +31,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
 
-@ManagedBean(name="db")
-@ApplicationScoped
+
 public class DB {
     private static Configuration cfg;
     private static ServiceRegistry serviceRegistry;

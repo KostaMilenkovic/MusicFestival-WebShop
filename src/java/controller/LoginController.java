@@ -19,6 +19,7 @@ import model.UserRole;
 @ViewScoped
 @ManagedBean(name = "loginController")
 public class LoginController implements Serializable {
+    @ManagedProperty(value = "#{user}")
     private User user;
     
     private String username;

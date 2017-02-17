@@ -7,68 +7,76 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:body>
         <ui:composition>
-            <nav class="navbar navbar-default">
+            
+           
+           
+           <nav class="navbar navbar-default">
                 <div class="container-fluid">
-                  <!-- Brand and toggle get grouped for better mobile display -->
-                  <div class="navbar-header">
-                        <h:form class="navbar-brand" rendered="#{ db.user.name == null}">
-                            <h:link value="Home unregistered" outcome="#{link.to('login.xhtml')}"/>
-                        </h:form>
+             
+                <div class="navbar-header">                     
+                    <h:form class="navbar-brand" rendered="#{ user.name == null}">
+                        <h:commandLink  class="btn" value="Home unregistered" action="home_unregistered.xhtml"/>
+                    </h:form>
 
-                        <h:form class="navbar-brand" rendered="#{db.user.role.name.compareTo('registered') == 0}">
-                            <h:link value="Home registered" outcome="#{link.to('home_registered.xhtml')}"/>
-                        </h:form>
-                      
-                        <h:form class="navbar-brand" rendered="#{db.user.role.name.compareTo('administrator') == 0}">
-                            <h:link value="Home admin" outcome="#{link.to('home_admin.xhtml')}"/>
-                        </h:form>                    
-                  </div>
+                    <h:form class="navbar-brand" rendered="#{user.role.name.compareTo('registered') == 0}">
+                        <h:commandLink  class="btn" value="Home registered" action="home_registered.xhtml"/>
+                    </h:form>
 
-                  <!-- Collect the nav links, forms, and other content for toggling -->
-                  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav navbar-right">
-                        <c:choose>
-                            <c:when test="#{db.user.name == null}">
-                                <li>
-                                    <h:form class="navbar-brand">
-                                        <h:link value="Register" outcome="#{link.to('register.xhtml')}"/>
-                                    </h:form>
-                                </li>
-                                <li>
-                                    <h:form class="navbar-brand">
-                                        <h:link value="Reset password" outcome="#{link.to('reset_password.xhtml')}"/>
-                                    </h:form>
-                                </li>
-                            </c:when>
-                            <c:when test="#{ db.user.role.name.compareTo('registered')==0 }">
-                                <li>
-                                    <h:form class="navbar-brand">
-                                        <h:link value="Tickets" outcome="#{link.to('tickets.xhtml')}"/>
-                                    </h:form>
-                                </li>
-                                <li>
-                                    <h:form class="navbar-brand">
-                                        <h:link value="logout" outcome="#{db.user.logout()}"/>
-                                    </h:form>
-                                </li>
-                            </c:when>
-                            <c:when test="#{ db.user.role.name.compareTo('administrator')==0 }">
-                                <li>
-                                    <h:form class="navbar-brand">
-                                        <h:link value="new festival" outcome="#{link.to('admin_create_festival.xhtml')}"/>
-                                    </h:form>
-                                </li>
-                                <li>
-                                    <h:form class="navbar-brand">
-                                        <h:link value="logout" outcome="#{db.user.logout()}"/>
-                                    </h:form>
-                                </li>
-                            </c:when>
-                        </c:choose>
-                    </ul>
-                  </div><!-- /.navbar-collapse -->
-                </div><!-- /.container-fluid -->
-              </nav>  
+                    <h:form class="navbar-brand" rendered="#{user.role.name.compareTo('administrator') == 0}">
+                        <h:commandLink  class="btn" value="Home admin" action="home_admin.xhtml"/>
+                    </h:form>                    
+                </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <c:choose>
+                        <c:when test="#{user.name == null}">
+                            <li>
+                                <h:form class="navbar-brand">
+                                    <h:commandLink  class="btn" value="Login" action="login.xhtml"/>
+                                </h:form>
+                            </li>
+                            <li>
+                                <h:form class="navbar-brand">
+                                    <h:commandLink  class="btn" value="Register" action="register.xhtml"/>
+                                </h:form>
+                            </li>
+                            <li>
+                                <h:form class="navbar-brand">
+                                    <h:commandLink  class="btn" value="Reset Password" action="reset_password.xhtml"/>
+                                </h:form>
+                            </li>
+                        </c:when>
+                        <c:when test="#{ user.role.name.compareTo('registered')==0 }">
+                            <li>
+                                <h:form class="navbar-brand">
+                                    <h:commandLink  class="btn" value="Tickets" action="tickets.xhtml"/>
+                                </h:form>
+                            </li>
+                            <li>
+                                <h:form class="navbar-brand">
+                                    <h:commandButton  class="btn" value="logout" action="#{user.logout()}"/>
+                                </h:form>
+                            </li>
+                        </c:when>
+                        <c:when test="#{ user.role.name.compareTo('administrator')==0 }">
+                            <li>
+                                <h:form class="navbar-brand">
+                                    <h:commandLink  class="btn" value="Create Festival" action="admin_create_festival.xhtml"/>
+                                </h:form>
+                            </li>
+                            <li>
+                                <h:form class="navbar-brand">
+                                    <h:commandButton  class="btn" value="logout" action="#{user.logout()}"/>
+                                </h:form>
+                            </li>
+                        </c:when>
+                    </c:choose>
+                </ul>
+                </div>
+
+                </div>
+              </nav>
+           
         </ui:composition>
     </h:body>
 </html>
