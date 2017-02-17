@@ -30,8 +30,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "FestivalPerformer.findAll", query = "SELECT f FROM FestivalPerformer f")
     , @NamedQuery(name = "FestivalPerformer.findById", query = "SELECT f FROM FestivalPerformer f WHERE f.id = :id")
-    , @NamedQuery(name = "FestivalPerformer.findByDate", query = "SELECT f FROM FestivalPerformer f WHERE f.date = :date")
-    , @NamedQuery(name = "FestivalPerformer.findByTime", query = "SELECT f FROM FestivalPerformer f WHERE f.time = :time")})
+    , @NamedQuery(name = "FestivalPerformer.findByDateStart", query = "SELECT f FROM FestivalPerformer f WHERE f.dateStart = :dateStart")
+    , @NamedQuery(name = "FestivalPerformer.findByTimeStart", query = "SELECT f FROM FestivalPerformer f WHERE f.timeStart = :timeStart")
+    , @NamedQuery(name = "FestivalPerformer.findByDateEnd", query = "SELECT f FROM FestivalPerformer f WHERE f.dateEnd = :dateEnd")
+    , @NamedQuery(name = "FestivalPerformer.findByTimeEnd", query = "SELECT f FROM FestivalPerformer f WHERE f.timeEnd = :timeEnd")})
 public class FestivalPerformer implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -42,14 +44,24 @@ public class FestivalPerformer implements Serializable {
     private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "date")
+    @Column(name = "date_start")
     @Temporal(TemporalType.DATE)
-    private Date date;
+    private Date dateStart;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "time")
+    @Column(name = "time_start")
     @Temporal(TemporalType.TIME)
-    private Date time;
+    private Date timeStart;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "date_end")
+    @Temporal(TemporalType.DATE)
+    private Date dateEnd;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "time_end")
+    @Temporal(TemporalType.TIME)
+    private Date timeEnd;
     @JoinColumn(name = "performer", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Performer performer;
@@ -64,10 +76,21 @@ public class FestivalPerformer implements Serializable {
         this.id = id;
     }
 
-    public FestivalPerformer(Integer id, Date date, Date time) {
+    public FestivalPerformer(Integer id, Date dateStart, Date timeStart, Date dateEnd, Date timeEnd) {
         this.id = id;
-        this.date = date;
-        this.time = time;
+        this.dateStart = dateStart;
+        this.timeStart = timeStart;
+        this.dateEnd = dateEnd;
+        this.timeEnd = timeEnd;
+    }
+
+    public FestivalPerformer(Festival festival, Performer p, Date dateStart, Date timeStart, Date dateEnd, Date timeEnd) {
+        this.dateStart = dateStart;
+        this.timeStart = timeStart;
+        this.dateEnd = dateEnd;
+        this.timeEnd = timeEnd;
+        this.festival = festival;
+        this.performer = p;
     }
 
     public Integer getId() {
@@ -78,20 +101,36 @@ public class FestivalPerformer implements Serializable {
         this.id = id;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getDateStart() {
+        return dateStart;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setDateStart(Date dateStart) {
+        this.dateStart = dateStart;
     }
 
-    public Date getTime() {
-        return time;
+    public Date getTimeStart() {
+        return timeStart;
     }
 
-    public void setTime(Date time) {
-        this.time = time;
+    public void setTimeStart(Date timeStart) {
+        this.timeStart = timeStart;
+    }
+
+    public Date getDateEnd() {
+        return dateEnd;
+    }
+
+    public void setDateEnd(Date dateEnd) {
+        this.dateEnd = dateEnd;
+    }
+
+    public Date getTimeEnd() {
+        return timeEnd;
+    }
+
+    public void setTimeEnd(Date timeEnd) {
+        this.timeEnd = timeEnd;
     }
 
     public Performer getPerformer() {
