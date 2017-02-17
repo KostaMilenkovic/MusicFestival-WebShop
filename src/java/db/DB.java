@@ -123,6 +123,19 @@ public class DB {
         return true;
     }
     
+    public static Boolean approveUser (Integer id) {
+        Session session = factory.openSession();
+        User user = getUserById(id);
+        user.setApproved(1);
+        
+        session.getTransaction().begin();
+        session.update(user);
+        if(!session.getTransaction().wasCommitted())session.getTransaction().commit();
+        
+        session.close();
+        return true;
+    }
+    
     public static List<Festival> getFestivals(){
         Session session = factory.openSession();
         Query query = session.getNamedQuery("Festival.findAll");
@@ -220,12 +233,28 @@ public class DB {
         return festival;
     }
     
+    public static List<User> getUsers(){
+        Session session = factory.openSession();
+        Query query = session.getNamedQuery("User.findAll");
+        List<User> users = query.list();
+        session.close();
+        return users;
+    }
+    
     public static List<User> getUsersByApproved(Integer approved){
         Session session = factory.openSession();
         Query query = session.getNamedQuery("User.findByApproved").setInteger("approved", approved);
         List<User> users = query.list();
         session.close();
         return users;
+    }
+    
+    public static User getUserById(Integer id){
+        Session session = factory.openSession();
+        Query query = session.getNamedQuery("User.findById").setInteger("id", id);
+        User user = (User) query.uniqueResult();
+        session.close();
+        return user;
     }
     
     public static UserRole getUserRoleById(Integer userRoleId) {

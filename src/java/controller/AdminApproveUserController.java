@@ -14,7 +14,7 @@ import javax.faces.bean.ViewScoped;
 import model.User;
 
 
-@ManagedBean(name = "newFestivalController")
+@ManagedBean(name = "adminApproveUserController")
 @ViewScoped
 public class AdminApproveUserController implements Serializable {
     private List<User> users;
@@ -23,9 +23,9 @@ public class AdminApproveUserController implements Serializable {
         
     }
     
-    public String approve() {   
+    public String approve(Integer id) {   
         String result = "home_admin.xhtml";
-        
+        DB.approveUser(id);
         
         return result;
     }

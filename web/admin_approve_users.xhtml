@@ -12,7 +12,7 @@
     <ui:define name="content">
         <div class="container">
             <div class="row">   
-                <div class="col-sm-6 col-sm-offset-3">
+                <div class="col-sm-12">
                       <b:dataTable  value="#{adminApproveUserController.users}" searching="false" var="user">
                         <b:column>
                             <f:facet name="header">Username</f:facet>
@@ -29,7 +29,7 @@
                         <b:column>
                             <f:facet name="header">Action</f:facet>
                             <b:form>
-                                <b:commandButton value="Approve" action="#{adminApproveUserController.approve()}"/>
+                                <b:commandButton class="btn btn-primary" value="Approve" action="#{adminApproveUserController.approve(user.id)}"/>
                             </b:form>
                         </b:column>
                     </b:dataTable>
