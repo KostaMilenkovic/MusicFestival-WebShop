@@ -11,5 +11,7 @@
     <ui:define name="content">
         <h1>Welcome to Admin Page</h1>
         <h:outputLabel value="#{user.name}"></h:outputLabel>
+        <h:link value="Approve Users" outcome="#{link.to('admin_approve_users.xhtml')}"/>
+
     </ui:define>
 </ui:composition>
