@@ -6,11 +6,46 @@
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:b="http://bootsfaces.net/ui">
     
     <ui:define name="content">
-        <h1>Welcome to Admin Page</h1>
-        <h:outputLabel value="#{db.user.name}"></h:outputLabel>
-        <h:link value="Approve Users" outcome="#{link.to('admin_approve_users.xhtml')}"/>
+        
+        <div class="container" >
+            <div class="row" >
+                <div class ="col-sm-6" >
+                    <h4>Top 5 festivals users visited</h4>
+                </div>
+                <div class ="col-sm-6" >
+                    <h4>Top 5 festivals users bought tickets</h4>
+                </div>
+            </div>
+            <div class="row" >
+                <div class="col-sm-6">
+                    <b:dataTable  value="#{homeAdminController.festivalsMostVisited}" searching="false" var="festival">
+                        <b:column>
+                            <f:facet name="header">Name</f:facet>
+                            <h:outputText value="#{festival.name}"/>
+                        </b:column>
+                        <b:column>
+                            <f:facet name="header">Place</f:facet>
+                            <h:outputText value="#{festival.place}"/>
+                        </b:column>
+                    </b:dataTable>
+                </div>
+                <div class="col-sm-6">
+                    <b:dataTable  value="#{homeAdminController.festivalsMostTicketsBought}" searching="false" var="festival">
+                        <b:column>
+                            <f:facet name="header">Name</f:facet>
+                            <h:outputText value="#{festival.name}"/>
+                        </b:column>
+                        <b:column>
+                            <f:facet name="header">Place</f:facet>
+                            <h:outputText value="#{festival.place}"/>
+                        </b:column>
+                    </b:dataTable>
+                </div>
+            </div>
+        </div>
     </ui:define>
 </ui:composition>

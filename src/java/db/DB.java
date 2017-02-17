@@ -144,6 +144,34 @@ public class DB {
         return festivals;
     }
     
+    public static List<Festival> getTopFiveFestivalsTicketsBought(){
+        Session session = factory.openSession();
+        Query query = session.getNamedQuery("Festival.findMostTicketsBought");
+        query.setMaxResults(5);
+        List<Object[]> list = query.list();
+        session.close();
+        List<Festival> festivals = new ArrayList<>();
+        for (Object[] obj : list) {
+            Festival festival = new Festival();
+            festival.setId((Integer) obj[0]);
+            festival.setName((String) obj[1]);
+            festival.setPlace((String) obj[2]);
+            festival.setStartDate((Date) obj[3]);
+            festival.setEndDate((Date) obj[4]);
+            festivals.add(festival);
+        }
+        
+        return festivals;
+    }
+            
+    public static List<Festival> getTopFiveFestivalsVisited(){
+        Session session = factory.openSession();
+        Query query = session.getNamedQuery("Festival.findMostVisited");
+        query.setMaxResults(5);
+        List<Festival> festivals = query.list();
+        session.close();
+        return festivals;
+    }
     
     public static List<Festival> getTopFiveFestivals(){
         Session session = factory.openSession();

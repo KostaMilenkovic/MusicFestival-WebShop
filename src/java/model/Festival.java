@@ -35,7 +35,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Festival.findAllDesc", query = "SELECT f FROM Festival f"),
     @NamedQuery(name = "Festival.findRecent", query = "SELECT f FROM Festival f WHERE startDate>CURRENT_DATE ORDER BY f. startDate DESC"),
     @NamedQuery(name = "Festival.findById", query = "SELECT f FROM Festival f WHERE f.id = :id"),
-    @NamedQuery(name = "Festival.findTopFiveByRating", query = "SELECT f.id, f.name, f.place, f.startDate, f.endDate, AVG(r.rating) as average FROM Festival f, FestivalRating r WHERE f.id = r.festival GROUP BY f.id ORDER BY average DESC")
+    @NamedQuery(name = "Festival.findTopFiveByRating", query = "SELECT f.id, f.name, f.place, f.startDate, f.endDate, AVG(r.rating) as average FROM Festival f, FestivalRating r WHERE f.id = r.festival GROUP BY f.id ORDER BY average DESC"),
+    @NamedQuery(name = "Festival.findMostVisited", query = "SELECT f FROM Festival f ORDER BY numVisits DESC"),
+    @NamedQuery(name = "Festival.findMostTicketsBought", query = "SELECT f FROM Festival f, Ticket t WHERE f.id = t.festival GROUP BY f.id ORDER BY COUNT(t.id) DESC")
     , @NamedQuery(name = "Festival.findByName", query = "SELECT f FROM Festival f WHERE f.name = :name")
     , @NamedQuery(name = "Festival.findByPlace", query = "SELECT f FROM Festival f WHERE f.place = :place")
     , @NamedQuery(name = "Festival.findByStartDate", query = "SELECT f FROM Festival f WHERE f.startDate = :startDate")

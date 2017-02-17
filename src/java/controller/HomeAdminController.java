@@ -22,5 +22,27 @@ import model.FestivalRating;
 @ViewScoped
 public class HomeAdminController implements Serializable{
     
+    public List<Festival> festivalsMostVisited;
+    public List<Festival> festivalsMostTicketsBought;
+    
+    public HomeAdminController() {
+    
+    }
+
+    public List<Festival> getFestivalsMostVisited() {
+        return DB.getTopFiveFestivalsVisited();
+    }
+
+    public void setFestivalsMostVisited(List<Festival> festivalsMostVisited) {
+        this.festivalsMostVisited = festivalsMostVisited;
+    }
+
+    public List<Festival> getFestivalsMostTicketsBought() {
+        return DB.getTopFiveFestivalsTicketsBought();
+    }
+
+    public void setFestivalsMostTicketsBought(List<Festival> festivalsMostTicketsBought) {
+        this.festivalsMostTicketsBought = festivalsMostTicketsBought;
+    }
     
 }
