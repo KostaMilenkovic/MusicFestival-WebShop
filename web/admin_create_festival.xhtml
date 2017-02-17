@@ -35,6 +35,16 @@
                       <h:outputText class="text-danger" value="#{registerController.message}" />
                 </b:form>
             </div>
+            <div class="row">
+                <h:form enctype="multipart/form-data">
+                    <div class="col-sm-2 col-sm-offset-3">
+                        <b:commandButton value="Upload JSON" action="#{adminCreateFestival.uploadFileJSON()}"/>
+                    </div>
+                    <div class="col-sm-2">
+                        <h:inputFile label="Json File" value="#{adminCreateFestival.file}"/>
+                    </div>
+                </h:form>    
+            </div>
         </div>
     </ui:define>
 </ui:composition>

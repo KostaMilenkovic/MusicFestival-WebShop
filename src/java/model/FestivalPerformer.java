@@ -30,8 +30,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "FestivalPerformer.findAll", query = "SELECT f FROM FestivalPerformer f")
     , @NamedQuery(name = "FestivalPerformer.findById", query = "SELECT f FROM FestivalPerformer f WHERE f.id = :id")
-    , @NamedQuery(name = "FestivalPerformer.findByDate", query = "SELECT f FROM FestivalPerformer f WHERE f.date = :date")
-    , @NamedQuery(name = "FestivalPerformer.findByTime", query = "SELECT f FROM FestivalPerformer f WHERE f.time = :time")})
+    , @NamedQuery(name = "FestivalPerformer.findByStartDate", query = "SELECT f FROM FestivalPerformer f WHERE f.startDate = :startDate")
+    , @NamedQuery(name = "FestivalPerformer.findByEndDate", query = "SELECT f FROM FestivalPerformer f WHERE f.endDate = :endDate")
+    , @NamedQuery(name = "FestivalPerformer.findByStartTime", query = "SELECT f FROM FestivalPerformer f WHERE f.startTime = :startTime")
+    , @NamedQuery(name = "FestivalPerformer.findByEndTime", query = "SELECT f FROM FestivalPerformer f WHERE f.endTime = :endTime")})
 public class FestivalPerformer implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -40,16 +42,28 @@ public class FestivalPerformer implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    
     @Basic(optional = false)
     @NotNull
-    @Column(name = "date")
+    @Column(name = "startDate")
     @Temporal(TemporalType.DATE)
-    private Date date;
+    private Date startDate;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "time")
+    @Column(name = "startTime")
     @Temporal(TemporalType.TIME)
-    private Date time;
+    private Date startTime;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "endDate")
+    @Temporal(TemporalType.DATE)
+    private Date endDate;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "endTime")
+    @Temporal(TemporalType.TIME)
+    private Date endTime;
+    
     @JoinColumn(name = "performer", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Performer performer;
@@ -64,10 +78,12 @@ public class FestivalPerformer implements Serializable {
         this.id = id;
     }
 
-    public FestivalPerformer(Integer id, Date date, Date time) {
+    public FestivalPerformer(Integer id, Date startDate, Date startTime, Date endDate, Date endTime) {
         this.id = id;
-        this.date = date;
-        this.time = time;
+        this.startDate = startDate;
+        this.startTime = startTime;
+        this.endDate = endDate;
+        this.endTime = endTime;
     }
 
     public Integer getId() {
@@ -78,22 +94,38 @@ public class FestivalPerformer implements Serializable {
         this.id = id;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setStartDate(Date date) {
+        this.startDate = date;
     }
 
-    public Date getTime() {
-        return time;
+    public Date getStartTime() {
+        return startTime;
     }
 
-    public void setTime(Date time) {
-        this.time = time;
+    public void setStartTime(Date time) {
+        this.startTime = time;
     }
 
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date date) {
+        this.endDate = date;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date time) {
+        this.endTime = time;
+    }
+    
     public Performer getPerformer() {
         return performer;
     }
