@@ -12,9 +12,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
@@ -26,10 +30,9 @@ import model.FestivalPerformer;
 import model.Performer;
 import model.SocialNetwork;
 import model.User;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import org.codehaus.jackson.*;
+import org.codehaus.jackson.map.ObjectMapper;
+
 
 
 @ManagedBean(name = "adminCreateFestival")
@@ -42,59 +45,30 @@ public class AdminCreateFestivalController implements Serializable {
     }
     
     public void uploadFileJSON() {
-        Festival festival = new Festival();
-        List<Performer> performers = new ArrayList<>();
-        List<FestivalPerformer> festivalPerformers = new ArrayList<>();
-        List<SocialNetwork> socialNetworks = new ArrayList<>(); 
-        
         try {
-            JSONParser parser = new JSONParser();
-            JSONObject rootObj = (JSONObject) parser.parse(new InputStreamReader(file.getInputStream()));
+            Festival festival = new Festival();
+            DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy",Locale.ENGLISH);
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode rootNode = objectMapper.readValue(file.getInputStream(), JsonNode.class);
             
-            JSONObject objFestival = (JSONObject) rootObj.get("Festival");
-            festival.setName(objFestival.get("Name").toString());
-            festival.setPlace(objFestival.get("Place").toString());
-            festival.setStartDate( (Date) objFestival.get("StartDate"));
-            festival.setEndDate( (Date) objFestival.get("EndDate"));
+            festival.setName(rootNode.findValues("Name").get(0).asText());
+            festival.setPlace(rootNode.findValues("Place").get(0).asText());
             
-            JSONArray objTickets = (JSONArray) objFestival.get("Tickets");
-            festival.setCostDay((Integer)objTickets.get(0));
-            festival.setCostAll((Integer)objTickets.get(1));
+            String date = rootNode.findValues("StartDate").get(0).asText();
+            festival.setStartDate( dateFormat.parse(date));
             
-            JSONArray objPerformers = (JSONArray) objFestival.get("PerformersList");
-            for (int i = 0; i < objPerformers.size(); i++) {
-                JSONObject objPerformer = (JSONObject) objPerformers.get(i);
-                Performer performer = new Performer();
-                FestivalPerformer festivalPerformer = new FestivalPerformer();
-                
-                performer.setName(objPerformer.get("Name").toString());
-                
-                festivalPerformer.setStartDate( (Date) objPerformer.get("StartDate"));
-                festivalPerformer.setEndDate( (Date) objPerformer.get("EndDate"));
-                festivalPerformer.setStartTime( (Date) objPerformer.get("StartTime"));
-                festivalPerformer.setEndTime( (Date) objPerformer.get("EndTime"));
-                festivalPerformer.setFestival(festival);
-                festivalPerformer.setPerformer(performer);
-                
-                performers.add(performer);
-                festivalPerformers.add(festivalPerformer);
-            }
+            date = rootNode.findValues("EndDate").get(0).asText();
+            festival.setEndDate( dateFormat.parse(date));
             
-            JSONArray objSocialNetworks = (JSONArray) objFestival.get("SocialNetworks");
-            for (int i = 0; i < objPerformers.size(); i++) {
-                JSONObject objSocialNetwork = (JSONObject) objPerformers.get(i);
-                SocialNetwork socialNetwork = new SocialNetwork();
-                
-                socialNetwork.setName( objSocialNetwork.get("Name").toString() );
-                socialNetwork.setLink( objSocialNetwork.get("Link").toString() );
-                socialNetwork.setFestival(festival);
-                
-                socialNetworks.add(socialNetwork);
-            }
+            festival.setCostDay( rootNode.findValues("Tickets").get(0).get(0).asInt());
+            festival.setCostAll( rootNode.findValues("Tickets").get(0).get(1).asInt());
             
+            System.out.print(rootNode.findValues("Festival").get(0).findValues("Name").get(0));
+            
+    
         } catch (Exception ex) {
             
-        } 
+        }
     }
 
     public Part getFile() {
