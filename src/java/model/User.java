@@ -35,8 +35,6 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author obabovic
  */
 @Entity
-@SessionScoped
-@ManagedBean (name="user")
 @Table(name = "user")
 @XmlRootElement
 @NamedQueries({
@@ -107,7 +105,7 @@ public class User implements Serializable {
     @JoinColumn(name = "role", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private UserRole role;
-
+    
     public User() {
     }
 
@@ -284,5 +282,6 @@ public class User implements Serializable {
 
             return true;
     }
+    
     
 }

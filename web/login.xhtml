@@ -6,35 +6,29 @@
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
-    
-    <ui:define name="header">
-        <h:link outcome="login.xhtml"><h1>Music festival web shop</h1></h:link>
-        <c:if test="#{user.username!=null}">
-            <h1>Your account is not approved yet <h:outputText value="#{user.username}" /></h1>
-        </c:if>
-    </ui:define>
-    
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:b="http://bootsfaces.net/ui">
     <ui:define name="content">
-        <div class="centered-div" style="background-color:lightcyan;">
-	  <h:form>
-                <hr></hr>
-                Username : <h:inputText value="#{loginController.user.username}" />
-                <hr></hr>
-                Password : <h:inputSecret value="#{loginController.user.password}" />
-                <hr></hr>
-    		<h:commandButton value="LOGIN" class="btn btn-default" action="#{loginController.login()}" />
-                <h:outputText value="#{loginController.message}" style="color:red;" />
-    	  </h:form>
+        <div class="container">
+            <h1 class="text-center">
+                Welcome to the music festival web shop
+            </h1>
+            <h2 class="text-center" style="margin-top:5em;">
+                Login
+            </h2>
+            <div class="row">
+                <div class="col-sm-4 col-sm-offset-4">
+                    <b:form>
+                        Username  <b:inputText value="#{loginController.username}" />
+                        Password  <b:inputSecret value="#{loginController.password}" />
+                        <b:commandButton value="LOGIN" class="btn btn-default" action="#{loginController.login()}" />
+                    </b:form>  
+                </div>
+            </div>
+            <h:outputText value="#{loginController.message}" style="color:red;" />
+        <h:form class="centered-div">
+            <h:commandLink value="Or continue to home page." action="home_unregistered.xhtml" style="color:lightcoral;" />
+        </h:form>
         </div>
-        <h:form class="centered-div">
-            <h:commandLink value="Register" action="register" style="color:lightcoral;" />
-        </h:form>
-        <h:form class="centered-div">
-            <h:commandLink value="Reset password" action="reset_password" style="color:lightcoral;" />
-        </h:form>
-        <h:form class="centered-div">
-            <h:commandLink value="Proceed as unregistered" action="home_unregistered.xhtml" style="color:lightcoral;" />
-        </h:form>
     </ui:define>
 </ui:composition>

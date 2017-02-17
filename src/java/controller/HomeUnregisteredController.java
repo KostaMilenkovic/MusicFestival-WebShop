@@ -18,10 +18,6 @@ import javax.faces.bean.ViewScoped;
 import model.Festival;
 import model.FestivalRating;
 
-/**
- *
- * @author milenkok
- */
 @ManagedBean(name = "homeUnregisteredController")
 @ViewScoped
 public class HomeUnregisteredController implements Serializable{

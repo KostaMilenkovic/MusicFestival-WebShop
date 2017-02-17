@@ -14,44 +14,37 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import model.UserRole;
 
-
-/**
- *
- * @author milenkok
- */
-@ViewScoped
+@SessionScoped
 @ManagedBean(name = "loginController")
-public class LoginController implements Serializable{
-    
-    @ManagedProperty(value = "#{user}")
+public class LoginController implements Serializable {
     private User user;
-    
+    private String username;
+    private String password;
     
     private String message;
     //==========================================================================
-   
     
     
     public String login(){
 
-        String username = user.getUsername();
-        String password = user.getPassword();
         
         if(username.equals("") || password.equals("")){
-            message = "Enter username and password";
+            message = "Please enter a username and a password";
             return null;
         }
         
-        User success = DB.login(username,password);
+        user = DB.login(username,password);
+
         
-        
-        if(success == null){
-            message = "Failed to login";
+        if(user == null){
+            message = "Failed to log in.";
             return null;
         }
         
-        message = "Successfully logged in";
+        message = "Successfully logged in!";
+        
         
         switch(user.getRole().getName()){
             case "administrator":
@@ -71,8 +64,7 @@ public class LoginController implements Serializable{
     //==========================================================================
     
     public LoginController(){
-        this.user = new User();
-        
+        user = new User();
     }
 
     public User getUser() {
@@ -90,6 +82,30 @@ public class LoginController implements Serializable{
     public void setMessage(String message) {
         
         this.message = message;
+    }
+
+    public User getuser() {
+        return user;
+    }
+
+    public void setuser(User user) {
+        this.user = user;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
   

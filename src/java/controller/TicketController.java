@@ -15,10 +15,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import model.Ticket;
 
-/**
- *
- * @author milenkok
- */
+
 @ViewScoped
 @ManagedBean(name="ticketController")
 public class TicketController implements Serializable{

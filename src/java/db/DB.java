@@ -34,7 +34,7 @@ public class DB {
     private static Configuration cfg;
     private static ServiceRegistry serviceRegistry;
     private static SessionFactory factory;
-        
+    
     static {
         cfg = new Configuration();
         cfg.configure("hibernate.cfg.xml");
