@@ -220,6 +220,14 @@ public class DB {
         return festival;
     }
     
+    public static List<User> getUsersByApproved(Integer approved){
+        Session session = factory.openSession();
+        Query query = session.getNamedQuery("User.findByApproved").setInteger("approved", approved);
+        List<User> users = query.list();
+        session.close();
+        return users;
+    }
+    
     public static UserRole getUserRoleById(Integer userRoleId) {
         Session session = factory.openSession();
 

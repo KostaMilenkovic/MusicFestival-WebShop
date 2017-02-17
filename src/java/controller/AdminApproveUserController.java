@@ -31,7 +31,7 @@ public class AdminApproveUserController implements Serializable {
     }
 
     public List<User> getUsers() {
-        return users;
+        return DB.getUsersByApproved(0);
     }
 
     public void setUsers(List<User> users) {
