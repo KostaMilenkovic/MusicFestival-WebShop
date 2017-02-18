@@ -52,8 +52,12 @@ public class SingleFestivalController implements Serializable{
     }
     
     public void reserveTicket(Ticket ticket){
-        DB.makeAReservation(user, ticket);
-        message = "reservation successfull!";
+        boolean result = DB.makeAReservation(user, ticket);
+        if(result)
+            message = "reservation successfull!";
+        else
+            message = "reservation failed!";
+            
     }
     
   

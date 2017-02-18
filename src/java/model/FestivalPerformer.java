@@ -30,10 +30,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "FestivalPerformer.findAll", query = "SELECT f FROM FestivalPerformer f")
     , @NamedQuery(name = "FestivalPerformer.findById", query = "SELECT f FROM FestivalPerformer f WHERE f.id = :id")
-    , @NamedQuery(name = "FestivalPerformer.findByDateStart", query = "SELECT f FROM FestivalPerformer f WHERE f.dateStart = :dateStart")
-    , @NamedQuery(name = "FestivalPerformer.findByTimeStart", query = "SELECT f FROM FestivalPerformer f WHERE f.timeStart = :timeStart")
-    , @NamedQuery(name = "FestivalPerformer.findByDateEnd", query = "SELECT f FROM FestivalPerformer f WHERE f.dateEnd = :dateEnd")
-    , @NamedQuery(name = "FestivalPerformer.findByTimeEnd", query = "SELECT f FROM FestivalPerformer f WHERE f.timeEnd = :timeEnd")})
+    , @NamedQuery(name = "FestivalPerformer.findByStartDate", query = "SELECT f FROM FestivalPerformer f WHERE f.startDate = :startDate")
+    , @NamedQuery(name = "FestivalPerformer.findByEndDate", query = "SELECT f FROM FestivalPerformer f WHERE f.endDate = :endDate")
+    , @NamedQuery(name = "FestivalPerformer.findByStartTime", query = "SELECT f FROM FestivalPerformer f WHERE f.startTime = :startTime")
+    , @NamedQuery(name = "FestivalPerformer.findByEndTime", query = "SELECT f FROM FestivalPerformer f WHERE f.endTime = :endTime")})
 public class FestivalPerformer implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -42,26 +42,28 @@ public class FestivalPerformer implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    
     @Basic(optional = false)
     @NotNull
-    @Column(name = "date_start")
+    @Column(name = "start_date")
     @Temporal(TemporalType.DATE)
-    private Date dateStart;
+    private Date startDate;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "time_start")
+    @Column(name = "start_time")
     @Temporal(TemporalType.TIME)
-    private Date timeStart;
+    private Date startTime;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "date_end")
+    @Column(name = "end_date")
     @Temporal(TemporalType.DATE)
-    private Date dateEnd;
+    private Date endDate;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "time_end")
+    @Column(name = "end_time")
     @Temporal(TemporalType.TIME)
-    private Date timeEnd;
+    private Date endTime;
+   
     @JoinColumn(name = "performer", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Performer performer;
@@ -76,19 +78,19 @@ public class FestivalPerformer implements Serializable {
         this.id = id;
     }
 
-    public FestivalPerformer(Integer id, Date dateStart, Date timeStart, Date dateEnd, Date timeEnd) {
+    public FestivalPerformer(Integer id, Date startDate, Date startTime, Date endDate, Date endTime) {
         this.id = id;
-        this.dateStart = dateStart;
-        this.timeStart = timeStart;
-        this.dateEnd = dateEnd;
-        this.timeEnd = timeEnd;
+        this.startDate = startDate;
+        this.startTime = startTime;
+        this.endDate = endDate;
+        this.endTime = endTime;
     }
 
     public FestivalPerformer(Festival festival, Performer p, Date dateStart, Date timeStart, Date dateEnd, Date timeEnd) {
-        this.dateStart = dateStart;
-        this.timeStart = timeStart;
-        this.dateEnd = dateEnd;
-        this.timeEnd = timeEnd;
+        this.startDate = dateStart;
+        this.startTime = timeStart;
+        this.endDate = dateEnd;
+        this.endTime = timeEnd;
         this.festival = festival;
         this.performer = p;
     }
@@ -101,38 +103,38 @@ public class FestivalPerformer implements Serializable {
         this.id = id;
     }
 
-    public Date getDateStart() {
-        return dateStart;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public void setDateStart(Date dateStart) {
-        this.dateStart = dateStart;
+    public void setStartDate(Date date) {
+        this.startDate = date;
     }
 
-    public Date getTimeStart() {
-        return timeStart;
+    public Date getStartTime() {
+        return startTime;
     }
 
-    public void setTimeStart(Date timeStart) {
-        this.timeStart = timeStart;
+    public void setStartTime(Date time) {
+        this.startTime = time;
     }
 
-    public Date getDateEnd() {
-        return dateEnd;
+    public Date getEndDate() {
+        return endDate;
     }
 
-    public void setDateEnd(Date dateEnd) {
-        this.dateEnd = dateEnd;
+    public void setEndDate(Date date) {
+        this.endDate = date;
     }
 
-    public Date getTimeEnd() {
-        return timeEnd;
+    public Date getEndTime() {
+        return endTime;
     }
 
-    public void setTimeEnd(Date timeEnd) {
-        this.timeEnd = timeEnd;
+    public void setEndTime(Date time) {
+        this.endTime = time;
     }
-
+    
     public Performer getPerformer() {
         return performer;
     }

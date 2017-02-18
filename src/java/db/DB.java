@@ -140,14 +140,40 @@ public class DB {
         return true;
     }
     
-    public static void newFestival(Festival festival) {
+    public static Boolean newFestival(Festival festival) {
         Session session = factory.openSession();
         session.getTransaction().begin();
         session.save(festival);
-        if(!session.getTransaction().wasCommitted())
-            session.getTransaction().commit();
+        if(!session.getTransaction().wasCommitted())session.getTransaction().commit();
         session.close();
-
+        return true;
+    }
+    
+    public static Performer newPerformer(Performer performer) {
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        session.saveOrUpdate(performer);
+        if(!session.getTransaction().wasCommitted())session.getTransaction().commit();
+        session.close();
+        return performer;
+    }
+    
+    public static Boolean newFestivalPerformer(FestivalPerformer festivalPerformer) {
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        session.save(festivalPerformer);
+        if(!session.getTransaction().wasCommitted())session.getTransaction().commit();
+        session.close();
+        return true;
+    }
+    
+    public static Boolean newSocialNetwork(SocialNetwork socialNetwork) {
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        session.save(socialNetwork);
+        if(!session.getTransaction().wasCommitted())session.getTransaction().commit();
+        session.close();
+        return true;
     }
     
     public static List<Festival> getFestivals(){
@@ -320,12 +346,13 @@ public class DB {
         return userRole;
     }
     
-    public static void makeAReservation(User user, Ticket ticket){
+    public static boolean makeAReservation(User user, Ticket ticket){
         Session session = factory.openSession();
 
         session.getTransaction().begin();
         Query query = session.getNamedQuery("Reservation.findByUserAndTicket").setInteger("userId", user.getId()).setInteger("ticketId",ticket.getId());
         Reservation result = (Reservation)query.uniqueResult();
+        boolean resultStatus = false;
         if(result == null){
             Reservation reservation = new Reservation();
             reservation.setDate(new Date());
@@ -336,14 +363,35 @@ public class DB {
             session.save(reservation);
             if(!session.getTransaction().wasCommitted())session.getTransaction().commit();
             user.getReservationCollection().add(reservation);
+            resultStatus = true;
         }else{
-            result.setCount(result.getCount() + 1);
-            session.save(result);
-            if(!session.getTransaction().wasCommitted())session.getTransaction().commit();
+            if(result.getStatus().equals("PENDING") || result.getCount()<ticket.getFestival().getUserTicketDay()){
+                    result.setCount(result.getCount() + 1);
+                    session.save(result);
+                    if(!session.getTransaction().wasCommitted())session.getTransaction().commit();
+                    for(Reservation reservation : user.getReservationCollection()){
+                        if(reservation.getId()==result.getId())
+                            reservation.setCount(result.getCount());
+                    }
+                    resultStatus = true;
+            }
+                
+            
         }
-        
-        
         session.close();
+        
+        return resultStatus;
+    }
+    
+    public static void cancelReservation(Reservation toDelete, User user){
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+            session.delete(toDelete);
+            if(!session.getTransaction().wasCommitted())session.getTransaction().commit();
+        session.close();
+        
+        user.getReservationCollection().remove(toDelete);
+        
     }
     
     public static void setCurrentUser(User user) {
