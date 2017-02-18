@@ -44,10 +44,10 @@ public class FestivalPerformerEditController {
             timeStart = formatterTime.parse(formatterTime.format(dateTimeStart));
             dateEnd = formatterDate.parse(formatterDate.format(dateTimeEnd));
             timeEnd = formatterTime.parse(formatterTime.format(dateTimeEnd));
-            fp.setDateStart(dateStart);
-            fp.setTimeStart(timeStart);
-            fp.setDateEnd(dateEnd);
-            fp.setTimeEnd(timeEnd);
+            fp.setStartDate(dateStart);
+            fp.setStartTime(timeStart);
+            fp.setEndDate(dateEnd);
+            fp.setEndTime(timeEnd);
             DB.updateFestivalPerformer(fp);
         } catch (ParseException ex) {
             Logger.getLogger(FestivalEditController.class.getName()).log(Level.SEVERE, null, ex);

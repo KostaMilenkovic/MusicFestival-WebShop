@@ -472,15 +472,6 @@ public class DB {
         session.close();
     }
     
-    public static void newPerformer(Performer p) {
-        Session session = factory.openSession();
-        session.getTransaction().begin();
-        session.save(p);
-        if(!session.getTransaction().wasCommitted())
-            session.getTransaction().commit();
-        session.close();
-    }
-    
     public static void updateFestivalPerformer(FestivalPerformer fp) {
         Session session = factory.openSession();
         session.getTransaction().begin();
