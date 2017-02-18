@@ -33,6 +33,7 @@ import model.FestivalImage;
 import model.FestivalPerformer;
 import model.FestivalVideo;
 import model.Performer;
+import model.SocialNetwork;
 import util.FileHelper;
 
 @ManagedBean(name = "festivalEdit")
@@ -45,9 +46,21 @@ public class FestivalEditController implements Serializable {
     private Date performerDateTimeStart;
     private Date performerDateTimeEnd;
     private Part file;
+    private String name;
+    private String location;
+    private Date dateStart;
+    private Date dateEnd;
+    private Integer priceOneDay;
+    private Integer priceAllDays;
+    private Integer numTicketsPerUser;
+    private Integer numTicketsPerDay;
+    private String status;
+    private String URL;
+    private String linkName;
     
     public FestivalEditController() {
         festival = (Festival)((HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(false)).getAttribute("festival_to_edit");
+        
     }
 
     public Festival getFestival() {
@@ -76,6 +89,13 @@ public class FestivalEditController implements Serializable {
         } catch (ParseException ex) {
             Logger.getLogger(FestivalEditController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    
+    public void editFestival() {
+        String result = "admin_create_festival_additional.xhtml";
+        
+        DB.updateFestival(festival);
     }
     
     
@@ -121,7 +141,12 @@ public class FestivalEditController implements Serializable {
             }
         }
     }
-
+    
+    public void uploadLink() {
+        SocialNetwork sn = new SocialNetwork(festival, linkName, URL);
+        DB.uploadLink(sn);
+    }
+    
     public List<SelectItem> getPerformers() {
         if(performers == null) {
             performers = DB.getAllPerformers();
@@ -169,7 +194,91 @@ public class FestivalEditController implements Serializable {
         this.file = file;
     }
 
-    
-    
-    
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public Date getDateStart() {
+        return dateStart;
+    }
+
+    public void setDateStart(Date dateStart) {
+        this.dateStart = dateStart;
+    }
+
+    public Date getDateEnd() {
+        return dateEnd;
+    }
+
+    public void setDateEnd(Date dateEnd) {
+        this.dateEnd = dateEnd;
+    }
+
+    public Integer getPriceOneDay() {
+        return priceOneDay;
+    }
+
+    public void setPriceOneDay(Integer priceOneDay) {
+        this.priceOneDay = priceOneDay;
+    }
+
+    public Integer getPriceAllDays() {
+        return priceAllDays;
+    }
+
+    public void setPriceAllDays(Integer priceAllDays) {
+        this.priceAllDays = priceAllDays;
+    }
+
+    public Integer getNumTicketsPerUser() {
+        return numTicketsPerUser;
+    }
+
+    public void setNumTicketsPerUser(Integer numTicketsPerUser) {
+        this.numTicketsPerUser = numTicketsPerUser;
+    }
+
+    public Integer getNumTicketsPerDay() {
+        return numTicketsPerDay;
+    }
+
+    public void setNumTicketsPerDay(Integer numTicketsPerDay) {
+        this.numTicketsPerDay = numTicketsPerDay;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getURL() {
+        return URL;
+    }
+
+    public void setURL(String URL) {
+        this.URL = URL;
+    }
+
+    public String getLinkName() {
+        return linkName;
+    }
+
+    public void setLinkName(String linkName) {
+        this.linkName = linkName;
+    }
 }

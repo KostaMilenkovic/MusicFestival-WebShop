@@ -403,4 +403,22 @@ public class DB {
             session.getTransaction().commit();
         session.close();
     }
+    
+    public static void updateFestival(Festival festival) {
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        session.update(festival);
+        if(!session.getTransaction().wasCommitted())
+            session.getTransaction().commit();
+        session.close();
+    }
+    
+    public static void uploadLink(SocialNetwork link) {
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        session.save(link);
+        if(!session.getTransaction().wasCommitted())
+            session.getTransaction().commit();
+        session.close();
+    }
 }
