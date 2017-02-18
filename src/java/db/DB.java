@@ -16,8 +16,10 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import model.Festival;
 import model.FestivalComment;
+import model.FestivalImage;
 import model.FestivalPerformer;
 import model.FestivalRating;
+import model.FestivalVideo;
 import model.Performer;
 import model.Reservation;
 import model.SocialNetwork;
@@ -46,6 +48,8 @@ public class DB {
         cfg.addAnnotatedClass(Festival.class);
         cfg.addAnnotatedClass(FestivalRating.class);
         cfg.addAnnotatedClass(FestivalComment.class);
+        cfg.addAnnotatedClass(FestivalImage.class);
+        cfg.addAnnotatedClass(FestivalVideo.class);
         cfg.addAnnotatedClass(FestivalPerformer.class);
         cfg.addAnnotatedClass(Ticket.class);
         cfg.addAnnotatedClass(Performer.class);
@@ -122,6 +126,7 @@ public class DB {
         return true;
     }
     
+
     public static Boolean approveUser (Integer id) {
         Session session = factory.openSession();
         User user = getUserById(id);
@@ -175,6 +180,7 @@ public class DB {
         Session session = factory.openSession();
         Query query = session.getNamedQuery("Festival.findAll");
         List<Festival> festivals = query.list();
+        
         session.close();
         return festivals;
     }
@@ -239,7 +245,7 @@ public class DB {
     
     public static List<Festival> getRecentFiveFestivals(){
         Session session = factory.openSession();
-        Query query = session.getNamedQuery("Festival.findRecent");
+        Query query = session.getNamedQuery("Festival.findRecentFive");
         query.setMaxResults(5);
         List<Festival> festivals = query.list();
         session.close();
@@ -262,12 +268,31 @@ public class DB {
         return festivals;
     }
     
+
     public static List<FestivalRating> getFestivalRatingsByFestival(Integer id){
         Session session = factory.openSession();
         Query query = session.getNamedQuery("FestivalRating.findByFestival").setInteger("festival", id);
         List<FestivalRating> festivalRating = query.list();
         session.close();
         return festivalRating;
+    }
+    
+    public static List<Festival> getInitializedFestivals() {
+        Session session = factory.openSession();
+        Query query = session.getNamedQuery("Festival.findInitialized");
+        List<Festival> festivals = query.list();
+        session.close();
+        return festivals;
+    }
+    
+    public static void finalizeFestivalSetup(Festival festival) {
+        Session session = factory.openSession();
+        festival.setStatus("active");
+        session.getTransaction().begin();
+        session.saveOrUpdate(festival);
+        if(!session.getTransaction().wasCommitted())
+            session.getTransaction().commit();
+        session.close();
     }
     
     public static List<Ticket> getMyTickets(Integer id){
@@ -331,6 +356,32 @@ public class DB {
         return userRole;
     }
     
+    public static void makeAReservation(User user, Ticket ticket){
+        Session session = factory.openSession();
+
+        session.getTransaction().begin();
+        Query query = session.getNamedQuery("Reservation.findByUserAndTicket").setInteger("userId", user.getId()).setInteger("ticketId",ticket.getId());
+        Reservation result = (Reservation)query.uniqueResult();
+        if(result == null){
+            Reservation reservation = new Reservation();
+            reservation.setDate(new Date());
+            reservation.setStatus("PENDING");
+            reservation.setTicket(ticket);
+            reservation.setUser(user);
+            reservation.setCount(1);
+            session.save(reservation);
+            if(!session.getTransaction().wasCommitted())session.getTransaction().commit();
+            user.getReservationCollection().add(reservation);
+        }else{
+            result.setCount(result.getCount() + 1);
+            session.save(result);
+            if(!session.getTransaction().wasCommitted())session.getTransaction().commit();
+        }
+        
+        
+        session.close();
+    }
+    
     public static void setCurrentUser(User user) {
         ((HttpSession)(FacesContext.getCurrentInstance().getExternalContext().getSession(true))).setAttribute("user", user);
     }
@@ -345,5 +396,67 @@ public class DB {
 
     public static void setUser(User user1) {
         user = user1;
+    }
+    
+    
+    public static List<Performer> getAllPerformers() {
+        Session session = factory.openSession();
+        Query query = session.getNamedQuery("Performer.findAll");
+        List<Performer> performers = query.list();
+        session.close();
+        return performers;
+    }
+    
+    public static Performer getPerformerById(Integer performerId) {
+        Session session = factory.openSession();
+        Query query = session.getNamedQuery("Performer.findById").setInteger("id", performerId);;
+        Performer performer = (Performer)query.uniqueResult();
+        session.close();
+        return performer;
+    }
+    
+    public static void createEvent(FestivalPerformer fp) {
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        session.save(fp);
+        if(!session.getTransaction().wasCommitted())
+            session.getTransaction().commit();
+        session.close();
+    }
+    
+    public static void uploadImage(FestivalImage image) {
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        session.save(image);
+        if(!session.getTransaction().wasCommitted())
+            session.getTransaction().commit();
+        session.close();
+    }
+    
+    public static void uploadVideo(FestivalVideo video) {
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        session.save(video);
+        if(!session.getTransaction().wasCommitted())
+            session.getTransaction().commit();
+        session.close();
+    }
+    
+    public static void updateFestival(Festival festival) {
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        session.update(festival);
+        if(!session.getTransaction().wasCommitted())
+            session.getTransaction().commit();
+        session.close();
+    }
+    
+    public static void uploadLink(SocialNetwork link) {
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        session.save(link);
+        if(!session.getTransaction().wasCommitted())
+            session.getTransaction().commit();
+        session.close();
     }
 }

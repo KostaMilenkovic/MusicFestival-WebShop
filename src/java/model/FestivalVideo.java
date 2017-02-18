@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -23,14 +24,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 
 @Entity
-@Table(name = "social_network")
+@Table(name = "festival_video")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "SocialNetwork.findAll", query = "SELECT s FROM SocialNetwork s")
-    , @NamedQuery(name = "SocialNetwork.findById", query = "SELECT s FROM SocialNetwork s WHERE s.id = :id")
-    , @NamedQuery(name = "SocialNetwork.findByName", query = "SELECT s FROM SocialNetwork s WHERE s.name = :name")
-    , @NamedQuery(name = "SocialNetwork.findByLink", query = "SELECT s FROM SocialNetwork s WHERE s.link = :link")})
-public class SocialNetwork implements Serializable {
+    @NamedQuery(name = "FestivalVideo.findAll", query = "SELECT f FROM FestivalVideo f")
+    , @NamedQuery(name = "FestivalVideo.findById", query = "SELECT f FROM FestivalVideo f WHERE f.id = :id")
+    , @NamedQuery(name = "FestivalVideo.findByText", query = "SELECT f FROM FestivalVideo f WHERE f.text = :text")})
+public class FestivalVideo implements Serializable {
+
+    @Basic(optional = false)
+    @NotNull
+    @Lob
+    @Size(min = 1, max = 65535)
+    @Column(name = "video")
+    private String video;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -40,35 +47,22 @@ public class SocialNetwork implements Serializable {
     private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "name")
-    private String name;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "link")
-    private String link;
+    @Column(name = "text")
+    private int text;
     @JoinColumn(name = "festival", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Festival festival;
 
-    public SocialNetwork() {
+    public FestivalVideo() {
     }
-
-    public SocialNetwork(Integer id) {
-        this.id = id;
-    }
-
-    public SocialNetwork(Integer id, String name, String link) {
-        this.id = id;
-        this.name = name;
-        this.link = link;
-    }
-
-    public SocialNetwork(Festival festival, String name, String URL) {
+    
+    public FestivalVideo(Festival festival, String text) {
         this.festival = festival;
-        this.name = name;
-        this.link = URL;
+        this.video = text;
+    }
+    
+    public FestivalVideo(Integer id) {
+        this.id = id;
     }
 
     public Integer getId() {
@@ -79,20 +73,12 @@ public class SocialNetwork implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public int getText() {
+        return text;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLink() {
-        return link;
-    }
-
-    public void setLink(String link) {
-        this.link = link;
+    public void setText(int text) {
+        this.text = text;
     }
 
     public Festival getFestival() {
@@ -102,7 +88,7 @@ public class SocialNetwork implements Serializable {
     public void setFestival(Festival festival) {
         this.festival = festival;
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -113,10 +99,10 @@ public class SocialNetwork implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof SocialNetwork)) {
+        if (!(object instanceof FestivalVideo)) {
             return false;
         }
-        SocialNetwork other = (SocialNetwork) object;
+        FestivalVideo other = (FestivalVideo) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -125,7 +111,15 @@ public class SocialNetwork implements Serializable {
 
     @Override
     public String toString() {
-        return "model.SocialNetwork[ id=" + id + " ]";
+        return "model.FestivalVideo[ id=" + id + " ]";
+    }
+
+    public String getVideo() {
+        return video;
+    }
+
+    public void setVideo(String video) {
+        this.video = video;
     }
     
 }

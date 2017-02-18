@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="template/templatePage.xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:b="http://bootsfaces.net/ui">
+    
+    <ui:define name="content">
+        <div class="container" >            
+            <div class="row" >
+                <div class="col-md-12">
+                        <b:dataTable  value="#{adminCreateFestivalAdditional.festivals}" searching="false" var="festival">
+                            <b:column>
+                                <f:facet name="header">Name</f:facet>
+                                <h:outputText value="#{festival.name}"/>
+                            </b:column>
+                            <b:column>
+                                <f:facet name="header">Place</f:facet>
+                                <h:outputText value="#{festival.place}"/>
+                            </b:column>
+                            <b:column>
+                                <f:facet name="header">Date From</f:facet>
+                                <h:outputText value="#{festival.startDate}"/>
+                            </b:column>
+                            <b:column>
+                                <f:facet name="header">Date Until</f:facet>
+                                <h:outputText value="#{festival.endDate}"/>
+                            </b:column>
+                            <h:column>
+                                <f:facet name="header">Add event</f:facet>
+                                <h:form>
+                                    <h:commandLink value="edit" action="#{adminCreateFestivalAdditional.editFestival(festival)}"/>
+                                </h:form>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Finalize</f:facet>
+                                <h:form>
+                                    <h:commandButton action="#{adminCreateFestivalAdditional.finalizeFestivalSetup(festival)}" value="ok"/>
+                                </h:form>
+                            </h:column>
+                        </b:dataTable>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

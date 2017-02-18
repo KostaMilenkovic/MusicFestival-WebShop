@@ -63,7 +63,7 @@ public class FestivalPerformer implements Serializable {
     @Column(name = "endTime")
     @Temporal(TemporalType.TIME)
     private Date endTime;
-    
+   
     @JoinColumn(name = "performer", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Performer performer;
@@ -84,6 +84,15 @@ public class FestivalPerformer implements Serializable {
         this.startTime = startTime;
         this.endDate = endDate;
         this.endTime = endTime;
+    }
+
+    public FestivalPerformer(Festival festival, Performer p, Date dateStart, Date timeStart, Date dateEnd, Date timeEnd) {
+        this.startDate = dateStart;
+        this.startTime = timeStart;
+        this.endDate = dateEnd;
+        this.endTime = timeEnd;
+        this.festival = festival;
+        this.performer = p;
     }
 
     public Integer getId() {

@@ -12,6 +12,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -33,7 +34,6 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Festival.findAll", query = "SELECT f FROM Festival f"),
     @NamedQuery(name = "Festival.findAllDesc", query = "SELECT f FROM Festival f"),
-    @NamedQuery(name = "Festival.findRecent", query = "SELECT f FROM Festival f WHERE startDate>CURRENT_DATE ORDER BY f. startDate DESC"),
     @NamedQuery(name = "Festival.findById", query = "SELECT f FROM Festival f WHERE f.id = :id"),
     @NamedQuery(name = "Festival.findTopFiveByRating", query = "SELECT f.id, f.name, f.place, f.startDate, f.endDate, AVG(r.rating) as average FROM Festival f, FestivalRating r WHERE f.id = r.festival GROUP BY f.id ORDER BY average DESC"),
     @NamedQuery(name = "Festival.findMostVisited", query = "SELECT f FROM Festival f ORDER BY numVisits DESC"),
@@ -47,6 +47,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Festival.findByUserTicketDay", query = "SELECT f FROM Festival f WHERE f.userTicketDay = :userTicketDay")
     , @NamedQuery(name = "Festival.findByNumTicketsDay", query = "SELECT f FROM Festival f WHERE f.numTicketsDay = :numTicketsDay")
     , @NamedQuery(name = "Festival.findByStatus", query = "SELECT f FROM Festival f WHERE f.status = :status")
+    , @NamedQuery(name = "Festival.findRecentFive", query = "SELECT f FROM Festival f WHERE f.endDate>current_date() ORDER BY f.startDate ASC")
+    , @NamedQuery(name = "Festival.findInitialized", query = "SELECT f FROM Festival f WHERE f.status = 'initialized'")
     , @NamedQuery(name = "Festival.findByNumVisits", query = "SELECT f FROM Festival f WHERE f.numVisits = :numVisits")})
 public class Festival implements Serializable {
 
@@ -101,7 +103,7 @@ public class Festival implements Serializable {
     @NotNull
     @Column(name = "num_visits")
     private int numVisits;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival",fetch = FetchType.EAGER)
     private Collection<Ticket> ticketCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival")
     private Collection<FestivalRating> festivalRatingCollection;
@@ -110,6 +112,10 @@ public class Festival implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival")
     private Collection<SocialNetwork> socialNetworkCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival")
+    private Collection<FestivalImage> festivalImageCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival")
+    private Collection<FestivalVideo> festivalVideoCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival",fetch = FetchType.EAGER)
     private Collection<FestivalPerformer> festivalPerformerCollection;
 
     public Festival() {
@@ -131,6 +137,19 @@ public class Festival implements Serializable {
         this.numTicketsDay = numTicketsDay;
         this.status = status;
         this.numVisits = numVisits;
+    }
+
+    public Festival(String name, String location, Date dateStart, Date dateEnd, Integer priceOneDay, Integer priceAllDays, Integer numTicketsPerUser, Integer numTicketsPerDay, String initialized, int i) {
+        this.name = name;
+        this.place = location;
+        this.startDate = dateStart;
+        this.endDate = dateEnd;
+        this.costDay = priceOneDay;
+        this.costAll = priceAllDays;
+        this.userTicketDay = numTicketsPerUser;
+        this.numTicketsDay = numTicketsPerDay;
+        this.status = initialized;
+        this.numVisits = i;
     }
 
     public Integer getId() {
@@ -256,6 +275,25 @@ public class Festival implements Serializable {
     public void setSocialNetworkCollection(Collection<SocialNetwork> socialNetworkCollection) {
         this.socialNetworkCollection = socialNetworkCollection;
     }
+    
+    @XmlTransient
+    public Collection<FestivalImage> getFestivalImageCollection() {
+        return festivalImageCollection;
+    }
+
+    public void setFestivalImageCollection(Collection<FestivalImage> festivalImageCollection) {
+        this.festivalImageCollection = festivalImageCollection;
+    }
+    
+    @XmlTransient
+    public Collection<FestivalVideo> getFestivalVideoCollection() {
+        return festivalVideoCollection;
+    }
+
+    public void setFestivalVideoCollection(Collection<FestivalVideo> festivalVideoCollection) {
+        this.festivalVideoCollection = festivalVideoCollection;
+    }
+    
 
     @XmlTransient
     public Collection<FestivalPerformer> getFestivalPerformerCollection() {

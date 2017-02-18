@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package model;
 
 import db.DB;
@@ -15,6 +10,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -98,7 +94,7 @@ public class User implements Serializable {
     private Collection<FestivalRating> festivalRatingCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Collection<FestivalComment> festivalCommentCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user",fetch = FetchType.EAGER)
     private Collection<Reservation> reservationCollection;
     @JoinColumn(name = "role", referencedColumnName = "id")
     @ManyToOne(optional = false)

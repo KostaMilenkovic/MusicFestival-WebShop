@@ -26,12 +26,12 @@
                             <f:facet name="header">Surname</f:facet>
                             <h:outputText value="#{user.surname}"/>
                         </b:column>
-                        <b:column>
+                        <h:column>
                             <f:facet name="header">Action</f:facet>
-                            <b:form>
+                            <h:form>
                                 <b:commandButton class="btn btn-primary" value="Approve" action="#{adminApproveUserController.approve(user.id)}"/>
-                            </b:form>
-                        </b:column>
+                            </h:form>
+                        </h:column>
                     </b:dataTable>
                 </div>
             </div>

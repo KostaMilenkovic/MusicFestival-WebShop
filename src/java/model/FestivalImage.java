@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -23,14 +24,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 
 @Entity
-@Table(name = "social_network")
+@Table(name = "festival_image")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "SocialNetwork.findAll", query = "SELECT s FROM SocialNetwork s")
-    , @NamedQuery(name = "SocialNetwork.findById", query = "SELECT s FROM SocialNetwork s WHERE s.id = :id")
-    , @NamedQuery(name = "SocialNetwork.findByName", query = "SELECT s FROM SocialNetwork s WHERE s.name = :name")
-    , @NamedQuery(name = "SocialNetwork.findByLink", query = "SELECT s FROM SocialNetwork s WHERE s.link = :link")})
-public class SocialNetwork implements Serializable {
+@NamedQuery(name = "FestivalImage.findAll", query = "SELECT f FROM FestivalImage f")
+, @NamedQuery(name = "FestivalImage.findById", query = "SELECT f FROM FestivalImage f WHERE f.id = :id")})
+public class FestivalImage implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -40,35 +39,29 @@ public class SocialNetwork implements Serializable {
     private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "name")
-    private String name;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "link")
-    private String link;
+    @Lob
+    @Size(min = 1, max = 65535)
+    @Column(name = "image")
+    private String image;
     @JoinColumn(name = "festival", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Festival festival;
 
-    public SocialNetwork() {
+    public FestivalImage() {
     }
 
-    public SocialNetwork(Integer id) {
+    public FestivalImage(Integer id) {
         this.id = id;
     }
 
-    public SocialNetwork(Integer id, String name, String link) {
+    public FestivalImage(Integer id, String image) {
         this.id = id;
-        this.name = name;
-        this.link = link;
+        this.image = image;
     }
 
-    public SocialNetwork(Festival festival, String name, String URL) {
+    public FestivalImage(Festival festival, String fileName) {
         this.festival = festival;
-        this.name = name;
-        this.link = URL;
+        this.image = fileName;
     }
 
     public Integer getId() {
@@ -79,20 +72,12 @@ public class SocialNetwork implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getImage() {
+        return image;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLink() {
-        return link;
-    }
-
-    public void setLink(String link) {
-        this.link = link;
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public Festival getFestival() {
@@ -110,13 +95,14 @@ public class SocialNetwork implements Serializable {
         return hash;
     }
 
+    
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof SocialNetwork)) {
+        if (!(object instanceof FestivalImage)) {
             return false;
         }
-        SocialNetwork other = (SocialNetwork) object;
+        FestivalImage other = (FestivalImage) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -125,7 +111,7 @@ public class SocialNetwork implements Serializable {
 
     @Override
     public String toString() {
-        return "model.SocialNetwork[ id=" + id + " ]";
+        return "model.FestivalImage[ id=" + id + " ]";
     }
     
 }
