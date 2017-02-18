@@ -32,7 +32,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Reservation.findAll", query = "SELECT r FROM Reservation r")
     , @NamedQuery(name = "Reservation.findById", query = "SELECT r FROM Reservation r WHERE r.id = :id")
     , @NamedQuery(name = "Reservation.findByStatus", query = "SELECT r FROM Reservation r WHERE r.status = :status")
-    , @NamedQuery(name = "Reservation.findByDate", query = "SELECT r FROM Reservation r WHERE r.date = :date")})
+    , @NamedQuery(name = "Reservation.findByDate", query = "SELECT r FROM Reservation r WHERE r.date = :date")
+    , @NamedQuery(name = "Reservation.findByUserAndTicket", query = "SELECT r FROM Reservation r WHERE r.user = :userId AND r.ticket = :ticketId")
+})
 public class Reservation implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -51,6 +53,10 @@ public class Reservation implements Serializable {
     @Column(name = "date")
     @Temporal(TemporalType.DATE)
     private Date date;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "count")
+    private Integer count;
     @JoinColumn(name = "user", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private User user;
@@ -110,6 +116,16 @@ public class Reservation implements Serializable {
     public void setTicket(Ticket ticket) {
         this.ticket = ticket;
     }
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
+    }
+    
+    
 
     @Override
     public int hashCode() {

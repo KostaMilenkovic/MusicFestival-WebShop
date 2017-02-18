@@ -334,13 +334,25 @@ public class DB {
         Session session = factory.openSession();
 
         session.getTransaction().begin();
-        Reservation reservation = new Reservation();
-        reservation.setDate(new Date());
-        reservation.setStatus("PENDING");
-        reservation.setTicket(ticket);
-        reservation.setUser(user);
-        session.save(reservation);
-        if(!session.getTransaction().wasCommitted())session.getTransaction().commit();
+        Query query = session.getNamedQuery("Reservation.findByUserAndTicket").setInteger("userId", user.getId()).setInteger("ticketId",ticket.getId());
+        Reservation result = (Reservation)query.uniqueResult();
+        if(result == null){
+            Reservation reservation = new Reservation();
+            reservation.setDate(new Date());
+            reservation.setStatus("PENDING");
+            reservation.setTicket(ticket);
+            reservation.setUser(user);
+            reservation.setCount(1);
+            session.save(reservation);
+            if(!session.getTransaction().wasCommitted())session.getTransaction().commit();
+            user.getReservationCollection().add(reservation);
+        }else{
+            result.setCount(result.getCount() + 1);
+            session.save(result);
+            if(!session.getTransaction().wasCommitted())session.getTransaction().commit();
+        }
+        
+        
         session.close();
     }
     
