@@ -45,7 +45,12 @@ public class LoginController implements Serializable {
             message = "Failed to log in.";
             return null;
         }
-        
+        if(user.getApproved()==0){
+            message = "Your account is not approved yet!";
+            DB.logout();
+            user = null;
+            return null;
+        }
         message = "Successfully logged in!";
        
         switch(user.getRole().getName()){

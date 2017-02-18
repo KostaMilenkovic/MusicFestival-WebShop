@@ -68,7 +68,7 @@ public class DB {
             return false;
         }
         session.getTransaction().begin();
-        session.save(resultUser);
+        session.save(user);
         if(!session.getTransaction().wasCommitted())session.getTransaction().commit();
         session.close();
         return true;

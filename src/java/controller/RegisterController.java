@@ -191,8 +191,6 @@ public class RegisterController {
             return null;
         }
         
-        
-        
         user.setName(userName);
         user.setSurname(lastName);
         user.setUsername(userName);
@@ -208,6 +206,7 @@ public class RegisterController {
         }catch(Exception e){
             e.printStackTrace();
             message = "Failed to save a user";
+            DB.logout();
             return null;
         }
         
@@ -216,8 +215,10 @@ public class RegisterController {
             return  null;
         }
         
+        
+        DB.logout();
         message = "Succesfully registered";
-        return "home_unregistered";
+        return "login";
     }
     
     
