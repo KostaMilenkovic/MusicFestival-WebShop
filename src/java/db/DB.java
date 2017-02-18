@@ -140,14 +140,40 @@ public class DB {
         return true;
     }
     
-    public static void newFestival(Festival festival) {
+    public static Boolean newFestival(Festival festival) {
         Session session = factory.openSession();
         session.getTransaction().begin();
         session.save(festival);
-        if(!session.getTransaction().wasCommitted())
-            session.getTransaction().commit();
+        if(!session.getTransaction().wasCommitted())session.getTransaction().commit();
         session.close();
-
+        return true;
+    }
+    
+    public static Performer newPerformer(Performer performer) {
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        session.saveOrUpdate(performer);
+        if(!session.getTransaction().wasCommitted())session.getTransaction().commit();
+        session.close();
+        return performer;
+    }
+    
+    public static Boolean newFestivalPerformer(FestivalPerformer festivalPerformer) {
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        session.save(festivalPerformer);
+        if(!session.getTransaction().wasCommitted())session.getTransaction().commit();
+        session.close();
+        return true;
+    }
+    
+    public static Boolean newSocialNetwork(SocialNetwork socialNetwork) {
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        session.save(socialNetwork);
+        if(!session.getTransaction().wasCommitted())session.getTransaction().commit();
+        session.close();
+        return true;
     }
     
     public static List<Festival> getFestivals(){
@@ -433,6 +459,24 @@ public class DB {
         Session session = factory.openSession();
         session.getTransaction().begin();
         session.save(video);
+        if(!session.getTransaction().wasCommitted())
+            session.getTransaction().commit();
+        session.close();
+    }
+    
+    public static void updateFestival(Festival festival) {
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        session.update(festival);
+        if(!session.getTransaction().wasCommitted())
+            session.getTransaction().commit();
+        session.close();
+    }
+    
+    public static void uploadLink(SocialNetwork link) {
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        session.save(link);
         if(!session.getTransaction().wasCommitted())
             session.getTransaction().commit();
         session.close();

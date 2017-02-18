@@ -10,9 +10,34 @@
                 xmlns:b="http://bootsfaces.net/ui">
     <ui:define name="content">
         <div class="container">
-            <h1 class="text-center" style="margin-bottom:2em;">
+            <div class="row">
+                <h1 class="text-center" style="margin-bottom:2em;">
                 Edit festival
             </h1>
+                <b:form class="col-sm-6 col-sm-offset-3">
+                Name  <b:inputText value="#{festivalEdit.festival.name}" />
+
+                Location <b:inputText value="#{festivalEdit.festival.place}" />
+
+                Starting date  <b:datepicker value="#{festivalEdit.festival.startDate}" />
+
+                Ending date  <b:datepicker value="#{festivalEdit.festival.endDate}" />
+
+                Price for a day  <b:inputText value="#{festivalEdit.festival.costDay}" type="number"/>
+
+                Price for whole festival  <b:inputText value="#{festivalEdit.festival.costAll}" type="number" />
+
+                Tickets per user  <b:inputText value="#{festivalEdit.festival.userTicketDay}" type="number" />
+
+                Tickets per day <b:inputText value="#{festivalEdit.festival.numTicketsDay}" type="number" />
+
+                Status <b:inputText value="#{festivalEdit.festival.status}" />
+
+                <b:commandButton class="btn btn-default"  value="Submit" action="#{festivalEdit.editFestival()}" />
+                <br></br>
+                <h:outputText class="text-danger" value="#{registerController.message}" />
+            </b:form>
+            </div>
             <div class="row">
                 <h2 class="text-center">
                     Add an event
@@ -29,6 +54,16 @@
                     <b:commandButton value="Submit" class="btn btn-default" action="#{festivalEdit.newEvent()}" />
                 </b:form>
             </div>
+            <div class="row">
+                <h2 class="text-center">
+                    Add a link
+                </h2>
+                <h:form class="col-sm-offset-3 col-sm-6" enctype="multipart/form-data">
+                    Name <b:inputText value="#{festivalEdit.linkName}" />
+                    URL <b:inputText value="#{festivalEdit.URL}" />
+                    <h:commandButton value="Submit" class="btn btn-default" action="#{festivalEdit.uploadLink()}"/>
+                </h:form>
+            </div>  
             <div class="row">
                 <h2 class="text-center">
                     Add an image

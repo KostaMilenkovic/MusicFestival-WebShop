@@ -65,6 +65,12 @@ public class SocialNetwork implements Serializable {
         this.link = link;
     }
 
+    public SocialNetwork(Festival festival, String name, String URL) {
+        this.festival = festival;
+        this.name = name;
+        this.link = URL;
+    }
+
     public Integer getId() {
         return id;
     }
