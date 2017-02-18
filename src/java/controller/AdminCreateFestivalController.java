@@ -14,6 +14,7 @@ import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.nio.file.Files;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,6 +31,9 @@ import model.FestivalPerformer;
 import model.Performer;
 import model.SocialNetwork;
 import model.User;
+import model.json.JSONFestival;
+import model.json.JSONFestivalWrapper;
+import model.json.JSONPerformer;
 import org.codehaus.jackson.*;
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -39,6 +43,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 @ViewScoped
 public class AdminCreateFestivalController implements Serializable {
     Part file;
+    Festival festival;
     
     public AdminCreateFestivalController() {
         
@@ -46,46 +51,65 @@ public class AdminCreateFestivalController implements Serializable {
     
     public void uploadFileJSON() {
         try {
-            Festival festival = new Festival();
-            DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy",Locale.ENGLISH);
             ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode rootNode = objectMapper.readValue(file.getInputStream(), JsonNode.class);
+            JSONFestivalWrapper jsonFestival = objectMapper.readValue(file.getInputStream(), JSONFestivalWrapper.class);
             
-            festival.setName(rootNode.findValues("Name").get(0).asText());
-            festival.setPlace(rootNode.findValues("Place").get(0).asText());
+            DB.newFestival( parseFestival(jsonFestival) );
             
-            String date = rootNode.findValues("StartDate").get(0).asText();
-            festival.setStartDate( dateFormat.parse(date));
-            
-            date = rootNode.findValues("EndDate").get(0).asText();
-            festival.setEndDate( dateFormat.parse(date));
-            
-            festival.setCostDay( rootNode.findValues("Tickets").get(0).get(0).asInt());
-            festival.setCostAll( rootNode.findValues("Tickets").get(0).get(1).asInt());
-            festival.setNumTicketsDay(0);
-            festival.setUserTicketDay(0);
-            festival.setNumVisits(0);
-            festival.setStatus("Open");
-            
-            
-            DB.insertFestival(festival);
-            
-            
-            List<Performer> performers = new ArrayList<>();
-            JsonNode jsonPerformer = rootNode.findValue("PerformersList");
-            
-            //TODO parse performers list and Social Networks
-            for ( int i = 0; i < jsonPerformer.size(); i++) {
-                Performer performer = new Performer();
-                
+            List<JSONPerformer> jsonPerformers = jsonFestival.getFestival().getPerformers();
+            for (int i = 0; i < jsonPerformers.size(); i++) {
+                DB.newFestivalPerformer( parseFestivalPerformer(jsonPerformers.get(i)));
             }
             
+            
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+    }
     
+    private Festival parseFestival(JSONFestivalWrapper jsonFestival) {
+        festival = new Festival();
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy",Locale.ENGLISH);    
+        try {    
+            festival.setName(jsonFestival.getFestival().getName());
+            festival.setPlace(jsonFestival.getFestival().getPlace());
+            festival.setStartDate( dateFormat.parse(jsonFestival.getFestival().getStartDate()) );
+            festival.setEndDate( dateFormat.parse(jsonFestival.getFestival().getEndDate()) );
+            festival.setCostDay( Integer.parseInt(jsonFestival.getFestival().getTickets().get(0)) );
+            festival.setCostAll( Integer.parseInt(jsonFestival.getFestival().getTickets().get(1)) );
+            festival.setUserTicketDay(0);
+            festival.setStatus("Open");
         } catch (Exception ex) {
             
         }
+        return festival;
+    }
+    
+    private FestivalPerformer parseFestivalPerformer(JSONPerformer jsonPerformer) {
+        
+        Performer performer = new Performer();
+        FestivalPerformer festivalPerformer = new FestivalPerformer();
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy",Locale.ENGLISH);
+        DateFormat timerFormat = new SimpleDateFormat("HH:mm:ss");
+
+        performer.setName(jsonPerformer.getPerformer());
+        performer = DB.newPerformer(performer);
+        try {    
+            festivalPerformer.setFestival(festival);
+            festivalPerformer.setPerformer(performer);
+            festivalPerformer.setStartDate( dateFormat.parse(jsonPerformer.getStartDate()) );
+            festivalPerformer.setStartTime( timerFormat.parse(jsonPerformer.getStartTime()) );
+            festivalPerformer.setEndDate( dateFormat.parse(jsonPerformer.getEndDate()) );
+            festivalPerformer.setEndTime( timerFormat.parse(jsonPerformer.getEndTime()) );
+            DB.newFestivalPerformer(festivalPerformer);
+        } catch (Exception ex) {
+            
+        }
+        return festivalPerformer;
     }
 
+    
+    
     public Part getFile() {
         return file;
     }
