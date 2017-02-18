@@ -13,7 +13,7 @@
         <div class="container" >            
             <div class="row" >
                 <div class="col-md-12">
-                        <b:dataTable  value="#{adminCreateFestivalAdditional.festivals}" searching="false" var="festival">
+                        <b:dataTable  value="#{adminFestivals.festivals}" searching="false" var="festival">
                             <b:column>
                                 <f:facet name="header">Name</f:facet>
                                 <h:outputText value="#{festival.name}"/>
@@ -33,13 +33,13 @@
                             <h:column>
                                 <f:facet name="header">Add event</f:facet>
                                 <h:form>
-                                    <h:commandLink value="edit" action="#{adminCreateFestivalAdditional.editFestival(festival)}"/>
+                                    <h:commandLink value="edit" action="#{adminFestivals.editFestival(festival)}"/>
                                 </h:form>
                             </h:column>
                             <h:column>
-                                <f:facet name="header">Finalize</f:facet>
+                                <f:facet name="header">Performers</f:facet>
                                 <h:form>
-                                    <h:commandButton action="#{adminCreateFestivalAdditional.finalizeFestivalSetup(festival)}" value="ok"/>
+                                    <h:commandLink value="edit" action="#{adminFestivals.showPerformers(festival)}"/>
                                 </h:form>
                             </h:column>
                         </b:dataTable>

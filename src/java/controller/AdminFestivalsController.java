@@ -16,12 +16,10 @@ import javax.servlet.http.HttpSession;
 import model.Festival;
 
 
-@ManagedBean(name="adminCreateFestivalAdditional")
+@ManagedBean(name="adminFestivals")
 @ViewScoped
-public class AdminCreateFestivalAdditionalController {
+public class AdminFestivalsController {
     private List<Festival> festivals = null;
-    
-    public AdminCreateFestivalAdditionalController() {}
     
     public List<Festival> getInitializedFestivals() {
         List<Festival> result = null;
@@ -46,9 +44,10 @@ public class AdminCreateFestivalAdditionalController {
         return result;
     }
     
-    public String finalizeFestivalSetup(Festival festival) {
-        String result = "admin_create_festival_additional.xhtml";
-        DB.finalizeFestivalSetup(festival);
+    
+    public String showPerformers(Festival festival) {
+        String result = "festival_performers.xhtml";
+        ((HttpSession)(FacesContext.getCurrentInstance().getExternalContext().getSession(true))).setAttribute("festival_performers", festival);
         return result;
     }
 }

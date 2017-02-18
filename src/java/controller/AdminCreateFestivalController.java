@@ -135,7 +135,7 @@ public class AdminCreateFestivalController implements Serializable {
     
     
     public String newFestival() {
-        String result = "admin_create_festival_additional.xhtml";
+        String result = "admin_festivals.xhtml";
         Festival festival = new Festival(name, location, dateStart, dateEnd, priceOneDay, priceAllDays, numTicketsPerUser, numTicketsPerDay, "initialized", 0);
         DB.newFestival(festival);
         return result;
