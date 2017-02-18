@@ -59,6 +59,10 @@ public class Performer implements Serializable {
         this.name = name;
     }
 
+    public Performer(String name) {
+        this.name = name;
+    }
+
     public Integer getId() {
         return id;
     }

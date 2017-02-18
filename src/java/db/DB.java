@@ -259,16 +259,6 @@ public class DB {
         return festivals;
     }
     
-    public static void finalizeFestivalSetup(Festival festival) {
-        Session session = factory.openSession();
-        festival.setStatus("active");
-        session.getTransaction().begin();
-        session.saveOrUpdate(festival);
-        if(!session.getTransaction().wasCommitted())
-            session.getTransaction().commit();
-        session.close();
-    }
-    
     public static List<Ticket> getMyTickets(Integer id){
         Session session = factory.openSession();
         Query query = session.getNamedQuery("Ticket.findByOwnerId").setInteger("ownerId", id);
@@ -429,6 +419,24 @@ public class DB {
         Session session = factory.openSession();
         session.getTransaction().begin();
         session.save(link);
+        if(!session.getTransaction().wasCommitted())
+            session.getTransaction().commit();
+        session.close();
+    }
+    
+    public static void newPerformer(Performer p) {
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        session.save(p);
+        if(!session.getTransaction().wasCommitted())
+            session.getTransaction().commit();
+        session.close();
+    }
+    
+    public static void updateFestivalPerformer(FestivalPerformer fp) {
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        session.update(fp);
         if(!session.getTransaction().wasCommitted())
             session.getTransaction().commit();
         session.close();
