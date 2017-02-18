@@ -17,6 +17,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import model.Festival;
+import model.Reservation;
 
 
 
@@ -134,6 +135,11 @@ public class HomeRegisteredController implements Serializable{
     public String showFestival(Integer festivalId){
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("festivalId", festivalId);
         return "festival";
+    }
+    
+    public String cancelReservation(Reservation reservation){
+        DB.cancelReservation(reservation, user);
+        return "home_registered";
     }
 
     

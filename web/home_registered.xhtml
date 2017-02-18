@@ -97,7 +97,7 @@
                 <h:outputText value="My reservations"/>
             </h1>
             
-            <div class="row" >
+            <div class="row" style="margin-bottom: 10em">
                 <div class="col-md-12">
                     <b:dataTable  value="#{homeRegisteredController.user.reservationCollection}" searching="false" var="reservation">
                         <b:column>
@@ -112,10 +112,13 @@
                             <f:facet name="header">Festival</f:facet>
                             <h:outputText value="#{reservation.ticket.festival.name}"/>
                         </b:column>
-                        <b:column>
+                        <h:column >
                             <f:facet name="header">Status</f:facet>
-                            <h:outputText value="#{reservation.status}"/>
-                        </b:column>
+                            <h:outputText rendered="#{reservation.status.compareTo('PENDING')==0}" value="#{reservation.status}" style="background-color: yellow"/>
+                            <h:outputText rendered="#{reservation.status.compareTo('CANCELED')==0}" value="#{reservation.status}" style="background-color: red"/>
+                            <h:outputText rendered="#{reservation.status.compareTo('FINISHED')==0}" value="#{reservation.status}" style="background-color: red"/>
+                            <h:outputText rendered="#{reservation.status.compareTo('ACTIVE')==0}" value="#{reservation.status}" style="background-color: greenyellow"/>                            
+                        </h:column>
                         <b:column>
                             <f:facet name="header">Reservation Date</f:facet>
                             <h:outputText value="#{reservation.date}"/>
@@ -127,7 +130,7 @@
                         <h:column>
                             <f:facet name="header">Action</f:facet>
                             <h:form>
-                                <h:commandLink class="btn btn-danger"  value="CANCEL"/>
+                                <h:commandLink rendered="#{reservation.status.compareTo('PENDING')==0}" action="#{homeRegisteredController.cancelReservation(reservation)}" class="btn btn-danger"  value="CANCEL"/>
                             </h:form>
                         </h:column>
                     </b:dataTable>
