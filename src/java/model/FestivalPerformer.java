@@ -45,22 +45,22 @@ public class FestivalPerformer implements Serializable {
     
     @Basic(optional = false)
     @NotNull
-    @Column(name = "startDate")
+    @Column(name = "start_date")
     @Temporal(TemporalType.DATE)
     private Date startDate;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "startTime")
+    @Column(name = "start_time")
     @Temporal(TemporalType.TIME)
     private Date startTime;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "endDate")
+    @Column(name = "end_date")
     @Temporal(TemporalType.DATE)
     private Date endDate;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "endTime")
+    @Column(name = "end_time")
     @Temporal(TemporalType.TIME)
     private Date endTime;
    
