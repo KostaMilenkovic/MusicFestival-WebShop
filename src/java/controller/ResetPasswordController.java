@@ -166,9 +166,9 @@ public class ResetPasswordController {
             message = "Wrong old password";
             return null;
         }
-        
+        DB.logout();
         message = "Your password has been reset successfully";
-        return null;
+        return "login";
     }
     
     

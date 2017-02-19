@@ -16,6 +16,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import model.Festival;
+import model.FestivalPerformer;
 import model.FestivalRating;
 
 @ManagedBean(name = "homeUnregisteredController")
@@ -28,6 +29,7 @@ public class HomeUnregisteredController implements Serializable{
     private String place;
     private Date startDate;
     private Date endDate;
+    private String performer;
     
     
     private List<Festival> festivals;
@@ -88,6 +90,16 @@ public class HomeUnregisteredController implements Serializable{
         
         return;
     }
+
+    public String getPerformer() {
+        return performer;
+    }
+
+    public void setPerformer(String performer) {
+        this.performer = performer;
+    }
+    
+    
     
     public void search() {
         
@@ -104,7 +116,20 @@ public class HomeUnregisteredController implements Serializable{
         
         festivals.removeAll(removedFestivals);
         
-        return;
+        removedFestivals = new ArrayList<Festival>();
+        if(!"".equals(performer))
+        for(Festival festival : festivals){
+            boolean found = false;
+            for(FestivalPerformer fp : festival.getFestivalPerformerCollection()){
+                if(fp.getPerformer().getName().equals(performer)){
+                    found = true;
+                    break;
+                }
+            }
+            if(!found)removedFestivals.add(festival);
+        }
+        
+        festivals.removeAll(removedFestivals);
         
     }
     

@@ -17,6 +17,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import model.Festival;
+import model.FestivalPerformer;
 import model.Reservation;
 import model.UserReport;
 
@@ -34,6 +35,7 @@ public class HomeRegisteredController implements Serializable{
     private Date startDate;
     private Date endDate;
     private String message;
+    private String performer;
     
     private List<Festival> festivals = null;
     
@@ -108,6 +110,14 @@ public class HomeRegisteredController implements Serializable{
         this.message = message;
     }
 
+    public String getPerformer() {
+        return performer;
+    }
+
+    public void setPerformer(String performer) {
+        this.performer = performer;
+    }
+
     
     
     
@@ -122,12 +132,26 @@ public class HomeRegisteredController implements Serializable{
         festivals = DB.getFestivals();
         List<Festival> removedFestivals = new ArrayList<Festival>();
         
+        
         for (Festival festival : festivals) {
             if (!"".equals(name) && !festival.getName().equals(name) ||
                 !"".equals(place) && !festival.getPlace().equals(place) ||
-                startDate != null && endDate != null && !( festival.getStartDate().after(startDate) && festival.getEndDate().before(endDate))) 
-                
+                startDate != null && endDate != null && !( festival.getStartDate().after(startDate) && festival.getEndDate().before(endDate)))
                 removedFestivals.add(festival);
+        }
+        
+        festivals.removeAll(removedFestivals);
+        removedFestivals = new ArrayList<Festival>();
+        if(!"".equals(performer))
+        for(Festival festival : festivals){
+            boolean found = false;
+            for(FestivalPerformer fp : festival.getFestivalPerformerCollection()){
+                if(fp.getPerformer().getName().equals(performer)){
+                    found = true;
+                    break;
+                }
+            }
+            if(!found)removedFestivals.add(festival);
         }
         
         festivals.removeAll(removedFestivals);
