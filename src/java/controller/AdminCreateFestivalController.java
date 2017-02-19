@@ -6,6 +6,7 @@
 package controller;
 
 import db.DB;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -51,12 +52,14 @@ public class AdminCreateFestivalController implements Serializable {
     private Integer priceAllDays;
     private Integer numTicketsPerUser;
     private Integer numTicketsPerDay;
+    private String message;
     
     public AdminCreateFestivalController() {
         
     }
     
-    public void uploadFileJSON() {
+    public String uploadFileJSON() {
+        String res = "";
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             JSONFestivalWrapper jsonFestival = objectMapper.readValue(file.getInputStream(), JSONFestivalWrapper.class);
@@ -67,11 +70,43 @@ public class AdminCreateFestivalController implements Serializable {
             for (int i = 0; i < jsonPerformers.size(); i++) {
                 DB.newFestivalPerformer( parseFestivalPerformer(jsonPerformers.get(i)));
             }
-            
+            message = "Successfully parsed JSON";
+            res = "admin_create_festival_additional.xhtml";
+            mapFestivalVars(festival);
             
         } catch (Exception ex) {
-            System.out.println(ex);
+            //PARSE CSV FILE IF objectMapper json failed.
+            
+            DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy",Locale.ENGLISH);
+            DateFormat timerFormat = new SimpleDateFormat("HH:mm:ss");
+            festival = new Festival();
+            
+            try {
+                BufferedReader br = new BufferedReader(new FileReader(new File(file.getName())));
+                String line; 
+                List<String[]> rootNode = new ArrayList<>();
+                
+                while ((line = br.readLine()) != null) {   
+                    // use comma as separator
+                    String[] lineNode = line.split(",");
+                    rootNode.add(lineNode);
+                }
+                festival.setName(rootNode.get(1)[0]);
+                festival.setPlace(rootNode.get(1)[1]);
+                festival.setStartDate( dateFormat.parse(rootNode.get(1)[2]) );
+                festival.setEndDate( dateFormat.parse(rootNode.get(1)[3]) );
+                festival.setCostDay( Integer.parseInt(rootNode.get(1)[4]) );
+                festival.setCostAll( Integer.parseInt(rootNode.get(1)[5]) );
+                festival.setUserTicketDay(0);
+                festival.setStatus("Open");
+                DB.newFestival( festival );
+                
+            } catch(Exception ex2) {
+              //PARSING CSV AND JSON FAILED!
+              message = "Parsing failed!";
+            }
         }
+        return res;
     }
     
     private Festival parseFestival(JSONFestivalWrapper jsonFestival) {
@@ -113,7 +148,18 @@ public class AdminCreateFestivalController implements Serializable {
         }
         return festivalPerformer;
     }
-
+    
+    private void mapFestivalVars(Festival fest) {
+        name = fest.getName();
+        location = fest.getPlace();
+        dateStart = fest.getStartDate();
+        dateEnd = fest.getEndDate();
+        priceOneDay = fest.getCostDay();
+        priceAllDays = fest.getCostAll();
+        numTicketsPerUser = fest.getUserTicketDay();
+        numTicketsPerDay = fest.getNumTicketsDay();
+    }
+    
     public String checkIfLoggedIn() {   
         String result = "login.xhtml";
         
@@ -204,6 +250,15 @@ public class AdminCreateFestivalController implements Serializable {
     public void setNumTicketsPerDay(Integer numTicketsPerDay) {
         this.numTicketsPerDay = numTicketsPerDay;
     }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+    
     
     
     
