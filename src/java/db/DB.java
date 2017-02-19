@@ -386,7 +386,7 @@ public class DB {
         if(result == null){
             Reservation reservation = new Reservation();
             reservation.setDate(new Date());
-            reservation.setStatus("PENDING");
+            reservation.setStatus("pending");
             reservation.setTicket(ticket);
             reservation.setUser(user);
             reservation.setCount(1);
@@ -395,7 +395,7 @@ public class DB {
             user.getReservationCollection().add(reservation);
             resultStatus = true;
         }else{
-            if(result.getStatus().equals("PENDING") || result.getCount()<ticket.getFestival().getUserTicketDay()){
+            if(result.getStatus().equals("pending") || result.getCount()<ticket.getFestival().getUserTicketDay()){
                     result.setCount(result.getCount() + 1);
                     session.save(result);
                     if(!session.getTransaction().wasCommitted())session.getTransaction().commit();

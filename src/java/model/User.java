@@ -102,7 +102,7 @@ public class User implements Serializable {
     private int approved;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Collection<FestivalRating> festivalRatingCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.EAGER)
     private Collection<UserReport> userReportCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Collection<FestivalComment> festivalCommentCollection;
