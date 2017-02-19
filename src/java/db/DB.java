@@ -26,6 +26,7 @@ import model.Performer;
 import model.Reservation;
 import model.SocialNetwork;
 import model.Ticket;
+import model.UserReport;
 import model.UserRole;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -57,6 +58,7 @@ public class DB {
         cfg.addAnnotatedClass(Performer.class);
         cfg.addAnnotatedClass(Reservation.class);
         cfg.addAnnotatedClass(SocialNetwork.class);
+        cfg.addAnnotatedClass(UserReport.class);
         serviceRegistry = new StandardServiceRegistryBuilder().applySettings(cfg.getProperties()).build();
         factory = cfg.buildSessionFactory(serviceRegistry);
     }
@@ -486,6 +488,22 @@ public class DB {
         Session session = factory.openSession();
         session.getTransaction().begin();
         session.update(festival);
+        if(festival.getStatus().compareTo("cancelled") == 0) {
+            List<Reservation> reservations = new ArrayList();
+            List<Ticket> tickets = new ArrayList(festival.getTicketCollection());
+            tickets.forEach((ticket) -> {
+                reservations.addAll(ticket.getReservationCollection());
+            });
+            reservations.forEach((reservation) -> {
+                if(reservation.getStatus().compareTo("active")==0) {
+                    UserReport ur;
+                    ur = new UserReport(reservation.getUser(), "Festival '"+festival.getName()+"' has been cancelled. You can claim your reservation fee in your local shop.");
+                    reservation.setStatus("cancelled");
+                    session.update(reservation);
+                    session.save(ur);
+                }
+            });
+        }
         if(!session.getTransaction().wasCommitted())
             session.getTransaction().commit();
         session.close();

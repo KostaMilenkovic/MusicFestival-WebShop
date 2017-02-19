@@ -46,9 +46,15 @@ public class FestivalReservationsController {
         if(reservations == null) {
             reservations = new ArrayList();
             List<Ticket> tmp = new ArrayList(festival.getTicketCollection());
-            for(Ticket ticket: tmp) {
-                reservations.addAll(ticket.getReservationCollection());
-            }
+            tmp.forEach((ticket) -> {
+                List<Reservation> rtmp = new ArrayList(ticket.getReservationCollection());
+                for(Reservation r: rtmp) {
+                    if(r.getStatus().compareTo("pending") == 0) {
+                        reservations.add(r);
+                    }
+                }
+                
+            });
         }
         return reservations;
     }

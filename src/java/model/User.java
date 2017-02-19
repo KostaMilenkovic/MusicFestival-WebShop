@@ -103,6 +103,8 @@ public class User implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Collection<FestivalRating> festivalRatingCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private Collection<UserReport> userReportCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Collection<FestivalComment> festivalCommentCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user",fetch = FetchType.EAGER)
     private Collection<Reservation> reservationCollection;
@@ -292,6 +294,13 @@ public class User implements Serializable {
     public void setLastLoginDate(Date lastLoginDate) {
         this.lastLoginDate = lastLoginDate;
     }
-    
+
+    public Collection<UserReport> getUserReportCollection() {
+        return userReportCollection;
+    }
+
+    public void setUserReportCollection(Collection<UserReport> userReportCollection) {
+        this.userReportCollection = userReportCollection;
+    }
     
 }
