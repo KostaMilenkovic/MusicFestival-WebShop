@@ -55,4 +55,10 @@ public class AdminFestivalsController {
         ((HttpSession)(FacesContext.getCurrentInstance().getExternalContext().getSession(true))).setAttribute("festival_performers", festival);
         return result;
     }
+    
+    public String showRequests(Festival festival) {
+        String result = "admin_approve_content.xhtml";
+        ((HttpSession)(FacesContext.getCurrentInstance().getExternalContext().getSession(true))).setAttribute("festival_to_approve", festival);
+        return result;
+    }
 }

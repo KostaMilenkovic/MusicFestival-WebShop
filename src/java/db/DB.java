@@ -593,4 +593,44 @@ public class DB {
             session.getTransaction().commit();
         session.close();
     }
+    
+    public static void approveImage(FestivalImage img) {
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        img.setStatus("approved");
+        session.update(img);
+        if(!session.getTransaction().wasCommitted())
+            session.getTransaction().commit();
+        session.close();
+    }
+   
+    public static void approveVideo(FestivalVideo vid) {
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        vid.setStatus("approved");
+        session.update(vid);
+        if(!session.getTransaction().wasCommitted())
+            session.getTransaction().commit();
+        session.close();
+    }
+    
+    public static void cancelImage(FestivalImage img) {
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        img.setStatus("cancelled");
+        session.update(img);
+        if(!session.getTransaction().wasCommitted())
+            session.getTransaction().commit();
+        session.close();
+    }
+    
+    public static void cancelVideo(FestivalVideo vid) {
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        vid.setStatus("cancelled");
+        session.update(vid);
+        if(!session.getTransaction().wasCommitted())
+            session.getTransaction().commit();
+        session.close();
+    }
 }

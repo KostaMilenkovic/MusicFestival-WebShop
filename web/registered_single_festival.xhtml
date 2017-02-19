@@ -30,7 +30,15 @@
                     <h:outputText value="Images"/>
                 </h3>
                 <c:forEach items="#{registeredSingleFestival.festival.festivalImageCollection}" var="image">
-                    <h:graphicImage value="/web/resources/img/#{image.image}" />
+                    <c:if test="#{image.status.compareTo('approved')==0}">
+                        <h:form>
+                            <div class="col-sm-4">
+                                <div class="col-sm-12">
+                                    <h:graphicImage name="img/#{image.image}" style="max-width:300px; max-height:400px;"/>
+                                </div>
+                            </div>
+                        </h:form>
+                    </c:if>
                 </c:forEach>
             </div>
             
@@ -57,8 +65,7 @@
                 </h3>
                 <c:forEach items="#{registeredSingleFestival.festival.festivalCommentCollection}" var="comment">
                     <div class="text-center">
-                        user:
-                        <h:outputText value="#{comment.user.username}"/>
+                        <h:outputText value="#{comment.user.username}"/>: 
                         <h:outputText value="#{comment.text}"/>
                     </div>
                 </c:forEach>

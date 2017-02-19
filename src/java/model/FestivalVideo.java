@@ -122,5 +122,14 @@ public class FestivalVideo implements Serializable {
     public void setVideo(String video) {
         this.video = video;
     }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+    
     
 }

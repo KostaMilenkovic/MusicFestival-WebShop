@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="template/templatePage.xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    
+    
+    <ui:define name="content">
+        <div class="container" style="margin-bottom: 10em;">
+            <h1 class="text-center">
+                <h:outputText value="#{adminApproveContent.festival.name}"/>
+            </h1>
+            <div class="row">
+                <div class="text-center">
+                    at: <h:outputText value="#{adminApproveContent.festival.place}"/>
+                    <br></br>
+                    from: <h:outputText value="#{adminApproveContent.festival.startDate}"/>
+                </div>
+            </div>
+           
+            <div class="row">
+                <h3 class="text-center">
+                    <h:outputText value="Images"/>
+                </h3>
+                <c:forEach items="#{adminApproveContent.festival.festivalImageCollection}" var="image">
+                    <c:if test="#{image.status.compareTo('pending')==0}">
+                        <h:form>
+                            <div class="col-sm-4">
+                                <div class="col-sm-12">
+                                    <h:graphicImage name="img/#{image.image}" style="max-width:300px; max-height:400px;"/>
+                                </div>
+                                <div class="col-sm-12" style="padding:0.5em;">
+                                    <div class="col-sm-6">
+                                        <b:commandButton class="btn btn-default"  value="approve" action="#{adminApproveContent.approveImage(image)}" />
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <b:commandButton class="btn btn-default"  value="cancel" action="#{adminApproveContent.cancelImage(image)}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </h:form>
+                    </c:if>
+                </c:forEach>
+            </div>
+            
+            <h3 class="text-center">
+                <h:outputText value="Videos"/>
+            </h3>
+            <div class="row">
+                <c:forEach items="#{adminApproveContent.festival.festivalVideoCollection}" var="video">
+                    <c:if test="#{video.status.compareTo('pending')==0}">
+                        <h:form>
+                            <div class="col-sm-4">
+                                <div class="col-sm-12">
+                                    <h:graphicImage value="/web/resources/vid/#{video.video}" />
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="col-sm-6">
+                                        <b:commandButton class="btn btn-default"  value="approve" action="#{adminApproveContent.approveVideo(video)}" />
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <b:commandButton class="btn btn-default"  value="cancel" action="#{adminApproveContent.cancelVideo(video)}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </h:form>
+                    </c:if>
+                </c:forEach>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>
