@@ -599,6 +599,9 @@ public class DB {
         session.getTransaction().begin();
         img.setStatus("approved");
         session.update(img);
+        if(!session.getTransaction().wasCommitted())
+            session.getTransaction().commit();
+        session.close();
     }
     
     public static List<Reservation> getAllPendingReservations(){
@@ -635,6 +638,9 @@ public class DB {
         session.getTransaction().begin();
         img.setStatus("cancelled");
         session.update(img);
+        if(!session.getTransaction().wasCommitted())
+            session.getTransaction().commit();
+        session.close();
     }
     
     public static List<Festival> getFestivalsByStatus(String status){
