@@ -14,10 +14,6 @@ import javax.faces.bean.ViewScoped;
 import model.Festival;
 import model.User;
 
-/**
- *
- * @author milenkok
- */
 @ManagedBean(name="festivalsByDate")
 @ViewScoped
 public class FestivalsByDateController {

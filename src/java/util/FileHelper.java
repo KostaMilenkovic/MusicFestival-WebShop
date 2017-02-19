@@ -7,10 +7,6 @@ package util;
 
 import javax.servlet.http.Part;
 
-/**
- *
- * @author obabovic
- */
 public class FileHelper {
     public static String getFileNameFromPart(Part part) {
         final String partHeader = part.getHeader("content-disposition");
