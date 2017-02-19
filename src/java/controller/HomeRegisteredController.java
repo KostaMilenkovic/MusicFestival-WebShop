@@ -146,6 +146,7 @@ public class HomeRegisteredController implements Serializable{
     public List<UserReport> getUserReports() {
         if(userReports == null) {
             userReports = new ArrayList(user.getUserReportCollection());
+            DB.deleteUserReports(userReports);
         }
         return userReports;
     }

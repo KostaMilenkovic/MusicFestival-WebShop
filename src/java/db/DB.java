@@ -546,4 +546,15 @@ public class DB {
             session.getTransaction().commit();
         session.close();
     }
+    
+    public static void deleteUserReports(List<UserReport> userReports) {
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        for(UserReport ur: userReports) {
+            session.delete(ur);
+        }
+        if(!session.getTransaction().wasCommitted())
+            session.getTransaction().commit();
+        session.close();
+    }
 }
