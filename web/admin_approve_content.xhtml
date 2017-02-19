@@ -57,9 +57,9 @@
                         <h:form>
                             <div class="col-sm-4">
                                 <div class="col-sm-12">
-                                    <h:graphicImage value="/web/resources/vid/#{video.video}" />
+                                    <h:graphicImage name="vid/#{video.video}" style="max-width:300px; max-height:400px;"/>
                                 </div>
-                                <div class="col-sm-12">
+                                <div class="col-sm-12" style="padding:0.5em;">
                                     <div class="col-sm-6">
                                         <b:commandButton class="btn btn-default"  value="approve" action="#{adminApproveContent.approveVideo(video)}" />
                                     </div>
