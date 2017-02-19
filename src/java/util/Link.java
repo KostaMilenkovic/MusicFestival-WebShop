@@ -8,10 +8,7 @@ package util;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 
-/**
- *
- * @author obabovic
- */
+
 @ManagedBean(name="link")
 @ApplicationScoped
 public class Link {
