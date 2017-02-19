@@ -44,6 +44,11 @@ public class AdminFestivalsController {
         return result;
     }
     
+    public String showReservations(Festival festival) {
+        String result = "festival_reservations.xhtml";
+        ((HttpSession)(FacesContext.getCurrentInstance().getExternalContext().getSession(true))).setAttribute("festival_reservations", festival);
+        return result;
+    }
     
     public String showPerformers(Festival festival) {
         String result = "festival_performers.xhtml";

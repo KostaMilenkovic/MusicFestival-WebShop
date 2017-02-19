@@ -480,4 +480,24 @@ public class DB {
             session.getTransaction().commit();
         session.close();
     }
+    
+    public static void approveReservation(Reservation r) {
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        r.setStatus("active");
+        session.update(r);
+        if(!session.getTransaction().wasCommitted())
+            session.getTransaction().commit();
+        session.close();
+    }
+    
+    public static void cancelReservation(Reservation r) {
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        r.setStatus("cancelled");
+        session.update(r);
+        if(!session.getTransaction().wasCommitted())
+            session.getTransaction().commit();
+        session.close();
+    }
 }

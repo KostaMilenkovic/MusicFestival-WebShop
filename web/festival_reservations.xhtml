@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="template/templatePage.xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:b="http://bootsfaces.net/ui">
+    
+    <ui:define name="content">
+        <div class="container" >            
+            <div class="row" >
+                <div class="col-md-12">
+                    <b:dataTable  value="#{festivalReservations.reservations}" searching="false" var="reservation">
+                        <b:column>
+                            <f:facet name="header">Reservation Date</f:facet>
+                            <h:outputText value="#{reservation.date}"/>
+                        </b:column>
+                        <b:column>
+                            <f:facet name="header">Number of tickets</f:facet>
+                            <h:outputText value="#{reservation.count}"/>
+                        </b:column>
+                        <b:column>
+                            <f:facet name="header">Ticket type</f:facet>
+                            <h:outputText value="#{reservation.ticket.type}"/>
+                        </b:column>
+                        <b:column>
+                            <f:facet name="header">User</f:facet>
+                            <h:outputText value="#{reservation.user.username}"/>
+                        </b:column>
+                        <h:column>
+                            <f:facet name="header">Approve</f:facet>
+                            <h:form>
+                                <h:commandLink value="ok" action="#{festivalReservations.approveReservation(reservation)}"/>
+                            </h:form>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Cancel</f:facet>
+                            <h:form>
+                                <h:commandLink value="ok" action="#{festivalReservations.cancelReservation(reservation)}"/>
+                            </h:form>
+                        </h:column>
+                    </b:dataTable>
+                </div>
+                <div class="col-sm-12">
+                    <h:link outcome="#{link.to('admin_festivals.xhtml')}">back</h:link>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>
