@@ -16,11 +16,23 @@
                 <p><h:outputText value="#{homeRegisteredController.message}"/></p>
             </div>
         </c:if>
+        <div class="row">
+            <div class="col-sm-offset-2 col-sm-8">
+                <c:forEach items="#{homeRegisteredController.userReports}" var="userReport">
+                    <p><h:outputText value="#{userReport.message}" style="color:red;"/></p>
+                </c:forEach>
+            </div>
+        </div>
         
 
 
         <div class="container" >
-            <div class="row" style="margin-bottom: 2em;"> 
+            <div class="row">
+                <h1 class="text-center" style="margin-bottom:2em;">
+                    Festival Web Shop
+                </h1>
+            </div>
+            <div class="row" style="margin-bottom: 1em;"> 
                 <div class="col-md-1">
                     <h4> Search: </h4>
                 </div>
@@ -117,10 +129,10 @@
                         </b:column>
                         <h:column >
                             <f:facet name="header">Status</f:facet>
-                            <h:outputText rendered="#{reservation.status.compareTo('PENDING')==0}" value="#{reservation.status}" style="background-color: yellow"/>
-                            <h:outputText rendered="#{reservation.status.compareTo('CANCELLED')==0}" value="#{reservation.status}" style="background-color: red"/>
-                            <h:outputText rendered="#{reservation.status.compareTo('FINISHED')==0}" value="#{reservation.status}" style="background-color: red"/>
-                            <h:outputText rendered="#{reservation.status.compareTo('ACTIVE')==0}" value="#{reservation.status}" style="background-color: greenyellow"/>                            
+                            <h:outputText rendered="#{reservation.status.compareTo('pending')==0}" value="#{reservation.status}" style="background-color: yellow"/>
+                            <h:outputText rendered="#{reservation.status.compareTo('cancelled')==0}" value="#{reservation.status}" style="background-color: red"/>
+                            <h:outputText rendered="#{reservation.status.compareTo('finished')==0}" value="#{reservation.status}" style="background-color: red"/>
+                            <h:outputText rendered="#{reservation.status.compareTo('active')==0}" value="#{reservation.status}" style="background-color: greenyellow"/>                            
                         </h:column>
                         <b:column>
                             <f:facet name="header">Reservation Date</f:facet>
@@ -133,7 +145,7 @@
                         <h:column>
                             <f:facet name="header">Action</f:facet>
                             <h:form>
-                                <h:commandLink rendered="#{reservation.status.compareTo('PENDING')==0}" action="#{homeRegisteredController.cancelReservation(reservation)}" class="btn btn-danger"  value="CANCEL"/>
+                                <h:commandLink rendered="#{reservation.status.compareTo('pending')==0}" action="#{homeRegisteredController.cancelReservation(reservation)}" class="btn btn-danger"  value="CANCEL"/>
                             </h:form>
                         </h:column>
                     </b:dataTable>

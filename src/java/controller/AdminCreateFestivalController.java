@@ -17,9 +17,11 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
@@ -29,6 +31,7 @@ import model.Festival;
 import model.FestivalPerformer;
 import model.Performer;
 import model.SocialNetwork;
+import model.Ticket;
 import model.User;
 import model.json.JSONFestival;
 import model.json.JSONFestivalWrapper;
@@ -136,8 +139,22 @@ public class AdminCreateFestivalController implements Serializable {
     
     public String newFestival() {
         String result = "admin_festivals.xhtml";
-        Festival festival = new Festival(name, location, dateStart, dateEnd, priceOneDay, priceAllDays, numTicketsPerUser, numTicketsPerDay, "initialized", 0);
-        DB.newFestival(festival);
+        List<Ticket> tickets = new ArrayList();
+        Festival fest = new Festival(name, location, dateStart, dateEnd, priceOneDay, priceAllDays, numTicketsPerUser, numTicketsPerDay, "initialized", 0);
+        DB.newFestival(fest);
+        long diff = dateEnd.getTime() - dateStart.getTime();
+        long days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+        Date tmpDate = dateStart;
+        for(int i = 0;i<days+1;i++) {
+            Ticket t = new Ticket(fest, "one_day", tmpDate);
+            Calendar c = Calendar.getInstance();
+            c.setTime(tmpDate);
+            c.add(Calendar.DATE, 1);
+            tmpDate = c.getTime();
+            tickets.add(t);
+        }
+        tickets.add(new Ticket(fest, "all_days", dateStart));
+        DB.createTickets(tickets);
         return result;
     }
 

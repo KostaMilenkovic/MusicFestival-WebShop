@@ -8,6 +8,8 @@ package controller;
 import model.User;
 import db.DB;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
@@ -51,15 +53,11 @@ public class SingleFestivalController implements Serializable{
         this.festival = festival;
     }
     
-    public void reserveTicket(Ticket ticket){
+    public void reserveTicket(Ticket ticket) {
         boolean result = DB.makeAReservation(user, ticket);
         if(result)
             message = "reservation successfull!";
         else
             message = "reservation failed!";     
     }
-    
-  
-    
-    
 }

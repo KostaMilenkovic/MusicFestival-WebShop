@@ -45,8 +45,37 @@
                     </b:dataTable>
                 </div>
             </div>
-        
-            <h:link value="Approve Users" outcome="#{link.to('admin_approve_users.xhtml')}"/>
+            
+            <div class="row" >
+                <div class="col-sm-6 col-sm-offset-3">
+                    <b:dataTable  value="#{homeAdminController.recentTenUsers}" searching="false" var="recentUser">
+                        <b:column>
+                            <f:facet name="header">Name</f:facet>
+                            <h:outputText value="#{recentUser.name}"/>
+                        </b:column>
+                        <b:column>
+                            <f:facet name="header">Last Name</f:facet>
+                            <h:outputText value="#{recentUser.surname}"/>
+                        </b:column>
+                        <b:column>
+                            <f:facet name="header">Username</f:facet>
+                            <h:outputText value="#{recentUser.username}"/>
+                        </b:column>
+                        <b:column>
+                            <f:facet name="header">Email</f:facet>
+                            <h:outputText value="#{recentUser.email}"/>
+                        </b:column>
+                        <b:column>
+                            <f:facet name="header">Last login</f:facet>
+                            <h:outputText value="#{recentUser.lastLoginDate}"/>
+                        </b:column>
+                    </b:dataTable>
+                </div>
+            </div>
+            
+            <div class="col-sm-6">
+                <h:link value="Approve Users" outcome="#{link.to('admin_approve_users.xhtml')}"/>
+            </div>
         </div>
 
         

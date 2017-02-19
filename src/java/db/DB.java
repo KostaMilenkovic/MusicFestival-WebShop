@@ -6,7 +6,9 @@
 package db;
 
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import model.User;
 import java.util.List;
@@ -24,6 +26,7 @@ import model.Performer;
 import model.Reservation;
 import model.SocialNetwork;
 import model.Ticket;
+import model.UserReport;
 import model.UserRole;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -55,6 +58,7 @@ public class DB {
         cfg.addAnnotatedClass(Performer.class);
         cfg.addAnnotatedClass(Reservation.class);
         cfg.addAnnotatedClass(SocialNetwork.class);
+        cfg.addAnnotatedClass(UserReport.class);
         serviceRegistry = new StandardServiceRegistryBuilder().applySettings(cfg.getProperties()).build();
         factory = cfg.buildSessionFactory(serviceRegistry);
     }
@@ -86,6 +90,12 @@ public class DB {
             
         if(!password.equals(resultUser.getPassword()))
             return null;
+        Date dateNow = new Date();
+        resultUser.setLastLoginDate(dateNow);
+        session.getTransaction().begin();
+        session.update(resultUser);
+        if(!session.getTransaction().wasCommitted())
+            session.getTransaction().commit();
         session.close();
         user = resultUser;
         setCurrentUser(user);
@@ -293,6 +303,17 @@ public class DB {
         return tickets;
     }
     
+    public static void createTickets(Collection<Ticket> tickets) {
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        tickets.forEach((ticket) -> {
+            session.save(ticket);
+        });
+        if(!session.getTransaction().wasCommitted())
+            session.getTransaction().commit();
+        session.close();
+    }
+    
     public static Boolean reserveTicketForFestival(Integer festivalId,String festivalName,Integer ownerId){
         Session session = factory.openSession();
         
@@ -314,6 +335,15 @@ public class DB {
     public static List<User> getUsers(){
         Session session = factory.openSession();
         Query query = session.getNamedQuery("User.findAll");
+        List<User> users = query.list();
+        session.close();
+        return users;
+    }
+    
+    public static List<User> getRecentTenUsers() {
+        Session session = factory.openSession();
+        Query query = session.getNamedQuery("User.find10ByLastLogin");
+        query.setMaxResults(10);
         List<User> users = query.list();
         session.close();
         return users;
@@ -356,7 +386,7 @@ public class DB {
         if(result == null){
             Reservation reservation = new Reservation();
             reservation.setDate(new Date());
-            reservation.setStatus("PENDING");
+            reservation.setStatus("pending");
             reservation.setTicket(ticket);
             reservation.setUser(user);
             reservation.setCount(1);
@@ -365,7 +395,7 @@ public class DB {
             user.getReservationCollection().add(reservation);
             resultStatus = true;
         }else{
-            if(result.getStatus().equals("PENDING") || result.getCount()<ticket.getFestival().getUserTicketDay()){
+            if(result.getStatus().equals("pending") || result.getCount()<ticket.getFestival().getUserTicketDay()){
                     result.setCount(result.getCount() + 1);
                     session.save(result);
                     if(!session.getTransaction().wasCommitted())session.getTransaction().commit();
@@ -458,6 +488,22 @@ public class DB {
         Session session = factory.openSession();
         session.getTransaction().begin();
         session.update(festival);
+        if(festival.getStatus().compareTo("cancelled") == 0) {
+            List<Reservation> reservations = new ArrayList();
+            List<Ticket> tickets = new ArrayList(festival.getTicketCollection());
+            tickets.forEach((ticket) -> {
+                reservations.addAll(ticket.getReservationCollection());
+            });
+            reservations.forEach((reservation) -> {
+                if(reservation.getStatus().compareTo("active")==0) {
+                    UserReport ur;
+                    ur = new UserReport(reservation.getUser(), "Festival '"+festival.getName()+"' has been cancelled. You can claim your reservation fee in your local shop.");
+                    reservation.setStatus("cancelled");
+                    session.update(reservation);
+                    session.save(ur);
+                }
+            });
+        }
         if(!session.getTransaction().wasCommitted())
             session.getTransaction().commit();
         session.close();
@@ -476,6 +522,37 @@ public class DB {
         Session session = factory.openSession();
         session.getTransaction().begin();
         session.update(fp);
+        if(!session.getTransaction().wasCommitted())
+            session.getTransaction().commit();
+        session.close();
+    }
+    
+    public static void approveReservation(Reservation r) {
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        r.setStatus("active");
+        session.update(r);
+        if(!session.getTransaction().wasCommitted())
+            session.getTransaction().commit();
+        session.close();
+    }
+    
+    public static void cancelReservation(Reservation r) {
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        r.setStatus("cancelled");
+        session.update(r);
+        if(!session.getTransaction().wasCommitted())
+            session.getTransaction().commit();
+        session.close();
+    }
+    
+    public static void deleteUserReports(List<UserReport> userReports) {
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        for(UserReport ur: userReports) {
+            session.delete(ur);
+        }
         if(!session.getTransaction().wasCommitted())
             session.getTransaction().commit();
         session.close();
