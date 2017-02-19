@@ -7,6 +7,7 @@ package db;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import model.User;
 import java.util.List;
@@ -291,6 +292,17 @@ public class DB {
         List<Ticket> tickets = query.list();
         session.close();
         return tickets;
+    }
+    
+    public static void createTickets(Collection<Ticket> tickets) {
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        tickets.forEach((ticket) -> {
+            session.save(ticket);
+        });
+        if(!session.getTransaction().wasCommitted())
+            session.getTransaction().commit();
+        session.close();
     }
     
     public static Boolean reserveTicketForFestival(Integer festivalId,String festivalName,Integer ownerId){

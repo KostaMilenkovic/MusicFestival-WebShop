@@ -67,6 +67,12 @@ public class Ticket implements Serializable {
     public Ticket(Integer id) {
         this.id = id;
     }
+    
+    public Ticket(Festival festival, String type, Date date) {
+        this.festival = festival;
+        this.type = type;
+        this.date = date;
+    }
 
     public Ticket(Integer id, String type, Date date) {
         this.id = id;
