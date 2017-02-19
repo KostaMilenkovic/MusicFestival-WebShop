@@ -135,10 +135,10 @@ public class HomeRegisteredController implements Serializable {
         for (Festival festival : festivals) {
             if (!"".equals(name) && !festival.getName().equals(name) ||
                 !"".equals(place) && !festival.getPlace().equals(place) ||
-                startDate != null && endDate != null && !( festival.getStartDate().after(startDate) && festival.getEndDate().before(endDate)))
+                startDate != null && endDate != null && !( festival.getStartDate().after(startDate) && festival.getEndDate().before(endDate) && festival.getEndDate().before(new Date())))
                 removedFestivals.add(festival);
         }
-        
+        //remove festivals without performer
         festivals.removeAll(removedFestivals);
         removedFestivals = new ArrayList<Festival>();
         if(!"".equals(performer))
@@ -154,6 +154,7 @@ public class HomeRegisteredController implements Serializable {
         }
         
         festivals.removeAll(removedFestivals);
+        
     }
     
     public String showFestival(Integer festivalId){

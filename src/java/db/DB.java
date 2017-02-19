@@ -195,7 +195,7 @@ public class DB {
         return festivals;
     }
     
-    public static List<Festival> getTopFiveFestivalsTicketsBought(){
+    public static List<Festival> getTopFiveFestivalsTicketsBought() {
         Session session = factory.openSession();
         Query query = session.getNamedQuery("Festival.findMostTicketsBought");
         query.setMaxResults(5);
@@ -569,6 +569,7 @@ public class DB {
         session.close();
     }
     
+<<<<<<< HEAD
     public static void newComment(FestivalComment fc) {
         Session session = factory.openSession();
         session.getTransaction().begin();
@@ -599,10 +600,28 @@ public class DB {
         session.getTransaction().begin();
         img.setStatus("approved");
         session.update(img);
+=======
+    
+    public static List<Reservation> getAllPendingReservations(){
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        Query query = session.getNamedQuery("Reservation.findByStatus").setString("status","pending");
+        List<Reservation> reservations = query.list();
+        session.close();
+        return reservations;
+    }
+    
+    public static void addUserBlockAttempts(User user){
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        user.setNumResAttempts(user.getNumResAttempts() + 1);
+        session.update(user);
+>>>>>>> e6fdbc50e888b2af7d9d74640643392a339077c6
         if(!session.getTransaction().wasCommitted())
             session.getTransaction().commit();
         session.close();
     }
+<<<<<<< HEAD
    
     public static void approveVideo(FestivalVideo vid) {
         Session session = factory.openSession();
@@ -619,16 +638,41 @@ public class DB {
         session.getTransaction().begin();
         img.setStatus("cancelled");
         session.update(img);
+=======
+    
+    public static List<Festival> getFestivalsByStatus(String status){
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        Query query = session.getNamedQuery("Festival.findByStatus").setString("status","active");
+        List<Festival> festivals = query.list();
+        session.close();
+        return festivals;
+    }
+    
+    public static void finishFestival(Festival festival){
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        festival.setStatus("finished");
+        session.update(festival);
+>>>>>>> e6fdbc50e888b2af7d9d74640643392a339077c6
         if(!session.getTransaction().wasCommitted())
             session.getTransaction().commit();
         session.close();
     }
     
+<<<<<<< HEAD
     public static void cancelVideo(FestivalVideo vid) {
         Session session = factory.openSession();
         session.getTransaction().begin();
         vid.setStatus("cancelled");
         session.update(vid);
+=======
+    public static void finishReservation(Reservation reservation){
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        reservation.setStatus("finished");
+        session.update(reservation);
+>>>>>>> e6fdbc50e888b2af7d9d74640643392a339077c6
         if(!session.getTransaction().wasCommitted())
             session.getTransaction().commit();
         session.close();
