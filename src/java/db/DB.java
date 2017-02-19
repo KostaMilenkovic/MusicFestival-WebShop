@@ -678,4 +678,22 @@ public class DB {
             session.getTransaction().commit();
         session.close();
     }
+    
+    public static List<Festival> getFestivalsByDate(Date date){
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        Query query = session.getNamedQuery("Festival.findByStatus").setString("status","active");
+        List<Festival> festivals = query.list();
+        session.close();
+        
+        List<Festival> removedFestivals = new ArrayList<Festival>();
+        for(Festival festival : festivals){
+            if(!(festival.getStartDate().before(date) && festival.getEndDate().after(date) || festival.getStartDate().equals(date) || festival.getEndDate().equals(date)))
+                removedFestivals.add(festival);
+        }
+        
+        festivals.removeAll(removedFestivals);
+        
+        return festivals;
+    }
 }
