@@ -568,4 +568,53 @@ public class DB {
             session.getTransaction().commit();
         session.close();
     }
+    
+    
+    public static List<Reservation> getAllPendingReservations(){
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        Query query = session.getNamedQuery("Reservation.findByStatus").setString("status","pending");
+        List<Reservation> reservations = query.list();
+        session.close();
+        return reservations;
+    }
+    
+    public static void addUserBlockAttempts(User user){
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        user.setNumResAttempts(user.getNumResAttempts() + 1);
+        session.update(user);
+        if(!session.getTransaction().wasCommitted())
+            session.getTransaction().commit();
+        session.close();
+    }
+    
+    public static List<Festival> getFestivalsByStatus(String status){
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        Query query = session.getNamedQuery("Festival.findByStatus").setString("status","active");
+        List<Festival> festivals = query.list();
+        session.close();
+        return festivals;
+    }
+    
+    public static void finishFestival(Festival festival){
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        festival.setStatus("finished");
+        session.update(festival);
+        if(!session.getTransaction().wasCommitted())
+            session.getTransaction().commit();
+        session.close();
+    }
+    
+    public static void finishReservation(Reservation reservation){
+        Session session = factory.openSession();
+        session.getTransaction().begin();
+        reservation.setStatus("finished");
+        session.update(reservation);
+        if(!session.getTransaction().wasCommitted())
+            session.getTransaction().commit();
+        session.close();
+    }
 }
