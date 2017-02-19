@@ -39,11 +39,14 @@
 
 
                 <b:form>
-                    <div class="col-md-2">
+                    <div class="col-md-1">
                         <b:inputText placeholder="Name" value="#{homeRegisteredController.name}" />
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-1">
                         <b:inputText placeholder="Place" value="#{homeRegisteredController.place}" />
+                    </div>
+                    <div class="col-md-2">
+                        <b:inputText placeholder="Performer" value="#{homeRegisteredController.performer}" />
                     </div>
                     <div class="col-md-2">
                         <b:datepicker placeholder="Start Date" value="#{homeRegisteredController.startDate}"  />
@@ -115,7 +118,7 @@
                         <h:column >
                             <f:facet name="header">Status</f:facet>
                             <h:outputText rendered="#{reservation.status.compareTo('PENDING')==0}" value="#{reservation.status}" style="background-color: yellow"/>
-                            <h:outputText rendered="#{reservation.status.compareTo('CANCELED')==0}" value="#{reservation.status}" style="background-color: red"/>
+                            <h:outputText rendered="#{reservation.status.compareTo('CANCELLED')==0}" value="#{reservation.status}" style="background-color: red"/>
                             <h:outputText rendered="#{reservation.status.compareTo('FINISHED')==0}" value="#{reservation.status}" style="background-color: red"/>
                             <h:outputText rendered="#{reservation.status.compareTo('ACTIVE')==0}" value="#{reservation.status}" style="background-color: greenyellow"/>                            
                         </h:column>

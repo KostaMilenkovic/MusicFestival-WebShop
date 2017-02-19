@@ -56,8 +56,7 @@ public class SingleFestivalController implements Serializable{
         if(result)
             message = "reservation successfull!";
         else
-            message = "reservation failed!";
-            
+            message = "reservation failed!";     
     }
     
   
