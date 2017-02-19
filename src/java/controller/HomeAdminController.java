@@ -24,6 +24,7 @@ public class HomeAdminController implements Serializable{
     
     public List<Festival> festivalsMostVisited;
     public List<Festival> festivalsMostTicketsBought;
+    private List<User> recentTenUsers = null;
     
     public HomeAdminController() {
     
@@ -45,5 +46,15 @@ public class HomeAdminController implements Serializable{
     public void setFestivalsMostTicketsBought(List<Festival> festivalsMostTicketsBought) {
         this.festivalsMostTicketsBought = festivalsMostTicketsBought;
     }
-    
+
+    public List<User> getRecentTenUsers() {
+        if(recentTenUsers == null) {
+            recentTenUsers = DB.getRecentTenUsers();
+        }
+        return recentTenUsers;
+    }
+
+    public void setRecentTenUsers(List<User> recentTenUsers) {
+        this.recentTenUsers = recentTenUsers;
+    }
 }

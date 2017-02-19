@@ -3,6 +3,7 @@ package model;
 import db.DB;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -20,6 +21,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -31,6 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u")
+    , @NamedQuery(name = "User.find10ByLastLogin", query = "SELECT u FROM User u ORDER BY u.lastLoginDate DESC")
     , @NamedQuery(name = "User.findById", query = "SELECT u FROM User u WHERE u.id = :id")
     , @NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username")
     , @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password")
@@ -43,6 +47,12 @@ import javax.xml.bind.annotation.XmlTransient;
 @SessionScoped
 @ManagedBean(name="user")
 public class User implements Serializable {
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "last_login_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastLoginDate;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -273,6 +283,14 @@ public class User implements Serializable {
             this.id = result.getId();
 
             return true;
+    }
+
+    public Date getLastLoginDate() {
+        return lastLoginDate;
+    }
+
+    public void setLastLoginDate(Date lastLoginDate) {
+        this.lastLoginDate = lastLoginDate;
     }
     
     

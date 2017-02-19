@@ -6,6 +6,7 @@
 package db;
 
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -87,6 +88,12 @@ public class DB {
             
         if(!password.equals(resultUser.getPassword()))
             return null;
+        Date dateNow = new Date();
+        resultUser.setLastLoginDate(dateNow);
+        session.getTransaction().begin();
+        session.update(resultUser);
+        if(!session.getTransaction().wasCommitted())
+            session.getTransaction().commit();
         session.close();
         user = resultUser;
         setCurrentUser(user);
@@ -326,6 +333,15 @@ public class DB {
     public static List<User> getUsers(){
         Session session = factory.openSession();
         Query query = session.getNamedQuery("User.findAll");
+        List<User> users = query.list();
+        session.close();
+        return users;
+    }
+    
+    public static List<User> getRecentTenUsers() {
+        Session session = factory.openSession();
+        Query query = session.getNamedQuery("User.find10ByLastLogin");
+        query.setMaxResults(10);
         List<User> users = query.list();
         session.close();
         return users;
