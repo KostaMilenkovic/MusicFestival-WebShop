@@ -195,7 +195,7 @@ public class DB {
         return festivals;
     }
     
-    public static List<Festival> getTopFiveFestivalsTicketsBought(){
+    public static List<Festival> getTopFiveFestivalsTicketsBought() {
         Session session = factory.openSession();
         Query query = session.getNamedQuery("Festival.findMostTicketsBought");
         query.setMaxResults(5);
