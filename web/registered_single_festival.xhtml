@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="template/templatePage.xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    
+    
+    <ui:define name="content">
+        <div class="container" style="margin-bottom: 10em;">
+            <h1 class="text-center">
+                <h:outputText value="#{registeredSingleFestival.festival.name}"/>
+            </h1>
+            <div class="row">
+                <div class="text-center">
+                    at: <h:outputText value="#{registeredSingleFestival.festival.place}"/>
+                    <br></br>
+                    from: <h:outputText value="#{registeredSingleFestival.festival.startDate}"/>
+                    <br></br>
+                    avg rating: <h:outputText value="#{registeredSingleFestival.averageRating}"/>
+                </div>
+            </div>
+           
+            <div class="row">
+                <h3 class="text-center">
+                    <h:outputText value="Images"/>
+                </h3>
+                <c:forEach items="#{registeredSingleFestival.festival.festivalImageCollection}" var="image">
+                    <h:graphicImage value="/web/resources/img/#{image.image}" />
+                </c:forEach>
+            </div>
+            
+            <div class="row">
+                <h3 class="text-center">
+                    <h:outputText value="Videos"/>
+                </h3>
+                <c:forEach items="#{registeredSingleFestival.festival.festivalVideoCollection}" var="video">
+                    <h:graphicImage value="/web/resources/vid/#{video.video}" />
+                </c:forEach>
+            </div>
+            <div class="row">
+                <h3 class="text-center">
+                    <h:outputText value="Links"/>
+                </h3>
+                <c:forEach items="#{registeredSingleFestival.festival.socialNetworkCollection}" var="mlink">
+                    <h:outputLink value="#{link.to(mlink.link)}"/>
+                </c:forEach>
+            </div>
+            
+            <div class="row">
+                <h3 class="text-center">
+                    <h:outputText value="Comments"/>
+                </h3>
+                <c:forEach items="#{registeredSingleFestival.festival.festivalCommentCollection}" var="comment">
+                    <div class="text-center">
+                        user:
+                        <h:outputText value="#{comment.user.username}"/>
+                        <h:outputText value="#{comment.text}"/>
+                    </div>
+                </c:forEach>
+            </div>
+            
+            <div class="row">
+                <h3 class="text-center">
+                    <h:outputText value="Post a comment."/>
+                </h3>
+                <b:form class="col-sm-6 col-sm-offset-3">
+                    Text
+                    <b:inputText value="#{registeredSingleFestival.commentText}"></b:inputText>
+                    <b:commandButton value="Submit" class="btn btn-default" action="#{registeredSingleFestival.postComment()}" />
+                </b:form>
+            </div>
+            
+            <div class="row">
+                <h3 class="text-center">
+                    <h:outputText value="Post an image."/>
+                </h3>
+                <h:form class="col-sm-offset-5 col-sm-1" enctype="multipart/form-data">
+                    <h:inputFile id="file" value="#{registeredSingleFestival.file}"/>
+                    <h:commandButton value="Submit" class="btn btn-default" action="#{registeredSingleFestival.uploadFile(false)}"/>
+                </h:form>
+            </div>
+            
+            <div class="row">
+                <h3 class="text-center">
+                    <h:outputText value="Post a video."/>
+                </h3>
+                <h:form class="col-sm-offset-5 col-sm-1" enctype="multipart/form-data">
+                    <h:inputFile id="file" value="#{registeredSingleFestival.file}"/>
+                    <h:commandButton value="Submit" class="btn btn-default" action="#{registeredSingleFestival.uploadFile(true)}"/>
+                </h:form>
+            </div>
+            
+            <div class="row">
+                <h3 class="text-center">
+                    <h:outputText value="Rate it."/>
+                </h3>
+                <b:form class="col-sm-6 col-sm-offset-3">
+                    Ratings from 1-10
+                    <b:inputText value="#{registeredSingleFestival.ratingToPost}" type="number"></b:inputText>
+                    <b:commandButton value="Submit" class="btn btn-default" action="#{registeredSingleFestival.postRating()}" />
+                </b:form>
+            </div>
+            
+        </div>
+    </ui:define>
+</ui:composition>

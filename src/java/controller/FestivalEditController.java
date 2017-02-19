@@ -128,11 +128,11 @@ public class FestivalEditController implements Serializable {
                     inputStream.close();
                 }
                 if(isVideo) {
-                    FestivalVideo video = new FestivalVideo(festival, fileName);
+                    FestivalVideo video = new FestivalVideo(festival, "active", fileName);
                     DB.uploadVideo(video);
                 }
                 else {
-                    FestivalImage img = new FestivalImage(festival, fileName);
+                    FestivalImage img = new FestivalImage(festival, "active", fileName);
                     DB.uploadImage(img);
                 }
                 fileSuccess = true;

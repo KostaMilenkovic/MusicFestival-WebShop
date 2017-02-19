@@ -25,8 +25,7 @@ import model.UserReport;
 
 @ViewScoped
 @ManagedBean(name = "homeRegisteredController")
-public class HomeRegisteredController implements Serializable{
-    
+public class HomeRegisteredController implements Serializable {
     @ManagedProperty(value = "#{user}")
     private User user;
     private List<UserReport> userReports = null;

@@ -47,7 +47,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Festival.findByUserTicketDay", query = "SELECT f FROM Festival f WHERE f.userTicketDay = :userTicketDay")
     , @NamedQuery(name = "Festival.findByNumTicketsDay", query = "SELECT f FROM Festival f WHERE f.numTicketsDay = :numTicketsDay")
     , @NamedQuery(name = "Festival.findByStatus", query = "SELECT f FROM Festival f WHERE f.status = :status")
-    , @NamedQuery(name = "Festival.findRecentFive", query = "SELECT f FROM Festival f WHERE f.endDate>current_date() ORDER BY f.startDate ASC")
+    , @NamedQuery(name = "Festival.findRecentFive", query = "SELECT f FROM Festival f WHERE f.endDate>current_date() AND f.status='active' ORDER BY f.startDate ASC")
     , @NamedQuery(name = "Festival.findInitialized", query = "SELECT f FROM Festival f WHERE f.status = 'initialized'")
     , @NamedQuery(name = "Festival.findByNumVisits", query = "SELECT f FROM Festival f WHERE f.numVisits = :numVisits")})
 public class Festival implements Serializable {
@@ -105,15 +105,15 @@ public class Festival implements Serializable {
     private int numVisits;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival",fetch = FetchType.EAGER)
     private Collection<Ticket> ticketCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival",fetch = FetchType.EAGER)
     private Collection<FestivalRating> festivalRatingCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival",fetch = FetchType.EAGER)
     private Collection<FestivalComment> festivalCommentCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival",fetch = FetchType.EAGER)
     private Collection<SocialNetwork> socialNetworkCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival",fetch = FetchType.EAGER)
     private Collection<FestivalImage> festivalImageCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival",fetch = FetchType.EAGER)
     private Collection<FestivalVideo> festivalVideoCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival",fetch = FetchType.EAGER)
     private Collection<FestivalPerformer> festivalPerformerCollection;

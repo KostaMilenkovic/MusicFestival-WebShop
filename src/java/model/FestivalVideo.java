@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "FestivalVideo.findAll", query = "SELECT f FROM FestivalVideo f")
     , @NamedQuery(name = "FestivalVideo.findById", query = "SELECT f FROM FestivalVideo f WHERE f.id = :id")
-    , @NamedQuery(name = "FestivalVideo.findByText", query = "SELECT f FROM FestivalVideo f WHERE f.text = :text")})
+    , @NamedQuery(name = "FestivalVideo.findByVideot", query = "SELECT f FROM FestivalVideo f WHERE f.video = :video")})
 public class FestivalVideo implements Serializable {
 
     @Basic(optional = false)
@@ -45,10 +45,13 @@ public class FestivalVideo implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    
     @Basic(optional = false)
     @NotNull
-    @Column(name = "text")
-    private int text;
+    @Lob
+    @Size(min = 1, max = 65535)
+    @Column(name = "status")
+    private String status;
     @JoinColumn(name = "festival", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Festival festival;
@@ -61,6 +64,12 @@ public class FestivalVideo implements Serializable {
         this.video = text;
     }
     
+    public FestivalVideo(Festival festival, String status, String fileName) {
+        this.festival = festival;
+        this.status = status;
+        this.video = fileName;
+    }
+    
     public FestivalVideo(Integer id) {
         this.id = id;
     }
@@ -71,14 +80,6 @@ public class FestivalVideo implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public int getText() {
-        return text;
-    }
-
-    public void setText(int text) {
-        this.text = text;
     }
 
     public Festival getFestival() {

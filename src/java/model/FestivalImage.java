@@ -43,6 +43,12 @@ public class FestivalImage implements Serializable {
     @Size(min = 1, max = 65535)
     @Column(name = "image")
     private String image;
+    @Basic(optional = false)
+    @NotNull
+    @Lob
+    @Size(min = 1, max = 65535)
+    @Column(name = "status")
+    private String status;
     @JoinColumn(name = "festival", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Festival festival;
@@ -61,6 +67,12 @@ public class FestivalImage implements Serializable {
 
     public FestivalImage(Festival festival, String fileName) {
         this.festival = festival;
+        this.image = fileName;
+    }
+    
+    public FestivalImage(Festival festival, String status, String fileName) {
+        this.festival = festival;
+        this.status = status;
         this.image = fileName;
     }
 
@@ -113,5 +125,14 @@ public class FestivalImage implements Serializable {
     public String toString() {
         return "model.FestivalImage[ id=" + id + " ]";
     }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+    
     
 }

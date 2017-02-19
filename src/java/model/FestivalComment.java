@@ -61,6 +61,12 @@ public class FestivalComment implements Serializable {
         this.id = id;
         this.text = text;
     }
+    
+    public FestivalComment(Festival f, User u, String text) {
+        this.festival = f;
+        this.user = u;
+        this.text = text;
+    }
 
     public Integer getId() {
         return id;
