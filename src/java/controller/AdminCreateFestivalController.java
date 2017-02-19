@@ -46,6 +46,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 @ViewScoped
 public class AdminCreateFestivalController implements Serializable {
     Part file;
+    File csv;
     Festival festival;
     
     private String name;
@@ -87,21 +88,23 @@ public class AdminCreateFestivalController implements Serializable {
             
         } catch (Exception ex) {
             //PARSE CSV FILE IF PARSING JSON FAILED.
-            parseCSV();
+            res = parseCSV();
         }
         return res;
     }
     
-    private void parseCSV() {
+    private String parseCSV() {
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy",Locale.ENGLISH);
         DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
         BufferedReader br = null;
         String line;
+        String res = "";
         String[] fields;
         festival = new Festival();
         
         try {
-        br = new BufferedReader(new FileReader("C:\\Users\\Nikola\\Documents\\NetBeansProjects\\PIA\\src\\java\\controller\\data.csv"));
+           
+            br = new BufferedReader(new FileReader("C:\\Developer\\Netbeans Projects\\Music_Festival\\csv.txt"));
             
             br.readLine();
             line = br.readLine();
@@ -139,6 +142,7 @@ public class AdminCreateFestivalController implements Serializable {
                 festivalPerformer.setEndDate( dateFormat.parse(fields[5]) );
                 festivalPerformer.setEndTime( timeFormat.parse(fields[9]) );
                 festivalPerformer.setFestival(festival);
+                festivalPerformer.setPerformer(performer);
                 
                 DB.newPerformer(performer);
                 DB.newFestivalPerformer(festivalPerformer);
@@ -154,9 +158,12 @@ public class AdminCreateFestivalController implements Serializable {
                 socialNetwork.setLink(fields[3]);
                 socialNetwork.setFestival(festival);
             }
+            
+            res = "admin_festivals.xhtml";
         } catch (Exception ex) {
             
         }
+        return res;
     }
     
     private Festival parseFestival(JSONFestivalWrapper jsonFestival) {
@@ -331,6 +338,14 @@ public class AdminCreateFestivalController implements Serializable {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public File getCsv() {
+        return csv;
+    }
+
+    public void setCsv(File csv) {
+        this.csv = csv;
     }
     
     
