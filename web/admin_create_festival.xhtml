@@ -15,7 +15,7 @@
                 New festival
             </h1>
             <div class="row">   
-                <b:form class="col-sm-6 col-sm-offset-3">
+                <b:form class="col-sm-4 col-sm-offset-4">
 
                       Name  <b:inputText value="#{adminCreateFestival.name}" />
 
@@ -35,18 +35,14 @@
 
                       <b:commandButton class="btn btn-default"  value="Submit" action="#{adminCreateFestival.newFestival()}" />
                       <br></br>
-                      <h:outputText class="text-danger" value="#{registerController.message}" />
+                      <h:outputText class="text-danger" value="#{adminCreateFestival.message}" />
                 </b:form>
-            </div>
-            <div class="row">
-                <h:form enctype="multipart/form-data">
-                    <div class="col-sm-2 col-sm-offset-3">
-                        <b:commandButton value="Upload JSON" action="#{adminCreateFestival.uploadFileJSON()}"/>
-                    </div>
-                    <div class="col-sm-2">
+                <div class="col-sm-4">
+                    <h:form enctype="multipart/form-data" class="centered-div">
                         <h:inputFile label="Json File" value="#{adminCreateFestival.file}"/>
-                    </div>
-                </h:form>    
+                        <h:commandLink value="Upload JSON/CSV" action="#{adminCreateFestival.uploadFileJSON()}" style="color:lightcoral;" />
+                    </h:form>                    
+                </div>
             </div>
         </div>
     </ui:define>
