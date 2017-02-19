@@ -57,6 +57,41 @@
                 </div>
             </div>
             
+
+            <div class="row">
+                <h3 class="text-center">
+                    <h:outputText value="Images"/>
+                </h3>
+                <c:forEach items="#{singleFestivalController.festival.festivalImageCollection}" var="image">
+                    <c:if test="#{image.status.compareTo('approved')==0}">
+                        <h:form>
+                            <div class="col-sm-4">
+                                <div class="col-sm-12">
+                                    <h:graphicImage name="img/#{image.image}" style="max-width:300px; max-height:400px;"/>
+                                </div>
+                            </div>
+                        </h:form>
+                    </c:if>
+                </c:forEach>
+            </div>
+            
+            <div class="row">
+                <h3 class="text-center">
+                    <h:outputText value="Videos"/>
+                </h3>
+                <c:forEach items="#{singleFestivalController.festival.festivalVideoCollection}" var="video">
+                    <h:graphicImage value="/web/resources/vid/#{video.video}" />
+                </c:forEach>
+            </div>
+            <div class="row">
+                <h3 class="text-center">
+                    <h:outputText value="Links"/>
+                </h3>
+                <c:forEach items="#{singleFestivalController.festival.socialNetworkCollection}" var="mlink">
+                    <h:outputLink value="#{link.to(mlink.link)}"/>
+                </c:forEach>
+            </div>
+            
             <h1 class="text-center">
                 <h:outputText value="Ticket Reservation"/>
             </h1>
@@ -82,8 +117,6 @@
                     </b:dataTable>
                 </div>
             </div>
-            
-            
         </div>
     </ui:define>
 </ui:composition>
