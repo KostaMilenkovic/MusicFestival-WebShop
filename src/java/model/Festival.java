@@ -37,7 +37,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Festival.findById", query = "SELECT f FROM Festival f WHERE f.id = :id"),
     @NamedQuery(name = "Festival.findTopFiveByRating", query = "SELECT f.id, f.name, f.place, f.startDate, f.endDate, AVG(r.rating) as average FROM Festival f, FestivalRating r WHERE f.id = r.festival GROUP BY f.id ORDER BY average DESC"),
     @NamedQuery(name = "Festival.findMostVisited", query = "SELECT f FROM Festival f ORDER BY numVisits DESC"),
-    @NamedQuery(name = "Festival.findMostTicketsBought", query = "SELECT f FROM Festival f, Ticket t WHERE f.id = t.festival GROUP BY f.id ORDER BY COUNT(t.id) DESC")
+    @NamedQuery(name = "Festival.findMostTicketsBought", query = "SELECT f.id, f.name, f.place, f.startDate, f.endDate, COUNT(t.id) as cnt FROM Festival f, Ticket t, Reservation r WHERE f.id = t.festival AND t.id = r.ticket AND r.status = 'active' GROUP BY f.id ORDER BY cnt DESC")
     , @NamedQuery(name = "Festival.findByName", query = "SELECT f FROM Festival f WHERE f.name = :name")
     , @NamedQuery(name = "Festival.findByPlace", query = "SELECT f FROM Festival f WHERE f.place = :place")
     , @NamedQuery(name = "Festival.findByStartDate", query = "SELECT f FROM Festival f WHERE f.startDate = :startDate")
@@ -47,7 +47,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Festival.findByUserTicketDay", query = "SELECT f FROM Festival f WHERE f.userTicketDay = :userTicketDay")
     , @NamedQuery(name = "Festival.findByNumTicketsDay", query = "SELECT f FROM Festival f WHERE f.numTicketsDay = :numTicketsDay")
     , @NamedQuery(name = "Festival.findByStatus", query = "SELECT f FROM Festival f WHERE f.status = :status")
-    , @NamedQuery(name = "Festival.findRecentFive", query = "SELECT f FROM Festival f WHERE f.endDate>current_date() ORDER BY f.startDate ASC")
+    , @NamedQuery(name = "Festival.findRecentFive", query = "SELECT f FROM Festival f WHERE f.endDate>current_date() AND f.status='active' ORDER BY f.startDate ASC")
     , @NamedQuery(name = "Festival.findInitialized", query = "SELECT f FROM Festival f WHERE f.status = 'initialized'")
     , @NamedQuery(name = "Festival.findByNumVisits", query = "SELECT f FROM Festival f WHERE f.numVisits = :numVisits")})
 public class Festival implements Serializable {
@@ -105,15 +105,15 @@ public class Festival implements Serializable {
     private int numVisits;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival",fetch = FetchType.EAGER)
     private Collection<Ticket> ticketCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival",fetch = FetchType.EAGER)
     private Collection<FestivalRating> festivalRatingCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival",fetch = FetchType.EAGER)
     private Collection<FestivalComment> festivalCommentCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival",fetch = FetchType.EAGER)
     private Collection<SocialNetwork> socialNetworkCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival",fetch = FetchType.EAGER)
     private Collection<FestivalImage> festivalImageCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival",fetch = FetchType.EAGER)
     private Collection<FestivalVideo> festivalVideoCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "festival",fetch = FetchType.EAGER)
     private Collection<FestivalPerformer> festivalPerformerCollection;

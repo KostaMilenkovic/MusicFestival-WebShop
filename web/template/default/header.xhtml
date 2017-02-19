@@ -54,6 +54,11 @@
                             <c:when test="#{ user.role.name.compareTo('registered')==0 }">
                                 <li>
                                     <h:form class="navbar-brand">
+                                        <h:commandButton class="btn" value="My festivals" action="#{link.to('registered_festivals.xhtml')}"/>
+                                    </h:form>
+                                </li>
+                                <li>
+                                    <h:form class="navbar-brand">
                                         <h:commandButton class="btn" value="logout" action="#{user.logout()}"/>
                                     </h:form>
                                 </li>

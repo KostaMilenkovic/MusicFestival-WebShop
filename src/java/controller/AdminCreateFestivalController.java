@@ -37,6 +37,7 @@ import model.User;
 import model.json.JSONFestival;
 import model.json.JSONFestivalWrapper;
 import model.json.JSONPerformer;
+import model.json.JSONSocialNetwork;
 import org.codehaus.jackson.*;
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -45,6 +46,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 @ViewScoped
 public class AdminCreateFestivalController implements Serializable {
     Part file;
+    File csv;
     Festival festival;
     
     private String name;
@@ -64,6 +66,7 @@ public class AdminCreateFestivalController implements Serializable {
     public String uploadFileJSON() {
         String res = "";
         try {
+            //TRY TO PARSE JSON
             ObjectMapper objectMapper = new ObjectMapper();
             JSONFestivalWrapper jsonFestival = objectMapper.readValue(file.getInputStream(), JSONFestivalWrapper.class);
             
@@ -73,41 +76,92 @@ public class AdminCreateFestivalController implements Serializable {
             for (int i = 0; i < jsonPerformers.size(); i++) {
                 DB.newFestivalPerformer( parseFestivalPerformer(jsonPerformers.get(i)));
             }
+            
+            List<JSONSocialNetwork> jsonSocialNetworks = jsonFestival.getFestival().getSocialNetworks();
+            for (int i = 0; i < jsonSocialNetworks.size(); i++) {
+                DB.newSocialNetwork(parseSocialNetwork(jsonSocialNetworks.get(i)));
+            }
+            
             message = "Successfully parsed JSON";
             res = "admin_festivals.xhtml";
             mapFestivalVars(festival);
             
         } catch (Exception ex) {
-            //PARSE CSV FILE IF objectMapper json failed.
+            //PARSE CSV FILE IF PARSING JSON FAILED.
+            res = parseCSV();
+        }
+        return res;
+    }
+    
+    private String parseCSV() {
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy",Locale.ENGLISH);
+        DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+        BufferedReader br = null;
+        String line;
+        String res = "";
+        String[] fields;
+        festival = new Festival();
+        
+        try {
+           
+            br = new BufferedReader(new FileReader("C:\\Developer\\Netbeans Projects\\Music_Festival\\csv.txt"));
             
-            DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy",Locale.ENGLISH);
-            DateFormat timerFormat = new SimpleDateFormat("HH:mm:ss");
-            festival = new Festival();
+            br.readLine();
+            line = br.readLine();
+            fields = line.split("\"");
+            festival.setName(fields[1]);
+            festival.setPlace(fields[3]);
+            DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+            festival.setStartDate(df.parse(fields[5]));
+            festival.setEndDate(df.parse(fields[7]));
             
-            try {
-                BufferedReader br = new BufferedReader(new FileReader(new File(file.getName())));
-                String line; 
-                List<String[]> rootNode = new ArrayList<>();
+            
+            br.readLine();
+            line = br.readLine();
+            fields = line.split("\"");
+            
+            festival.setCostDay( Integer.parseInt(fields[3]));
+            line = br.readLine();
+            fields = line.split("\"");
+            festival.setCostAll( Integer.parseInt(fields[3]) );
+            festival.setUserTicketDay(0);
+            festival.setStatus("initialized");
+            
+            DB.newFestival(festival);
+            
+            br.readLine();
+            line = br.readLine();
+            fields = line.split("\"");
+            while (!fields[1].equals("Social Network")) {
+                Performer performer = new Performer();
+                FestivalPerformer festivalPerformer = new FestivalPerformer();
                 
-                while ((line = br.readLine()) != null) {   
-                    // use comma as separator
-                    String[] lineNode = line.split(",");
-                    rootNode.add(lineNode);
-                }
-                festival.setName(rootNode.get(1)[0]);
-                festival.setPlace(rootNode.get(1)[1]);
-                festival.setStartDate( dateFormat.parse(rootNode.get(1)[2]) );
-                festival.setEndDate( dateFormat.parse(rootNode.get(1)[3]) );
-                festival.setCostDay( Integer.parseInt(rootNode.get(1)[4]) );
-                festival.setCostAll( Integer.parseInt(rootNode.get(1)[5]) );
-                festival.setUserTicketDay(0);
-                festival.setStatus("Open");
-                DB.newFestival( festival );
+                performer.setName(fields[1]);
+                festivalPerformer.setStartDate( dateFormat.parse(fields[3]) );
+                festivalPerformer.setStartTime( timeFormat.parse(fields[7]) );
+                festivalPerformer.setEndDate( dateFormat.parse(fields[5]) );
+                festivalPerformer.setEndTime( timeFormat.parse(fields[9]) );
+                festivalPerformer.setFestival(festival);
+                festivalPerformer.setPerformer(performer);
                 
-            } catch(Exception ex2) {
-              //PARSING CSV AND JSON FAILED!
-              message = "Parsing failed!";
+                DB.newPerformer(performer);
+                DB.newFestivalPerformer(festivalPerformer);
+                
+                line = br.readLine();
+                fields = line.split("\"");
             }
+            
+            while ((line = br.readLine()) != null) {
+                fields = line.split("\"");
+                SocialNetwork socialNetwork = new SocialNetwork();
+                socialNetwork.setName(fields[1]);
+                socialNetwork.setLink(fields[3]);
+                socialNetwork.setFestival(festival);
+            }
+            
+            res = "admin_festivals.xhtml";
+        } catch (Exception ex) {
+            
         }
         return res;
     }
@@ -150,6 +204,16 @@ public class AdminCreateFestivalController implements Serializable {
             
         }
         return festivalPerformer;
+    }
+    
+    private SocialNetwork parseSocialNetwork (JSONSocialNetwork jsonSocialNetwork) {
+        SocialNetwork socialNetwork = new SocialNetwork();
+        
+        socialNetwork.setFestival(festival);
+        socialNetwork.setLink( jsonSocialNetwork.getLink() );
+        socialNetwork.setName( jsonSocialNetwork.getName() );
+        
+        return socialNetwork;
     }
     
     private void mapFestivalVars(Festival fest) {
@@ -274,6 +338,14 @@ public class AdminCreateFestivalController implements Serializable {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public File getCsv() {
+        return csv;
+    }
+
+    public void setCsv(File csv) {
+        this.csv = csv;
     }
     
     

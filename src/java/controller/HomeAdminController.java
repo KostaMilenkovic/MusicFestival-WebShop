@@ -39,8 +39,8 @@ public class HomeAdminController implements Serializable{
     }
 
     public List<Festival> getFestivalsMostTicketsBought() {
-//        return DB.getTopFiveFestivalsTicketsBought();
-        return DB.getTopFiveFestivals();
+        return DB.getTopFiveFestivalsTicketsBought();
+//        return DB.getTopFiveFestivals();
     }
 
     public void setFestivalsMostTicketsBought(List<Festival> festivalsMostTicketsBought) {
